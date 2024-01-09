@@ -23,9 +23,13 @@ MY_SOURCES	=	ft_isdigit.c ft_putendl_fd.c ft_strlen.c ft_isprint.c \
 BONUS_SOURCES	=	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
 	ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
 
+FT_PRINTF_SOURCES	=	additions/ft_parse.c additions/ft_printf.c additions/ft_put001.c additions/ft_put002.c
+
 MY_OBJECTS	=	$(MY_SOURCES:%.c=%.o)
 
 MY_BONUS	=	$(BONUS_SOURCES:%.c=%.o)
+
+MY_FT_PRINTF	=	$(FT_PRINTF_SOURCES:%.c=%.o)
 
 CC	=	gcc
 

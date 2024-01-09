@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   libftprintf.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
+/*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/01 18:17:44 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/09 14:14:47 by fbarrett         ###   ########.fr       */
+/*   Created: 2023/10/18 14:22:32 by gcrepin           #+#    #+#             */
+/*   Updated: 2023/10/31 12:58:41 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include <sys/wait.h>
-# include "libft/libft.h"
+#ifndef LIBFTPRINTF_H
+# define LIBFTPRINTF_H
 
-char	*seek_cmd(char *cmd, char **envp);
-char	**ft_split_quote(char const *s, char c);
+# include <stdarg.h>
+# include "ft_printf.h"
+
+int	is_spec_printf(char *format, va_list ap);
+
 #endif
