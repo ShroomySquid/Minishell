@@ -15,6 +15,7 @@
 # define MINISHELL_H
 # include <sys/wait.h>
 # include "libft.h"
+# include "sig_handling.h"
 
 char	*seek_cmd(char *cmd, char **envp);
 char	**ft_split_quote(char const *s, char c);

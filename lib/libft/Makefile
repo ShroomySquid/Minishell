@@ -37,13 +37,10 @@ LIBFLAGS = -L. -lft -I. -I./additions
 
 CCFLAGS	=	-Wall -Wextra -Werror
 
-all:	bonus
+all:	$(NAME)
 
-$(NAME): $(MY_OBJECTS)
+$(NAME): $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
 	ar rcs libft.a $(MY_OBJECTS)
-
-bonus: $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
-	ar rcs libft.a $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
 
 test:	$(NAME) libft.h
 	$(CC) $(CCFLAGS) $(LIBFLAGS) main.c -o test

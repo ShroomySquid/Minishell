@@ -16,9 +16,12 @@
 #include <signal.h>
 #include "minishell.h"
 
-typedef struct sigation t_sigaction;
+typedef struct sigaction t_sigaction;
 
 #define CTRLC SIGINT
 #define CTRLSL SIGQUIT
+
+void	sig_interactive_handler(int signum);
+int		sig_access(int signum);
 
 #endif

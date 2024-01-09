@@ -14,24 +14,35 @@
 
 int main(int argc, char	**argv, char **envp)
 {
-	char	*buff;
-	char	**line;
-	int		i;
-	char	*exec_cmd;
+	char		*buff;
+	char		**line;
+	int			i;
+	char		*exec_cmd;
+//	int			sig;
+	t_sigaction	act;
 
 	i = 0;
-	if (envp)
-		argc += 0;
-	else
-		printf("%s\n", argv[0]);
+	(void)argc;
+	(void)argv;
+	(void)envp;
+	act.sa_handler = sig_interactive_handler;
+	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
 	while (1)
 	{
 		write(1, "> ", 2);
 		buff = get_next_line(0);
 		if (!buff)
 		{
-			printf("get_next_line failed to saved on buffer");
-			return (1);
+//			sig = sig_access(0);
+			if (sig_access(0))
+//			if (sig)
+				continue ;
+			else
+			{
+				write(1, "exit\n", 5);
+				return (1);
+			}
 		}
 		if (!ft_strncmp("exit", buff, 4))
 		{

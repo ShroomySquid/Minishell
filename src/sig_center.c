@@ -14,14 +14,20 @@
 
 //Handle SIGINT and SIGQUIT
 
+int	sig_access(int signum)
+{
+	static int	sig = 0;
+	int			ret;
+
+	ret = sig;
+	sig = signum;
+	return (ret);
+}
+
 void	sig_interactive_handler(int signum)
 {
+	sig_access(signum);
 	if (signum == CTRLC)
-	{
-		ft_putstr_fd("\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
+		ft_printf("\n");
 }
 
