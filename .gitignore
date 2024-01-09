@@ -1,5 +1,5 @@
 .gitignore
-push_swap
+minishell
 .DS_store
 test*
 a.out
