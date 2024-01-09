@@ -1,58 +1,39 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/09/30 09:59:24 by fbarrett          #+#    #+#              #
-#    Updated: 2023/12/18 11:05:35 by fbarrett         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+CFLAGS= -g -Wextra -Wall -Werror
+LIBS	:= -lft -L./lib/libft
+NAME = minishell
+OBJECTS = src/print_line.o
+DEPS = -I./include -I./lib/libft
+INCLUDES = include/minishell.h
 
-NAME	=	minishell
 
-MY_LIBRARY	=	./Libft/
+all: space
+	@echo "\033[1;32mMaking libft:\033[0m"
+	@$(MAKE) -C ./lib/libft 2>&1 | (grep -v "make\[1\]" || echo "\033[1;33mNothing to be done for libft\033[0m\n")
+	@echo "\033[1;32mMaking $(NAME):\033[0m"
+	@$(MAKE) $(NAME) 2>&1 | (grep -v "make\[1\]" || echo "\033[1;33mNothing to be done for $(NAME)\033[0m\n")
 
-O_DIRECT	=	./bin/
-
-MY_BONUS	=	./bonus/
-
-MY_SOURCES	=	print_line.c
-
-MY_OBJECTS	=	$(addprefix $(O_DIRECT), $(MY_SOURCES:%.c=%.o))
-
-CC	=	gcc
-
-LIBFLAGS = -L./Libft/ -lft -I.
-
-CCFLAGS	=	-Wall -Wextra -Werror
-
-all:	$(NAME)
-
-$(NAME): $(O_DIRECT) $(MY_OBJECTS) $(MY_LIBRARY)
-	@make -C $(MY_LIBRARY)
-	$(CC) $(CCFLAGS) -o $(NAME) $(MY_OBJECTS) $(LIBFLAGS)
-
-bonus: $(O_DIRECT) $(MY_BONUS) $(MY_LIBRARY) 
-	@make -C $(MY_LIBRARY)
-	@make -C $(MY_BONUS)
-
-$(O_DIRECT)%.o: %.c
-	$(CC) $(CCFLAGS) -o $@ -c $< 
-
-$(O_DIRECT):	
-	mkdir -p -m 777 $(O_DIRECT)
+$(NAME): $(OBJECTS) $(INCLUDES)
+	@echo
+	$(CC) $(OBJECTS) $(LIBS) -o $(NAME) $(CFLAGS) $(DEPS)
+	@echo "\033[1;32m$(NAME) compiled\033[0m"
+	@echo
 
 clean:
-	rm -f $(O_DIRECT)*.o
-	rm -f *.o
-	rm -rf *.dSYM
+	@rm -f $(OBJECTS)
+	@echo "\033[1;31m$(NAME) cleaned\033[0m"
 
-fclean:	clean
-	rm -f $(NAME)
-	rm -rf $(O_DIRECT)
+fclean: libclean clean
+	@rm -f $(NAME)
 
-re:	fclean $(NAME)
+libclean:
+	@$(MAKE) -C ./lib/libft fclean
 
-.PHONY:	all clean fclean re test bonus bin pipex_bonus
+re: fclean space all
+
+space:
+	@echo
+
+%.o: %.c $(INCLUDES)
+	cc -c -o $@ $< $(CFLAGS) $(DEPS)
+
+.PHONY: clean fclean re all libclean space

@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
+/*   By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/01 18:17:44 by fbarrett          #+#    #+#             */
-/*   Updated: 2023/12/19 09:57:44 by fbarrett         ###   ########.fr       */
+/*   Created: 2023/10/16 14:24:02 by fbarrett          #+#    #+#             */
+/*   Updated: 2024/01/07 13:02:30 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-# include <sys/wait.h>
-# include "libft/libft.h"
+#include "libft.h"
 
+/* Fonction qui compte la taille du string (incluant le backslah zero) */
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
 
-#endif
+	if (!s)
+		return (0);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
