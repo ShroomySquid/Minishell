@@ -23,7 +23,7 @@ MY_SOURCES	=	ft_isdigit.c ft_putendl_fd.c ft_strlen.c ft_isprint.c \
 BONUS_SOURCES	=	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
 	ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
 
-FT_PRINTF_SOURCES	=	additions/ft_parse.c additions/ft_printf.c additions/ft_put001.c additions/ft_put002.c
+FT_PRINTF_SOURCES	=	additions/ft_printf/ft_parse.c additions/ft_printf/ft_printf.c additions/ft_printf/ft_put001.c additions/ft_printf/ft_put002.c
 
 MY_OBJECTS	=	$(MY_SOURCES:%.c=%.o)
 
@@ -33,26 +33,26 @@ MY_FT_PRINTF	=	$(FT_PRINTF_SOURCES:%.c=%.o)
 
 CC	=	gcc
 
-LIBFLAGS = -L. -lft -I.
+LIBFLAGS = -L. -lft -I. -I./additions
 
 CCFLAGS	=	-Wall -Wextra -Werror
 
-all:	$(NAME)
+all:	bonus
 
 $(NAME): $(MY_OBJECTS)
 	ar rcs libft.a $(MY_OBJECTS)
 
-bonus: all	$(MY_OBJECTS) $(MY_BONUS)
-	ar rcs libft.a $(MY_OBJECTS) $(MY_BONUS)
+bonus: $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
+	ar rcs libft.a $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
 
 test:	$(NAME) libft.h
 	$(CC) $(CCFLAGS) $(LIBFLAGS) main.c -o test
 
 %.o:%.c libft.h
-	$(CC) $(CCFLAGS) -c $< -o $@
+	$(CC) $(CCFLAGS) -c $< -o $@ -I.
 
 clean:
-	rm -f *.o
+	rm -f $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
 
 fclean:	clean
 	rm -f $(NAME) test a.out

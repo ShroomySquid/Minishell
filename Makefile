@@ -1,7 +1,7 @@
 CFLAGS= -g -Wextra -Wall -Werror
 LIBS	:= -lft -L./lib/libft
 NAME = minishell
-OBJECTS = src/print_line.o
+OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o
 DEPS = -I./include -I./lib/libft
 INCLUDES = include/minishell.h
 

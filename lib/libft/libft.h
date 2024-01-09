@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
+# include "additions/ft_printf/ft_printf.h"
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
 # endif
