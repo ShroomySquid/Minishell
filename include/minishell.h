@@ -16,5 +16,6 @@
 # include <sys/wait.h>
 # include "libft.h"
 
-
+char	*seek_cmd(char *cmd, char **envp);
+char	**ft_split_quote(char const *s, char c);
 #endif
