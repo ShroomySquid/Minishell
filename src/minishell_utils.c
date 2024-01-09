@@ -6,11 +6,23 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:37:41 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/09 14:15:38 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/09 15:57:41 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_array(char **array_str)
+{
+	int i;
+
+	i = 0;
+	while (array_str[i])
+	{	
+		ft_printf("%s\n", array_str[i]);
+		i++;
+	}
+}
 
 char	*find_path(char **possible_paths, char *cmd)
 {
@@ -29,6 +41,7 @@ char	*find_path(char **possible_paths, char *cmd)
 		free(valid_path);
 		i++;
 	}
+	write(1, "no possible paths\n", 19);
 	return (NULL);
 }
 
@@ -39,6 +52,8 @@ char	*seek_cmd(char *cmd, char **envp)
 	char	*valid_path;
 
 	i = 0;
+	i = ft_strlen(cmd) - 1;
+	cmd[i] = '\0';
 	if (ft_strchr(cmd, 47))
 		return (cmd);
 	while (!ft_strnstr(envp[i], "PATH", 4))
@@ -46,6 +61,7 @@ char	*seek_cmd(char *cmd, char **envp)
 	possible_paths = ft_split(envp[i] + 5, ':');
 	if (!possible_paths)
 		return (0);
+	print_array(possible_paths);
 	valid_path = find_path(possible_paths, cmd);
 	free_all(possible_paths);
 	return (valid_path);

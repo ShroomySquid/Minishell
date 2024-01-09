@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/09 14:21:44 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/09 16:00:12 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,12 @@ int main(int argc, char	**argv, char **envp)
 			break ;
 		}
 		line = ft_split_quote(buff, ' ');
-		/*
-		while (line[i])
-		{
-			printf("%s\n", line[i]);
-			i++;
-		}
-		*/
-		i = 0;
 		exec_cmd = seek_cmd(line[0], envp);
 		if (!exec_cmd)
 			write(1, "No matching commands\n", 21);
 		else
 		{
-			write(1, exec_cmd, ft_strlen(exec_cmd));
-			write(1, " is an executable command\n", 26);
+			ft_printf("%s is executable\n", exec_cmd);
 			free(exec_cmd);
 		}
 		free_all(line);
