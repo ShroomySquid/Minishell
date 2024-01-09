@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:37:41 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/09 15:57:41 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/09 16:12:30 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ char	*seek_cmd(char *cmd, char **envp)
 	char	*valid_path;
 
 	i = 0;
-	i = ft_strlen(cmd) - 1;
-	cmd[i] = '\0';
 	if (ft_strchr(cmd, 47))
 		return (cmd);
 	while (!ft_strnstr(envp[i], "PATH", 4))

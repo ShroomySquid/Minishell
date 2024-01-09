@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/09 16:00:12 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/09 16:19:28 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int main(int argc, char	**argv, char **envp)
 			printf("get_next_line failed to saved on buffer");
 			return (1);
 		}
+		i = ft_strlen(buff) - 1;
+		buff[i] = '\0';
 		if (!ft_strncmp("exit", buff, 4))
 		{
 			free(buff);
