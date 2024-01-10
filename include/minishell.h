@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/09 13:55:13 by gcrepin          ###   ########.fr       */
+/*   Updated: 2024/01/10 11:28:34 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <sys/wait.h>
 # include "libft.h"
 
+void	print_array(char **array_str);
 char	*seek_cmd(char *cmd, char **envp);
 char	**ft_split_quote(char const *s, char c);
 #endif
