@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/10 11:41:56 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/10 15:02:40 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,31 @@ int	run_single(char	**line, char	*cmd_path,	char	**envp)
 	exit (1);
 }
 
+void	seek_all_cmds(char **cmd_paths, char **line_args, char **envp)
+{
+	int i;
+	int args;
+
+	args = 0;
+	i = 0;
+	while (line_args[i])
+	{
+		if (i == 0 || !ft_strncmp("|", line_args[i - 1], 2))
+		{
+			cmd_paths[args] = seek_cmd(line_args[0], envp);
+			args++;
+		}
+		i++;
+	}
+	cmd_paths[args] = 0;
+}
+
 int main(int argc, char	**argv, char **envp)
 {
 	char	*buff;
 	char	**line_args;
 	int		pipes_nbr;
-	char	*cmd_path;
+	char	**cmd_paths;
 	int		i;
 	int		fd[2];
 
@@ -66,15 +85,13 @@ int main(int argc, char	**argv, char **envp)
 		printf("%s\n", argv[0]);
 	while (1)
 	{
-		ft_printf("> ");
-		buff = get_next_line(0);
+		buff = readline("> ");
+		add_history(buff);
 		if (!buff)
 		{
-			printf("get_next_line failed to saved on buffer");
+			printf("whobolo");
 			return (1);
 		}
-		i = ft_strlen(buff) - 1;
-		buff[i] = '\0';
 		if (!ft_strncmp("exit", buff, 4))
 		{
 			free(buff);
@@ -82,7 +99,30 @@ int main(int argc, char	**argv, char **envp)
 		}
 		line_args = ft_split_quote(buff, ' ');
 		pipes_nbr = seek_pipe(line_args);
-		cmd_path = seek_cmd(line_args[0], envp);
+		if (pipes_nbr < 1)
+		{
+			cmd_paths = ft_calloc(1, sizeof(char *));
+			cmd_paths[0] = seek_cmd(line_args[0], envp);
+			cmd_paths[1] = 0;
+		}
+		else
+		{
+			cmd_paths = ft_calloc(1 + pipes_nbr, sizeof(char *));
+			seek_all_cmds(cmd_paths, line_args, envp);
+		}
+		i = -1;
+		while (i < pipes_nbr)
+		{
+			i++;
+			if (!cmd_paths[i])
+			{
+				free_all(line_args);
+				free_all(cmd_paths);
+				free(buff);				
+				continue ;
+			}
+		}
+		/*
 		i = 0;
 		while (i < pipes_nbr)
 		{
@@ -90,16 +130,14 @@ int main(int argc, char	**argv, char **envp)
 			printf("%d, %d, \n", fd[0], fd[1]);
 			i++;
 		}
-		if (!cmd_path)
-		{
-			write(1, "No matching commands\n", 21);
-			continue ;
-		}
-		else if (!pipes_nbr)
-			run_single(line_args, cmd_path, envp);
+		*/
+		if (!pipes_nbr)
+			run_single(line_args, cmd_paths[0], envp);
 		free_all(line_args);
-		free(cmd_path);
+		free_all(cmd_paths);
 		free(buff);
 	}
+	clear_history();
 	return (0);
 }
+

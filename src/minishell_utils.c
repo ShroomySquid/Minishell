@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:37:41 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/10 11:41:58 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/10 14:24:16 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*find_path(char **possible_paths, char *cmd)
 		free(valid_path);
 		i++;
 	}
-	write(1, "no possible paths\n", 19);
+	ft_printf("command not found: %s\n", cmd);	
 	return (NULL);
 }
 
