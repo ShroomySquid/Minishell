@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   sig_handling.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/09 13:55:13 by gcrepin          ###   ########.fr       */
+/*   Created: 2024/01/09 15:05:09 by gcrepin           #+#    #+#             */
+/*   Updated: 2024/01/09 15:05:25 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef SIG_HANDLING_H
+#define SIG_HANDLING_H
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-# include <sys/wait.h>
-# include "libft.h"
-# include "sig_handling.h"
+#include <signal.h>
+#include "minishell.h"
 
-char	*seek_cmd(char *cmd, char **envp);
-char	**ft_split_quote(char const *s, char c);
+typedef struct sigaction t_sigaction;
+
+#define CTRLC SIGINT
+#define CTRLSL SIGQUIT
+
+void	sig_interactive_handler(int signum);
+int		sig_access(int signum);
+void	sig_ignore(int signum);
+void	mask_control_chars(void);
+void	setup_sigs(void);
+
 #endif

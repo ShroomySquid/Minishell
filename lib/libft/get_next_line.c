@@ -12,18 +12,20 @@
 
 #include "libft.h"
 
-int static	read_file(int fd, char *buf_static)
+static	int	read_file(int fd, char *buf_static)
 {
 	int	read_size;
 	int	return_value;
 
 	return_value = 0;
 	read_size = read(fd, buf_static, BUFFER_SIZE);
-	if (read_size < 0)
+	if (read_size < 0 || buf_static[0] == '\4')
 	{
 		read_size = 0;
 		return_value = -1;
 	}
+	else
+		write(0, buf_static, read_size);
 	while (read_size < BUFFER_SIZE)
 	{
 		buf_static[read_size] = 0;
@@ -33,7 +35,7 @@ int static	read_file(int fd, char *buf_static)
 	return (return_value);
 }
 
-int	static	finish_get_line(char *temp_buf, char *temp_buf2, char **return_buf)
+static int	finish_get_line(char *temp_buf, char *temp_buf2, char **return_buf)
 {
 	if (!*return_buf)
 	{
@@ -49,7 +51,7 @@ int	static	finish_get_line(char *temp_buf, char *temp_buf2, char **return_buf)
 	return (1);
 }
 
-void static	save_it(char *temp_buf2, 
+static void	save_it(char *temp_buf2,
 		char *buf_static_start, int a, char **return_buf)
 {
 	char	*temp_buf;
@@ -65,7 +67,7 @@ void static	save_it(char *temp_buf2,
 	}
 }
 
-int static	get_line(int i, char **return_buf, char *buf_static, int fd)
+static int	get_line(int i, char **return_buf, char *buf_static, int fd)
 {
 	int		a;
 	char	*temp_buf;
