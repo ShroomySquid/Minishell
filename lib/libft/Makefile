@@ -35,12 +35,13 @@ CC	=	cc
 
 LIBFLAGS = -I.
 
+
 CCFLAGS	=	-Wall -Wextra -Werror
 
 all:	$(NAME)
 
-$(NAME): $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
-	ar rcs libft.a $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
+$(NAME): $(MY_OBJECTS) $(MY_FT_PRINTF) $(MY_BONUS)
+	ar rcs libft.a $(MY_OBJECTS) $(MY_FT_PRINTF) $(MY_BONUS)
 
 test:	$(NAME) libft.h
 	$(CC) $(CCFLAGS) $(LIBFLAGS) main.c -o test
@@ -52,7 +53,7 @@ clean:
 	rm -f $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
 
 fclean:	clean
-	rm -f $(NAME) test a.out
+	rm -f $(NAME)
 
 re:	fclean $(NAME)
 
