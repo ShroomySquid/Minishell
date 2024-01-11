@@ -23,7 +23,7 @@ int main(int argc, char	**argv, char **envp)
 	(void)argc;
 	(void)argv;
 	(void)envp;
-	setup_sigs();
+	setup_interactive();
 	mask_control_chars();
 	while (1)
 	{

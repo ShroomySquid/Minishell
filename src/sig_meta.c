@@ -1,38 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sig_center.c                                       :+:      :+:    :+:   */
+/*   sig_meta.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 15:09:24 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/09 15:09:29 by gcrepin          ###   ########.fr       */
+/*   Created: 2024/01/10 22:43:57 by gcrepin           #+#    #+#             */
+/*   Updated: 2024/01/10 22:43:57 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sig_handling.h"
 
-
-
-int	sig_access(int signum)
+void	mask_control_chars(void)
 {
-	static int	sig = 0;
-	int			ret;
+	struct termios	term;
 
-	ret = sig;
-	sig = signum;
-	return (ret);
+	tcgetattr(0, &term);
+	term.c_lflag &= ~(ECHO | ICANON);
+//	term.c_lflag &= ~(ICANON);
+//	term.c_lflag &= ~(ECHO);
+	tcsetattr(0, TCSANOW, &term);
 }
 
-void sig_ignore(int signum)
+void	setup_interactive(void)
 {
-	(void)signum;
-}
+	t_sigaction act;
+	t_sigaction ign;
 
-void	sig_interactive_handler(int signum)
-{
-	sig_access(signum);
-	if (signum == CTRLC)
-		ft_printf("\n");
+	act.sa_handler = sig_interactive_handler;
+	ign.sa_handler = sig_ignore;
+	ign.sa_flags = SA_RESTART;
+	sigaction(CTRLC, &act, NULL);
+	sigaction(CTRLSL, &ign, NULL);
 }
 
