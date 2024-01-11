@@ -31,9 +31,9 @@ MY_BONUS	=	$(BONUS_SOURCES:%.c=%.o)
 
 MY_FT_PRINTF	=	$(FT_PRINTF_SOURCES:%.c=%.o)
 
-CC	=	gcc
+CC	=	cc
 
-LIBFLAGS = -L. -lft -I. -I./additions/ft_printf
+LIBFLAGS = -I.
 
 CCFLAGS	=	-Wall -Wextra -Werror
 
