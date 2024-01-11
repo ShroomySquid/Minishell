@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/10 15:02:40 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/11 14:58:23 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	seek_pipe(char	**line_args)
 	return (pipe_nbr);
 }
 
-int	run_single(char	**line, char	*cmd_path,	char	**envp)
+int	run_single_cmd(char	**line, char	*cmd_path,	char	**envp)
 {
 	int	child;
 
@@ -43,30 +43,83 @@ int	run_single(char	**line, char	*cmd_path,	char	**envp)
 	if (!child)
 	{
 		if (execve(cmd_path, line, envp) == -1)
-			perror("Execve failed to execute");	
+			perror("execve failed to execute");	
 	}
 	free(cmd_path);
 	free_all(line);
 	exit (1);
 }
 
-void	seek_all_cmds(char **cmd_paths, char **line_args, char **envp)
+void	select_pipe()
+{
+	if (s_pipe->i == pipes_nbr)
+	{
+		dup2(s_pipe->fd[0], STDIN_FILENO);
+		close(s_pipe->fd[0]);
+	}
+	if (!s_pipe->i);
+	{
+		dup2(s_pipe->fd[1], STDOUT_FILENO);
+		close(s_pipe->fd[1]);
+	}
+
+}
+
+int	run_cmds_pipe(char **line, char	**cmd_path, char **envp, int pipes_nbr)
+{
+	int	child;
+	int i;
+	int fd[2];
+
+	i = 0;
+	while (i < pipes_nbr)
+	{
+		pipe(fd);
+		i++;	
+	}
+	i = 0;
+	
+	while ()
+	{
+
+	}
+	if	((child = fork()) < 0)
+		return (1);
+	if (child > 0)
+	{
+		wait(&child);
+		return (0);
+	}
+	if (!child)
+	{
+		if (execve(cmd_path, line, envp) == -1)
+			perror("execve failed to execute");	
+	}
+	free(cmd_path);
+	free_all(line);
+	exit (1);
+}
+
+void	seek_all_cmds(char ***cmd_paths, char **line_args, char **envp)
 {
 	int i;
 	int args;
 
-	args = 0;
-	i = 0;
-	while (line_args[i])
+	args = 1;
+	i = 1;
+	(*cmd_paths)[0] = seek_cmd(line_args[0], envp);
+	while (line_args[i] && (*cmd_paths)[0])
 	{
-		if (i == 0 || !ft_strncmp("|", line_args[i - 1], 2))
+		if (!ft_strncmp("|", line_args[i - 1], 2))
 		{
-			cmd_paths[args] = seek_cmd(line_args[0], envp);
+			(*cmd_paths)[args] = seek_cmd(line_args[i], envp);
 			args++;
+			if (!(*cmd_paths)[args - 1])
+				break ;
 		}
 		i++;
 	}
-	cmd_paths[args] = 0;
+	(*cmd_paths)[args] = 0;
 }
 
 int main(int argc, char	**argv, char **envp)
@@ -76,7 +129,7 @@ int main(int argc, char	**argv, char **envp)
 	int		pipes_nbr;
 	char	**cmd_paths;
 	int		i;
-	int		fd[2];
+	s_pipe	s_pipe;
 
 	i = 0;
 	if (envp)
@@ -101,27 +154,30 @@ int main(int argc, char	**argv, char **envp)
 		pipes_nbr = seek_pipe(line_args);
 		if (pipes_nbr < 1)
 		{
-			cmd_paths = ft_calloc(1, sizeof(char *));
+			cmd_paths = ft_calloc(2, sizeof(char *));
 			cmd_paths[0] = seek_cmd(line_args[0], envp);
 			cmd_paths[1] = 0;
 		}
 		else
 		{
-			cmd_paths = ft_calloc(1 + pipes_nbr, sizeof(char *));
-			seek_all_cmds(cmd_paths, line_args, envp);
+			cmd_paths = ft_calloc(2 + pipes_nbr, sizeof(char *));
+			seek_all_cmds(&cmd_paths, line_args, envp);
 		}
-		i = -1;
-		while (i < pipes_nbr)
+		print_array(cmd_paths);
+		i = 0;
+		while (i < pipes_nbr + 1)
 		{
-			i++;
 			if (!cmd_paths[i])
 			{
 				free_all(line_args);
 				free_all(cmd_paths);
-				free(buff);				
-				continue ;
+				free(buff);
+				break ;
 			}
+			i++;
 		}
+		if (i <= pipes_nbr)
+			continue ;
 		/*
 		i = 0;
 		while (i < pipes_nbr)
@@ -132,7 +188,13 @@ int main(int argc, char	**argv, char **envp)
 		}
 		*/
 		if (!pipes_nbr)
-			run_single(line_args, cmd_paths[0], envp);
+		{
+			run_single_cmd(line_args, cmd_paths[0], envp);
+		}
+		else
+		{
+			run_cmds_pipe();
+		}
 		free_all(line_args);
 		free_all(cmd_paths);
 		free(buff);
