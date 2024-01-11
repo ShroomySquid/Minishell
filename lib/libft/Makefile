@@ -35,7 +35,6 @@ CC	=	cc
 
 LIBFLAGS = -I.
 
-
 CCFLAGS	=	-Wall -Wextra -Werror
 
 all:	$(NAME)
