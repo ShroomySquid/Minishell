@@ -50,55 +50,55 @@ int	run_single_cmd(char	**line, char	*cmd_path,	char	**envp)
 	exit (1);
 }
 
-void	select_pipe()
-{
-	if (s_pipe->i == pipes_nbr)
-	{
-		dup2(s_pipe->fd[0], STDIN_FILENO);
-		close(s_pipe->fd[0]);
-	}
-	if (!s_pipe->i);
-	{
-		dup2(s_pipe->fd[1], STDOUT_FILENO);
-		close(s_pipe->fd[1]);
-	}
+//void	select_pipe()
+//{
+//	if (s_pipe->i == pipes_nbr)
+//	{
+//		dup2(s_pipe->fd[0], STDIN_FILENO);
+//		close(s_pipe->fd[0]);
+//	}
+//	if (!s_pipe->i);
+//	{
+//		dup2(s_pipe->fd[1], STDOUT_FILENO);
+//		close(s_pipe->fd[1]);
+//	}
+//
+//}
 
-}
-
-int	run_cmds_pipe(char **line, char	**cmd_path, char **envp, int pipes_nbr)
-{
-	int	child;
-	int i;
-	int fd[2];
-
-	i = 0;
-	while (i < pipes_nbr)
-	{
-		pipe(fd);
-		i++;	
-	}
-	i = 0;
-	
-	while ()
-	{
-
-	}
-	if	((child = fork()) < 0)
-		return (1);
-	if (child > 0)
-	{
-		wait(&child);
-		return (0);
-	}
-	if (!child)
-	{
-		if (execve(cmd_path, line, envp) == -1)
-			perror("execve failed to execute");	
-	}
-	free(cmd_path);
-	free_all(line);
-	exit (1);
-}
+//int	run_cmds_pipe(char **line, char	**cmd_path, char **envp, int pipes_nbr)
+//{
+//	int	child;
+//	int i;
+//	int fd[2];
+//
+//	i = 0;
+//	while (i < pipes_nbr)
+//	{
+//		pipe(fd);
+//		i++;
+//	}
+//	i = 0;
+//
+//	while ()
+//	{
+//
+//	}
+//	if	((child = fork()) < 0)
+//		return (1);
+//	if (child > 0)
+//	{
+//		wait(&child);
+//		return (0);
+//	}
+//	if (!child)
+//	{
+//		if (execve(cmd_path, line, envp) == -1)
+//			perror("execve failed to execute");
+//	}
+//	free(cmd_path);
+//	free_all(line);
+//	exit (1);
+//}
 
 void	seek_all_cmds(char ***cmd_paths, char **line_args, char **envp)
 {
@@ -129,16 +129,17 @@ int main(int argc, char	**argv, char **envp)
 	int		pipes_nbr;
 	char	**cmd_paths;
 	int		i;
-	s_pipe	s_pipe;
+//	s_pipe	s_pipe;
 
-//	i = 0;
 	(void)argc;
 	(void)argv;
 	(void)envp;
-//	setup_interactive();
-//	setup_terminal();
 	while (1)
 	{
+//		sig_innit();
+//		ft_printf("minishell$ ");
+//		buff = get_next_line(0);
+		rl_catch_signals = 0;
 		buff = readline("> ");
 		add_history(buff);
 		if (!buff)
@@ -194,7 +195,7 @@ int main(int argc, char	**argv, char **envp)
 		}
 		else
 		{
-			run_cmds_pipe();
+//			run_cmds_pipe();
 		}
 		free_all(line_args);
 		free_all(cmd_paths);
