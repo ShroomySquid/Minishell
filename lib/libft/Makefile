@@ -33,20 +33,20 @@ MY_FT_PRINTF	=	$(FT_PRINTF_SOURCES:%.c=%.o)
 
 CC	=	gcc
 
-LIBFLAGS = -L. -lft -I. -I./additions
+LIBFLAGS = -L. -lft -I. -I./additions/ft_printf
 
 CCFLAGS	=	-Wall -Wextra -Werror
 
 all:	$(NAME)
 
 $(NAME): $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
-	ar rcs libft.a $(MY_OBJECTS)
+	ar rcs libft.a $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
 
 test:	$(NAME) libft.h
 	$(CC) $(CCFLAGS) $(LIBFLAGS) main.c -o test
 
 %.o:%.c libft.h
-	$(CC) $(CCFLAGS) -c $< -o $@ -I.
+	$(CC) $(CCFLAGS) -c $< -o $@ $(LIBFLAGS)
 
 clean:
 	rm -f $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)

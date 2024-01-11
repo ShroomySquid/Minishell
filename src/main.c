@@ -16,18 +16,15 @@ int main(int argc, char	**argv, char **envp)
 {
 	char		*buff;
 	char		**line;
-	int			i;
+//	int			i;
 	char		*exec_cmd;
-//	int			sig;
-	t_sigaction	act;
 
-	i = 0;
+//	i = 0;
 	(void)argc;
 	(void)argv;
 	(void)envp;
-	act.sa_handler = sig_interactive_handler;
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
+	setup_sigs();
+	mask_control_chars();
 	while (1)
 	{
 		write(1, "> ", 2);
@@ -57,7 +54,7 @@ int main(int argc, char	**argv, char **envp)
 			i++;
 		}
 		*/
-		i = 0;
+//		i = 0;
 		exec_cmd = seek_cmd(line[0], envp);
 		if (!exec_cmd)
 			write(1, "No matching commands\n", 21);
