@@ -15,6 +15,7 @@
 
 #include <signal.h>
 #include "minishell.h"
+#include <termios.h>
 
 typedef struct sigaction t_sigaction;
 
@@ -24,7 +25,8 @@ typedef struct sigaction t_sigaction;
 void	sig_interactive_handler(int signum);
 int		sig_access(int signum);
 void	sig_ignore(int signum);
-void	mask_control_chars(void);
-void	setup_sigs(void);
+void	setup_terminal(void);
+void	setup_interactive(void);
+void	sig_innit(void);
 
 #endif

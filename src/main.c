@@ -23,14 +23,16 @@ int main(int argc, char	**argv, char **envp)
 	(void)argc;
 	(void)argv;
 	(void)envp;
-	setup_sigs();
-	mask_control_chars();
+//	setup_interactive();
+//	setup_terminal();
 	while (1)
 	{
-		write(1, "> ", 2);
+		sig_innit();
+		ft_printf("> ");
 		buff = get_next_line(0);
 		if (!buff)
 		{
+//			ft_printf(" debug ");
 //			sig = sig_access(0);
 			if (sig_access(0))
 //			if (sig)
