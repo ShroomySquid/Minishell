@@ -46,7 +46,7 @@ test:	$(NAME) libft.h
 	$(CC) $(CCFLAGS) $(LIBFLAGS) main.c -o test
 
 %.o:%.c libft.h
-	$(CC) $(CCFLAGS) -c $< -o $@ -I.
+	$(CC) $(CCFLAGS) -c $< -o $@ $(LIBFLAGS)
 
 clean:
 	rm -f $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)

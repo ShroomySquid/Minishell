@@ -14,24 +14,32 @@
 
 int main(int argc, char	**argv, char **envp)
 {
-	char	*buff;
-	char	**line;
-	int		i;
-	char	*exec_cmd;
+	char		*buff;
+	char		**line;
+//	int			i;
+	char		*exec_cmd;
 
-	i = 0;
-	if (envp)
-		argc += 0;
-	else
-		printf("%s\n", argv[0]);
+//	i = 0;
+	(void)argc;
+	(void)argv;
+	(void)envp;
+	setup_sigs();
+	mask_control_chars();
 	while (1)
 	{
 		write(1, "> ", 2);
 		buff = get_next_line(0);
 		if (!buff)
 		{
-			printf("get_next_line failed to saved on buffer");
-			return (1);
+//			sig = sig_access(0);
+			if (sig_access(0))
+//			if (sig)
+				continue ;
+			else
+			{
+				write(1, "exit\n", 5);
+				return (1);
+			}
 		}
 		if (!ft_strncmp("exit", buff, 4))
 		{
@@ -46,7 +54,7 @@ int main(int argc, char	**argv, char **envp)
 			i++;
 		}
 		*/
-		i = 0;
+//		i = 0;
 		exec_cmd = seek_cmd(line[0], envp);
 		if (!exec_cmd)
 			write(1, "No matching commands\n", 21);

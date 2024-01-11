@@ -12,4 +12,4 @@ checker_Mac
 /push_swap_visualizer/
 imgui.ini
 debug
-ref
+ref/*
