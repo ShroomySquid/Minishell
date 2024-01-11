@@ -1,0 +1,4 @@
+ > après une commande renvoie le contenu de la commande vers le lieu indiqué.
+ >> même chose mais on rajoute au lieu de remplacer.
+ < avant la commande indique ou la commande doit aller chercher son contenu.
+ << même chose mais arrête lorsqu'on rencontre le terme donné.
