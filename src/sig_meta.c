@@ -12,7 +12,13 @@
 
 #include "sig_handling.h"
 
-void	mask_control_chars(void)
+void	sig_innit(void)
+{
+	setup_terminal();
+	setup_interactive();
+}
+
+void	setup_terminal(void)
 {
 	struct termios	term;
 
@@ -29,6 +35,7 @@ void	setup_interactive(void)
 	t_sigaction ign;
 
 	act.sa_handler = sig_interactive_handler;
+	act.sa_flags = SA_INTERRUPT;
 	ign.sa_handler = sig_ignore;
 	ign.sa_flags = SA_RESTART;
 	sigaction(CTRLC, &act, NULL);

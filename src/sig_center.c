@@ -32,7 +32,6 @@ void sig_ignore(int signum)
 void	sig_interactive_handler(int signum)
 {
 	sig_access(signum);
-	if (signum == CTRLC)
-		ft_printf("\n");
+	ft_printf("\n");
 }
 
