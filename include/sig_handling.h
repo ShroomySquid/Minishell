@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   sig_handling.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/11 14:58:41 by fbarrett         ###   ########.fr       */
+/*   Created: 2024/01/09 15:05:09 by gcrepin           #+#    #+#             */
+/*   Updated: 2024/01/09 15:05:25 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef SIG_HANDLING_H
+#define SIG_HANDLING_H
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-# include <sys/wait.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft.h"
-# include "sig_handling.h"
+#include <signal.h>
+#include "minishell.h"
+#include <termios.h>
 
-typedef struct t_pipe
-{
-	int child;
-	int fd[2];
-	int pipes_nbr;
-	int	i;
-}				s_pipe
+typedef struct sigaction t_sigaction;
 
-void	print_array(char **array_str);
-char	*seek_cmd(char *cmd, char **envp);
-char	**ft_split_quote(char const *s, char c);
+#define CTRLC SIGINT
+#define CTRLSL SIGQUIT
+
+void	sig_interactive_handler(int signum);
+int		sig_access(int signum);
+void	sig_ignore(int signum);
+void	setup_terminal(void);
+void	setup_interactive(void);
+void	sig_innit(void);
+
 #endif

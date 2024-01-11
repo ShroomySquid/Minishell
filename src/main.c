@@ -131,11 +131,12 @@ int main(int argc, char	**argv, char **envp)
 	int		i;
 	s_pipe	s_pipe;
 
-	i = 0;
-	if (envp)
-		argc += 0;
-	else
-		printf("%s\n", argv[0]);
+//	i = 0;
+	(void)argc;
+	(void)argv;
+	(void)envp;
+//	setup_interactive();
+//	setup_terminal();
 	while (1)
 	{
 		buff = readline("> ");

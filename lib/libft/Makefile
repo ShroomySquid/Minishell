@@ -31,31 +31,28 @@ MY_BONUS	=	$(BONUS_SOURCES:%.c=%.o)
 
 MY_FT_PRINTF	=	$(FT_PRINTF_SOURCES:%.c=%.o)
 
-CC	=	gcc
+CC	=	cc
 
-LIBFLAGS = -L. -lft -I. -I./additions
+LIBFLAGS = -I.
 
 CCFLAGS	=	-Wall -Wextra -Werror
 
-all:	bonus
+all:	$(NAME)
 
-$(NAME): $(MY_OBJECTS)
-	ar rcs libft.a $(MY_OBJECTS)
-
-bonus: $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
-	ar rcs libft.a $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
+$(NAME): $(MY_OBJECTS) $(MY_FT_PRINTF) $(MY_BONUS)
+	ar rcs libft.a $(MY_OBJECTS) $(MY_FT_PRINTF) $(MY_BONUS)
 
 test:	$(NAME) libft.h
 	$(CC) $(CCFLAGS) $(LIBFLAGS) main.c -o test
 
 %.o:%.c libft.h
-	$(CC) $(CCFLAGS) -c $< -o $@ -I.
+	$(CC) $(CCFLAGS) -c $< -o $@ $(LIBFLAGS)
 
 clean:
 	rm -f $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
 
 fclean:	clean
-	rm -f $(NAME) test a.out
+	rm -f $(NAME)
 
 re:	fclean $(NAME)
 

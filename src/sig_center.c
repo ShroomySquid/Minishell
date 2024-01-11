@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   sig_center.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/11 14:58:41 by fbarrett         ###   ########.fr       */
+/*   Created: 2024/01/09 15:09:24 by gcrepin           #+#    #+#             */
+/*   Updated: 2024/01/09 15:09:29 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "sig_handling.h"
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-# include <sys/wait.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft.h"
-# include "sig_handling.h"
 
-typedef struct t_pipe
+
+int	sig_access(int signum)
 {
-	int child;
-	int fd[2];
-	int pipes_nbr;
-	int	i;
-}				s_pipe
+	static int	sig = 0;
+	int			ret;
 
-void	print_array(char **array_str);
-char	*seek_cmd(char *cmd, char **envp);
-char	**ft_split_quote(char const *s, char c);
-#endif
+	ret = sig;
+	sig = signum;
+	return (ret);
+}
+
+void sig_ignore(int signum)
+{
+	(void)signum;
+}
+
+void	sig_interactive_handler(int signum)
+{
+	sig_access(signum);
+	ft_printf("\n");
+}
+
