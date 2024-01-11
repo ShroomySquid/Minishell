@@ -35,7 +35,9 @@ void	setup_interactive(void)
 	t_sigaction ign;
 
 	act.sa_handler = sig_interactive_handler;
+	act.sa_flags = 0;
 //	act.sa_flags = SA_INTERRUPT;
+//	This flag is necessary on Ubuntu machine else the read() is not interrupted
 	ign.sa_handler = sig_ignore;
 	ign.sa_flags = SA_RESTART;
 	sigaction(CTRLC, &act, NULL);
