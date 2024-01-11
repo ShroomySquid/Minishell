@@ -3,6 +3,7 @@ LIBS	:= -lft -L./lib/libft
 NAME = minishell
 OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o src/sig_center.o src/sig_meta.o
 DEPS = -I./include -I./lib/libft
+READLINE_LIB = -L/usr/local/lib -I/usr/local/include -lreadline
 INCLUDES = include/minishell.h
 
 
@@ -14,7 +15,7 @@ all: space
 
 $(NAME): $(OBJECTS) $(INCLUDES)
 	@echo
-	$(CC) $(OBJECTS) $(LIBS) -o $(NAME) $(CFLAGS) $(DEPS)
+	$(CC) $(OBJECTS) $(LIBS) -o $(NAME) $(CFLAGS) $(DEPS) $(READLINE_LIB)
 	@echo "\033[1;32m$(NAME) compiled\033[0m"
 	@echo
 

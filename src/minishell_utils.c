@@ -6,11 +6,23 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:37:41 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/09 14:15:38 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/11 14:11:55 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_array(char **array_str)
+{
+	int i;
+
+	i = 0;
+	while (array_str[i])
+	{	
+		ft_printf("%s\n", array_str[i]);
+		i++;
+	}
+}
 
 char	*find_path(char **possible_paths, char *cmd)
 {
@@ -29,6 +41,7 @@ char	*find_path(char **possible_paths, char *cmd)
 		free(valid_path);
 		i++;
 	}
+	ft_printf("command not found: %s\n", cmd);	
 	return (NULL);
 }
 
@@ -50,6 +63,24 @@ char	*seek_cmd(char *cmd, char **envp)
 	free_all(possible_paths);
 	return (valid_path);
 }
+
+char	**ft_sub_array(char **array, int start, int end)
+{
+	char	**sub_array;
+
+	i = 0;
+	if (start >= end)
+		return (1);
+	sub_array = ft_calloc(end - start + 1, sizeof(char*));
+	while (array[start + i] && (start + i) <= end)
+	{
+		sub_array[i] = ft_strdup(array[start + i]);
+		i++;
+	}
+	sub_array[i] = 0;
+	return (sub_array);
+}
+
 /*
 void	close_moi_ca(t_ints ints)
 {
