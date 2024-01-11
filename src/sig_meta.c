@@ -35,7 +35,7 @@ void	setup_interactive(void)
 	t_sigaction ign;
 
 	act.sa_handler = sig_interactive_handler;
-	act.sa_flags = SA_INTERRUPT;
+//	act.sa_flags = SA_INTERRUPT;
 	ign.sa_handler = sig_ignore;
 	ign.sa_flags = SA_RESTART;
 	sigaction(CTRLC, &act, NULL);

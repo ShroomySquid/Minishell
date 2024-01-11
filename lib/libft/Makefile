@@ -33,7 +33,8 @@ MY_FT_PRINTF	=	$(FT_PRINTF_SOURCES:%.c=%.o)
 
 CC	=	cc
 
-LIBFLAGS = -L. -lft -I.
+LIBFLAGS = -I.
+
 
 CCFLAGS	=	-Wall -Wextra -Werror
 
