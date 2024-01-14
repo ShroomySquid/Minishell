@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:37:41 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/14 16:26:48 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/14 17:03:54 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,10 @@ char	*seek_cmd(char *cmd, char **envp)
 		if (!access(cmd, X_OK))
 		{
 			ft_printf("valid cmd: %s\n", cmd);
-			return (cmd);
+			return (ft_strdup(cmd));
 		}
 		ft_printf("Command not found: %s\n", cmd);
-		return (NULL);
-		//return (cmd);
+		return (NULL);	
 	}
 	while (!ft_strnstr(envp[i], "PATH", 4))
 		i++;

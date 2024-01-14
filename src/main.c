@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/14 16:26:41 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/14 17:03:55 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	run_single_cmd(char	**line, char *cmd_path,	char **envp, s_pipe *pipe)
 	}
 	//free(cmd_path);
 	exit (1);
+	//return (1);
 }
 
 void	parent_process(s_pipe *pipe, char **line)
