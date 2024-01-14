@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/11 14:58:23 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/14 13:30:22 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	seek_pipe(char	**line_args)
 			pipe_nbr++;
 		i++;
 	}
-	ft_printf("There is %d pipes\n", pipe_nbr);
 	return (pipe_nbr);
 }
 
@@ -50,54 +49,98 @@ int	run_single_cmd(char	**line, char	*cmd_path,	char	**envp)
 	exit (1);
 }
 
-void	select_pipe()
+void	parent_process(s_pipe *pipe, char **line)
 {
-	if (s_pipe->i == pipes_nbr)
+	if (pipe->fd[0] >= pipe->min_fd)
 	{
-		dup2(s_pipe->fd[0], STDIN_FILENO);
-		close(s_pipe->fd[0]);
+		if (pipe->fd[1] != pipe->max_fd)
+			pipe->fd[0] -= 2;
+		pipe->fd[1] -= 2;
 	}
-	if (!s_pipe->i);
-	{
-		dup2(s_pipe->fd[1], STDOUT_FILENO);
-		close(s_pipe->fd[1]);
-	}
-
+	pipe->i--;
+	while (ft_strncmp("|", line[pipe->cmd_ptr], 2))
+		pipe->cmd_ptr++;
+	pipe->cmd_ptr++;
 }
 
-int	run_cmds_pipe(char **line, char	**cmd_path, char **envp, int pipes_nbr)
+void	parent_close(s_pipe *pipe)
 {
-	int	child;
-	int i;
-	int fd[2];
+	while (pipe->max_fd >= pipe->min_fd)
+	{
+		close(pipe->max_fd);
+		pipe->max_fd--;
+	}
+	wait(&pipe->child);
+}
 
-	i = 0;
-	while (i < pipes_nbr)
-	{
-		pipe(fd);
-		i++;	
-	}
-	i = 0;
-	
-	while ()
-	{
+void	child_process(s_pipe *pipe, char **line)
+{
+	int ite;
 
-	}
-	if	((child = fork()) < 0)
-		return (1);
-	if (child > 0)
+	ite = pipe->max_fd;
+	if (pipe->i != pipe->pipes_nbr)
 	{
-		wait(&child);
-		return (0);
+		dup2(pipe->fd[0], STDIN_FILENO);
+		close(pipe->fd[0]);
 	}
-	if (!child)
+	if (pipe->i != 0)
 	{
-		if (execve(cmd_path, line, envp) == -1)
-			perror("execve failed to execute");	
+		dup2(pipe->fd[1], STDOUT_FILENO);
+		close(pipe->fd[1]);
 	}
-	free(cmd_path);
-	free_all(line);
-	exit (1);
+	while (ite >= pipe->min_fd)
+	{
+		if (ite != pipe->fd[0] && ite != pipe->fd[1])
+			close(ite);
+		ite--;
+	}
+	ite = 0;
+	while (ft_strncmp("|", line[pipe->cmd_ptr + ite], 2))
+		ite++;
+	pipe->cmd_args = ft_calloc(ite + 1, sizeof(char *));
+	ite = 0;
+	while (ft_strncmp("|", line[pipe->cmd_ptr + ite], 2))
+	{
+		pipe->cmd_args[ite] = ft_strdup(line[pipe->cmd_ptr + ite]);
+		ite++;
+	}
+	pipe->cmd_args[ite] = 0;
+}
+
+int	run_cmds_pipe(char **line, char	**cmd_paths, char **envp, s_pipe *pipes)
+{
+	pipes->i = 0;
+	pipes->cmd_ptr = 0;
+	while (pipes->i < pipes->pipes_nbr)
+	{
+		pipe(pipes->fd);
+		if (pipes->i == 0)
+			pipes->min_fd = pipes->fd[0];
+		pipes->i++;	
+	}
+	pipes->max_fd = pipes->fd[1];
+	while (pipes->i >= 0)
+	{
+		if	((pipes->child = fork()) < 0)
+			return (1);
+		if (pipes->child > 0)
+		{
+			parent_process(pipes, line);
+			continue ;
+		}
+		if (!pipes->child)
+		{
+			child_process(pipes, line);
+			if (execve(cmd_paths[pipes->pipes_nbr - pipes->i], pipes->cmd_args, envp) == -1)
+				perror("execve failed to execute");	
+		}
+		free(cmd_paths);
+		free_all(pipes->cmd_args);
+		free_all(line);
+		exit (1);
+	}
+	parent_close(pipes);
+	return (0);
 }
 
 void	seek_all_cmds(char ***cmd_paths, char **line_args, char **envp)
@@ -126,17 +169,15 @@ int main(int argc, char	**argv, char **envp)
 {
 	char	*buff;
 	char	**line_args;
-	int		pipes_nbr;
 	char	**cmd_paths;
-	int		i;
-	s_pipe	s_pipe;
+	s_pipe	*pipe;
 
-//	i = 0;
 	(void)argc;
 	(void)argv;
 	(void)envp;
 //	setup_interactive();
 //	setup_terminal();
+	pipe = ft_calloc(1, sizeof(char *));
 	while (1)
 	{
 		buff = readline("> ");
@@ -152,8 +193,8 @@ int main(int argc, char	**argv, char **envp)
 			break ;
 		}
 		line_args = ft_split_quote(buff, ' ');
-		pipes_nbr = seek_pipe(line_args);
-		if (pipes_nbr < 1)
+		pipe->pipes_nbr = seek_pipe(line_args);
+		if (pipe->pipes_nbr < 1)
 		{
 			cmd_paths = ft_calloc(2, sizeof(char *));
 			cmd_paths[0] = seek_cmd(line_args[0], envp);
@@ -161,45 +202,36 @@ int main(int argc, char	**argv, char **envp)
 		}
 		else
 		{
-			cmd_paths = ft_calloc(2 + pipes_nbr, sizeof(char *));
+			cmd_paths = ft_calloc(2 + pipe->pipes_nbr, sizeof(char *));
 			seek_all_cmds(&cmd_paths, line_args, envp);
 		}
-		print_array(cmd_paths);
-		i = 0;
-		while (i < pipes_nbr + 1)
+		pipe->i = 0;
+		while (pipe->i < pipe->pipes_nbr + 1)
 		{
-			if (!cmd_paths[i])
+			if (!cmd_paths[pipe->i])
 			{
 				free_all(line_args);
 				free_all(cmd_paths);
 				free(buff);
 				break ;
 			}
-			i++;
+			pipe->i++;
 		}
-		if (i <= pipes_nbr)
+		if (pipe->i <= pipe->pipes_nbr)
 			continue ;
-		/*
-		i = 0;
-		while (i < pipes_nbr)
-		{
-			pipe(fd);
-			printf("%d, %d, \n", fd[0], fd[1]);
-			i++;
-		}
-		*/
-		if (!pipes_nbr)
+		if (!pipe->pipes_nbr)
 		{
 			run_single_cmd(line_args, cmd_paths[0], envp);
 		}
 		else
 		{
-			run_cmds_pipe();
+			run_cmds_pipe(line_args, cmd_paths, envp, pipe);
 		}
 		free_all(line_args);
 		free_all(cmd_paths);
 		free(buff);
 	}
+	// y faut rl_clear_history
 	clear_history();
 	return (0);
 }

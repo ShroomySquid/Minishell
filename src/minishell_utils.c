@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:37:41 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/11 14:11:55 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/14 12:25:29 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,11 @@ char	*seek_cmd(char *cmd, char **envp)
 char	**ft_sub_array(char **array, int start, int end)
 {
 	char	**sub_array;
+	int i;
 
 	i = 0;
 	if (start >= end)
-		return (1);
+		return (NULL);
 	sub_array = ft_calloc(end - start + 1, sizeof(char*));
 	while (array[start + i] && (start + i) <= end)
 	{
