@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/14 13:58:28 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/14 17:37:22 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct t_pipe
 	int	min_fd;
 	int	cmd_ptr;
 	int	error;
+	int	*child_list;
 	char	**cmd_args;
 }				s_pipe;
 

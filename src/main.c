@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/14 17:03:55 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/14 17:39:39 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ void	parent_process(s_pipe *pipe, char **line)
 			pipe->fd[0] -= 2;
 		pipe->fd[1] -= 2;
 	}
+	pipe->child_list[pipe->pipes_nbr - pipe->i] = pipe->child;
 	pipe->i--;
+	if (pipe->i == 0)
+		pipe->child_list[pipe->pipes_nbr - pipe->i] = 0;
 	while (ft_strncmp("|", line[pipe->cmd_ptr], 2))
 		pipe->cmd_ptr++;
 	pipe->cmd_ptr++;
@@ -68,7 +71,12 @@ void	parent_close(s_pipe *pipe)
 		close(pipe->max_fd);
 		pipe->max_fd--;
 	}
-	waitpid(pipe->child, &pipe->error, 0);
+	while (pipe->child_list[pipe->i])
+	{
+		wait(&pipe->child_list[pipe->i]);
+		pipe->i++;
+	}
+	free(pipe->child_list);
 }
 
 void	child_process(s_pipe *pipe, char **line)
@@ -109,6 +117,7 @@ int	run_cmds_pipe(char **line, char	**cmd_paths, char **envp, s_pipe *pipes)
 {
 	pipes->i = 0;
 	pipes->cmd_ptr = 0;
+	pipes->child_list = ft_calloc(pipes->pipes_nbr + 2, sizeof(int));
 	while (pipes->i < pipes->pipes_nbr)
 	{
 		pipe(pipes->fd);
