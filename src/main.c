@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/14 13:30:22 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/14 14:42:02 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,16 @@ int	seek_pipe(char	**line_args)
 	return (pipe_nbr);
 }
 
-int	run_single_cmd(char	**line, char	*cmd_path,	char	**envp)
+int	run_single_cmd(char	**line, char *cmd_path,	char **envp, s_pipe *pipe)
 {
-	int	child;
-
-	if	((child = fork()) < 0)
+	if	((pipe->child = fork()) < 0)
 		return (1);
-	if (child > 0)
+	if (pipe->child > 0)
 	{
-		wait(&child);
+		waitpid(pipe->child, &pipe->error, 0);
 		return (0);
 	}
-	if (!child)
+	if (!pipe->child)
 	{
 		if (execve(cmd_path, line, envp) == -1)
 			perror("execve failed to execute");	
@@ -70,7 +68,7 @@ void	parent_close(s_pipe *pipe)
 		close(pipe->max_fd);
 		pipe->max_fd--;
 	}
-	wait(&pipe->child);
+	waitpid(pipe->child, &pipe->error, 0);
 }
 
 void	child_process(s_pipe *pipe, char **line)
@@ -193,6 +191,12 @@ int main(int argc, char	**argv, char **envp)
 			break ;
 		}
 		line_args = ft_split_quote(buff, ' ');
+		if (!line_args[0])
+		{
+			free(line_args);
+			free(buff);
+			continue ;
+		}
 		pipe->pipes_nbr = seek_pipe(line_args);
 		if (pipe->pipes_nbr < 1)
 		{
@@ -221,7 +225,7 @@ int main(int argc, char	**argv, char **envp)
 			continue ;
 		if (!pipe->pipes_nbr)
 		{
-			run_single_cmd(line_args, cmd_paths[0], envp);
+			run_single_cmd(line_args, cmd_paths[0], envp, pipe);
 		}
 		else
 		{
