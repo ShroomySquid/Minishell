@@ -27,11 +27,15 @@ int	sig_access(int signum)
 void sig_ignore(int signum)
 {
 	(void)signum;
+//	rl_redisplay();
 }
 
 void	sig_interactive_handler(int signum)
 {
-	sig_access(signum);
 	ft_printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	sig_access(signum);
 }
 

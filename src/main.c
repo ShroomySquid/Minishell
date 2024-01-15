@@ -186,6 +186,7 @@ int	main(int argc, char	**argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	sig_innit();
 	pipe = ft_calloc(1, sizeof(s_pipe *));
 	while (1)
 	{
@@ -204,10 +205,13 @@ int	main(int argc, char	**argv, char **envp)
 			break ;
 		}
 		line_args = ft_split_quote(buff, ' ');
-		if (!line_args[0])
+		if (!line_args || !line_args[0])
 		{
-			free(line_args);
 			free(buff);
+			if (line_args)
+				free(line_args);
+			else
+				ft_printf("Failed to parse line\n");
 			continue ;
 		}
 		exec_line(pipe, line_args, envp, buff);
