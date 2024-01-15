@@ -1,4 +1,10 @@
  > après une commande renvoie le contenu de la commande vers le lieu indiqué.
  >> même chose mais on rajoute au lieu de remplacer.
- < avant la commande indique ou la commande doit aller chercher son contenu.
+ < après la commande indique ou la commande doit aller chercher son contenu.
  << même chose mais arrête lorsqu'on rencontre le terme donné.
+
+
+ Pour les pipes:
+ 	corriger le cat | cat | ls
+ 	implémenter readline si pipe est le dernier arg
+	checker leaks

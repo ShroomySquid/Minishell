@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/15 13:24:21 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:20:47 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,32 @@ int	seek_pipe(char	**line_args)
 	return (pipe_nbr);
 }
 
+int	check_redirection(char **line)
+{
+	int i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (!ft_strncmp(">", line[i], 2) && access(line[i + 1], W_OK) != 0)
+		{
+			perror("Unable to write on file");
+			return (1);
+		}
+		if (!ft_strncmp("<", line[i], 2) && access(line[i + 1], R_OK) != 0)
+		{
+			perror("Unable to read on file");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	run_single_cmd(char	**line, char *cmd_path,	char **envp, s_pipe *pipe)
 {
+	if (check_redirection(line))
+		return (1);
 	if	((pipe->child = fork()) < 0)
 		return (1);
 	if (pipe->child > 0)
