@@ -1,7 +1,8 @@
 CFLAGS= -g -Wextra -Wall -Werror
 LIBS	:= -lft -L./lib/libft
 NAME = minishell
-OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o src/sig_center.o src/sig_meta.o
+OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o src/sig_center.o src/sig_meta.o \
+	src/path_parsing.o
 DEPS = -I./include -I./lib/libft
 READLINE_LIB = -L/usr/local/lib -I/usr/local/include -lreadline
 INCLUDES = include/minishell.h

@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/14 17:37:22 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/15 12:13:08 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ typedef struct t_pipe
 
 void	print_array(char **array_str);
 char	*seek_cmd(char *cmd, char **envp);
+void	seek_all_cmds(char ***cmd_paths, char **line_args, char **envp);
 char	**ft_split_quote(char const *s, char c);
+char	**ft_sub_array(char **array, int start, int end);
 #endif
