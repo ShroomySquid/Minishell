@@ -14,7 +14,8 @@
 
 void	sig_innit(void)
 {
-	setup_terminal();
+//	setup_terminal();
+	rl_catch_signals = 0;
 	setup_interactive();
 }
 

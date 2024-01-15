@@ -1,41 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sig_center.c                                       :+:      :+:    :+:   */
+/*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 15:09:24 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/09 15:09:29 by gcrepin          ###   ########.fr       */
+/*   Created: 2024/01/15 15:55:06 by gcrepin           #+#    #+#             */
+/*   Updated: 2024/01/15 15:55:14 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sig_handling.h"
+#ifndef BUILTIN_H
+#define BUILTIN_H
 
+# include "minishell.h"
 
+int		b_pwd(char **args);
+int		b_pwd_short(char **args);
+char	*b_get_pwd_short(char **args);
 
-int	sig_access(int signum)
-{
-	static int	sig = 0;
-	int			ret;
-
-	ret = sig;
-	sig = signum;
-	return (ret);
-}
-
-void sig_ignore(int signum)
-{
-	(void)signum;
-//	rl_redisplay();
-}
-
-void	sig_interactive_handler(int signum)
-{
-	ft_printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	sig_access(signum);
-}
-
+#endif

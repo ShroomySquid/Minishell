@@ -56,7 +56,7 @@ int	run_single_cmd(char	**line, char *cmd_path,	char **envp, s_pipe *pipe)
 		return (1);
 	if	((pipe->child = fork()) < 0)
 		return (1);
-	if (pipe->child > 0)
+	if (pipe->child)
 	{
 		waitpid(pipe->child, &pipe->error, 0);
 		return (0);
@@ -159,7 +159,26 @@ int	exec_line(s_pipe *pipe, char **line_args, char **envp, char *buff)
 	return (0);
 }
 
-int main(int argc, char	**argv, char **envp)
+char	*recieve_input(void)
+{
+	char	*buff;
+	char	*temp;
+	char	*prompt;
+
+	temp = b_get_pwd_short(NULL);
+	if (!temp)
+		prompt = ft_strdup("minishell$ ");
+	else
+	{
+		prompt = ft_strjoin(temp, " $ ");
+		free(temp);
+	}
+	buff = readline(prompt);
+	free(prompt);
+	return (buff);
+}
+
+int	main(int argc, char	**argv, char **envp)
 {
 	char	*buff;
 	char	**line_args;
@@ -167,36 +186,38 @@ int main(int argc, char	**argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	pipe = ft_calloc(1, sizeof(char *));
+	sig_innit();
+	pipe = ft_calloc(1, sizeof(s_pipe *));
 	while (1)
 	{
-//		sig_innit();
-//		ft_printf("minishell$ ");
-//		buff = get_next_line(0);
-//		rl_catch_signals = 0;
-		buff = readline("> ");
-		add_history(buff);
-		if (!buff)
+		buff = recieve_input();
+		if (!buff && errno == 0)
+			break ;
+		else if (!buff)
 		{
-			printf("Somehow readline failed to save on buff");
+			printf("Failed to read line\n");
 			break ;
 		}
+		add_history(buff);
 		if (!ft_strncmp("exit", buff, 4))
 		{
 			free(buff);
 			break ;
 		}
 		line_args = ft_split_quote(buff, ' ');
-		if (!line_args[0])
+		if (!line_args || !line_args[0])
 		{
-			free(line_args);
 			free(buff);
+			if (line_args)
+				free(line_args);
+			else
+				ft_printf("Failed to parse line\n");
 			continue ;
 		}
 		exec_line(pipe, line_args, envp, buff);
 	}
+	ft_printf("exit\n");
 	free(pipe);
-	// y faut rl_clear_history
 	rl_clear_history();
 	return (0);
 }
