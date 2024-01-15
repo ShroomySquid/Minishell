@@ -170,6 +170,10 @@ int main(int argc, char	**argv, char **envp)
 	pipe = ft_calloc(1, sizeof(char *));
 	while (1)
 	{
+//		sig_innit();
+//		ft_printf("minishell$ ");
+//		buff = get_next_line(0);
+		rl_catch_signals = 0;
 		buff = readline("> ");
 		add_history(buff);
 		if (!buff)
