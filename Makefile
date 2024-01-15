@@ -2,9 +2,9 @@ CFLAGS= -g -Wextra -Wall -Werror
 LIBS	:= -lft -L./lib/libft
 NAME = minishell
 OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o src/sig_center.o src/sig_meta.o \
-	src/path_parsing.o	src/parent_child_process.o src/line_reader.o
+	src/path_parsing.o	src/parent_child_process.o src/line_reader.o src/b_pwd.o
 DEPS = -I./include -I./lib/libft -I./readline/include
-READLINE_LIB = -L./readline/lib -lreadline -lhistory -ltermcap
+READLINE_LIB = -L./lib/readline -lreadline -lhistory
 INCLUDES = include/minishell.h
 
 

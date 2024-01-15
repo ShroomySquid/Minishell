@@ -18,6 +18,7 @@
 # include <readline/history.h>
 # include "libft.h"
 # include "sig_handling.h"
+# include "builtin.h"
 
 typedef struct t_pipe
 {

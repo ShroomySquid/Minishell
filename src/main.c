@@ -56,7 +56,7 @@ int	run_single_cmd(char	**line, char *cmd_path,	char **envp, s_pipe *pipe)
 		return (1);
 	if	((pipe->child = fork()) < 0)
 		return (1);
-	if (pipe->child > 0)
+	if (pipe->child)
 	{
 		waitpid(pipe->child, &pipe->error, 0);
 		return (0);
@@ -164,17 +164,27 @@ int main(int argc, char	**argv, char **envp)
 	char	*buff;
 	char	**line_args;
 	s_pipe	*pipe;
+	char	*prompt;
+	char	*temp;
 
 	(void)argc;
 	(void)argv;
-	pipe = ft_calloc(1, sizeof(char *));
+	pipe = ft_calloc(1, sizeof(s_pipe *));
 	while (1)
 	{
+		temp = b_get_pwd_short(NULL);
+		if (!temp)
+			prompt = ft_strdup("minishell$ ");
+		else
+		{
+			prompt = ft_strjoin(temp, " $ ");
+			free(temp);
+		}
 //		sig_innit();
 //		ft_printf("minishell$ ");
 //		buff = get_next_line(0);
 //		rl_catch_signals = 0;
-		buff = readline("> ");
+		buff = readline(prompt);
 		add_history(buff);
 		if (!buff)
 		{
