@@ -197,6 +197,6 @@ int main(int argc, char	**argv, char **envp)
 	}
 	free(pipe);
 	// y faut rl_clear_history
-	clear_history();
+	rl_clear_history();
 	return (0);
 }
