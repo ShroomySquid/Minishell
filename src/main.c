@@ -173,7 +173,7 @@ int main(int argc, char	**argv, char **envp)
 //		sig_innit();
 //		ft_printf("minishell$ ");
 //		buff = get_next_line(0);
-		rl_catch_signals = 0;
+//		rl_catch_signals = 0;
 		buff = readline("> ");
 		add_history(buff);
 		if (!buff)
@@ -197,6 +197,6 @@ int main(int argc, char	**argv, char **envp)
 	}
 	free(pipe);
 	// y faut rl_clear_history
-	clear_history();
+	rl_clear_history();
 	return (0);
 }
