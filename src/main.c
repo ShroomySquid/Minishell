@@ -63,8 +63,8 @@ int	run_single_cmd(char	**line, char *cmd_path,	char **envp, s_pipe *pipe)
 	}
 	if (!pipe->child)
 	{
-		if (execve(cmd_path, line, envp) == -1)
-			perror("execve failed to execute");	
+		if (execute(cmd_path, line, envp) == -1)
+			perror("execve failed to execute");
 	}
 	exit (1);
 }
@@ -83,8 +83,9 @@ int	run_each_cmd(s_pipe *pipes, char **cmd_paths, char **envp, char **line)
 		if (!pipes->child)
 		{
 			child_process(pipes, line);
-			if (execve(cmd_paths[pipes->pipes_nbr - pipes->i], pipes->cmd_args, envp) == -1)
-				perror("execve failed to execute");	
+			if (execute(cmd_paths[pipes->pipes_nbr - pipes->i],
+					pipes->cmd_args, envp) == -1)
+				perror("execve failed to execute");
 		}
 		free_all(pipes->cmd_args);
 		exit (1);
@@ -191,19 +192,20 @@ int	main(int argc, char	**argv, char **envp)
 	while (1)
 	{
 		buff = recieve_input();
-		if (!buff && errno == 0)
-			break ;
-		else if (!buff)
+		if (!buff && errno)
 		{
 			printf("Failed to read line\n");
 			break ;
 		}
-		add_history(buff);
-		if (!ft_strncmp("exit", buff, 4))
+		if (!buff || !ft_strncmp("exit", buff, 5))
 		{
-			free(buff);
+			if (buff)
+				free(buff);
+			free(pipe);
+			b_exit(NULL);
 			break ;
 		}
+		add_history(buff);
 		line_args = ft_split_quote(buff, ' ');
 		if (!line_args || !line_args[0])
 		{
@@ -216,8 +218,5 @@ int	main(int argc, char	**argv, char **envp)
 		}
 		exec_line(pipe, line_args, envp, buff);
 	}
-	ft_printf("exit\n");
-	free(pipe);
-	rl_clear_history();
 	return (0);
 }
