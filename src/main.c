@@ -192,19 +192,20 @@ int	main(int argc, char	**argv, char **envp)
 	while (1)
 	{
 		buff = recieve_input();
-		if (!buff && errno == 0)
-			break ;
-		else if (!buff)
+		if (!buff && errno)
 		{
 			printf("Failed to read line\n");
 			break ;
 		}
-		add_history(buff);
-		if (!ft_strncmp("exit", buff, 4))
+		if (!buff || !ft_strncmp("exit", buff, 5))
 		{
-			free(buff);
+			if (buff)
+				free(buff);
+			free(pipe);
+			b_exit(NULL);
 			break ;
 		}
+		add_history(buff);
 		line_args = ft_split_quote(buff, ' ');
 		if (!line_args || !line_args[0])
 		{
@@ -217,8 +218,5 @@ int	main(int argc, char	**argv, char **envp)
 		}
 		exec_line(pipe, line_args, envp, buff);
 	}
-	ft_printf("exit\n");
-	free(pipe);
-	rl_clear_history();
 	return (0);
 }

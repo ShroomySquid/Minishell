@@ -16,6 +16,8 @@
 int	b_exit(char **args)
 {
 	(void)args;
-	ft_printf("function exit not implemented yet (lmao)\n");
-	return (0);
+	rl_replace_line("", 0);
+	rl_clear_history();
+	ft_printf("\n[exit]\n");
+	exit(0);
 }
