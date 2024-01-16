@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/15 14:20:47 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/16 15:46:17 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,32 +28,145 @@ int	seek_pipe(char	**line_args)
 	return (pipe_nbr);
 }
 
+int	here_doc(int file, char	*delimiter, int *a)
+{
+	char	*buff;
+	char	*here_doc_name;
+
+	here_doc_name = ft_calloc(3, sizeof(char));
+	here_doc_name[0] = '.';
+	here_doc_name[1] = 'A';
+	here_doc_name[2] = '\0';
+	if (!access(here_doc_name, F_OK))
+		here_doc_name[1] += 1;
+	file = open(here_doc_name, O_CREAT | O_WRONLY | O_TRUNC, 0000644);
+	if (file < 0)
+		return (file);
+	while (1)
+	{
+		buff = readline("Input something: ");
+		if (!buff)
+			return (-1);
+		if (!ft_strncmp(delimiter, buff, ft_strlen(delimiter)))
+			break ;
+		write(file, buff, ft_strlen(buff));
+		write(file, "\n", 1);
+		free(buff);
+	}
+	if (buff)
+		free(buff);
+	close(file);
+	file = open(here_doc_name, O_RDONLY, 0000644);
+	close(STDIN_FILENO);
+	dup2(file, STDIN_FILENO);
+	close(file);
+	a += 2;
+	free(here_doc_name);
+	return (file);
+}
+
+int	r_redirect(int file, char *given_file, int *a)
+{
+	file = open(given_file, O_CREAT | O_WRONLY | O_TRUNC, 0000644);
+	if (file < 0)
+		return (file);
+	close(STDOUT_FILENO);
+	dup2(file, STDOUT_FILENO);
+	close(file);
+	a += 2;
+   return (file);	
+}
+
+int	ra_redirect(int file, char *given_file, int *a)
+{
+	file = open(given_file, O_CREAT | O_WRONLY | O_APPEND, 0000644);
+	if (file < 0)
+		return (file);
+	close(STDOUT_FILENO);
+	dup2(file, STDOUT_FILENO);
+	close(file);
+	a += 2;
+   return (file);	
+}
+
+int	l_redirect(int file, char *given_file, int *a)
+{
+	file = open(given_file, O_RDONLY, 0000644);
+	if (file < 0)
+		return (file);
+	close(STDIN_FILENO);
+	dup2(file, STDIN_FILENO);
+	close(file);
+	a += 2;
+   return (file);	
+}
+
+
 int	check_redirection(char **line)
 {
 	int i;
+	int	file;
+	int a;
 
 	i = 0;
+	a = 0;
 	while (line[i])
 	{
-		if (!ft_strncmp(">", line[i], 2) && access(line[i + 1], W_OK) != 0)
+		if (!ft_strncmp(">", line[i], 2))
 		{
-			perror("Unable to write on file");
-			return (1);
+			file = r_redirect(file, line[i + 1], &a);
 		}
-		if (!ft_strncmp("<", line[i], 2) && access(line[i + 1], R_OK) != 0)
+		else if (!ft_strncmp(">>", line[i], 3))
 		{
-			perror("Unable to read on file");
-			return (1);
+			file = ra_redirect(file, line[i + 1], &a);
+		}
+		else if (!ft_strncmp("<", line[i], 2))
+		{
+			file = l_redirect(file, line[i + 1], &a);
+		}
+		else if (!ft_strncmp("<<", line[i], 3))
+		{
+			file = here_doc(file, line[i + 1], &a);
+		}
+		if (file < 0)
+		{
+			perror("Error");
+			return (-1);
 		}
 		i++;
 	}
-	return (0);
+	return (i - a);
+}
+
+char	**line_args_parse(char **line, int args_nbr)
+{
+	char	**line_args;
+	int i;
+	int a;
+
+	i = 0;
+	a = 0;
+	line_args = ft_calloc(args_nbr + 1, sizeof(char *));
+	while (line[i])
+	{
+		if (!ft_strncmp("<", line[i], 2) || !ft_strncmp("<<", line[i], 3) || !ft_strncmp(">", line[i], 2) || !ft_strncmp(">>", line[i], 3))
+		{
+			i += 2;
+			a += 2;
+			continue ;
+		}
+		line_args[i - a] = ft_strdup(line[i]);
+		i++;
+	}
+	line_args[i + a] = 0;
+	return (line_args);
 }
 
 int	run_single_cmd(char	**line, char *cmd_path,	char **envp, s_pipe *pipe)
 {
-	if (check_redirection(line))
-		return (1);
+	char	**line_args;
+	int		line_args_nbr;
+	
 	if	((pipe->child = fork()) < 0)
 		return (1);
 	if (pipe->child > 0)
@@ -63,14 +176,22 @@ int	run_single_cmd(char	**line, char *cmd_path,	char **envp, s_pipe *pipe)
 	}
 	if (!pipe->child)
 	{
-		if (execve(cmd_path, line, envp) == -1)
-			perror("execve failed to execute");	
+		line_args_nbr = check_redirection(line);
+		if (line_args_nbr < 0)
+			return (1);
+		line_args = line_args_parse(line, line_args_nbr);
+		if (execve(cmd_path, line_args, envp) == -1)
+			perror("execve failed to execute");
+		free(line_args);
 	}
 	exit (1);
 }
 
 int	run_each_cmd(s_pipe *pipes, char **cmd_paths, char **envp, char **line)
 {
+	char	**line_args;
+	int		line_args_nbr;
+
 	while (pipes->i >= 0)
 	{
 		if	((pipes->child = fork()) < 0)
@@ -83,7 +204,11 @@ int	run_each_cmd(s_pipe *pipes, char **cmd_paths, char **envp, char **line)
 		if (!pipes->child)
 		{
 			child_process(pipes, line);
-			if (execve(cmd_paths[pipes->pipes_nbr - pipes->i], pipes->cmd_args, envp) == -1)
+			line_args_nbr = check_redirection(line);
+			if (line_args_nbr < 0)
+				return (1);
+			line_args = line_args_parse(pipes->cmd_args, line_args_nbr);
+			if (execve(cmd_paths[pipes->pipes_nbr - pipes->i], line_args, envp) == -1)
 				perror("execve failed to execute");	
 		}
 		free_all(pipes->cmd_args);
@@ -159,6 +284,22 @@ int	exec_line(s_pipe *pipe, char **line_args, char **envp, char *buff)
 	return (0);
 }
 
+void	unlink_here_doc(void)
+{
+	char	*here_doc;
+
+	here_doc = ft_calloc(3, sizeof(char));
+	here_doc[0] = '.';
+	here_doc[1] = 'A';
+	here_doc[2] = '\0';
+	while (!access(here_doc, F_OK))
+	{
+		unlink(here_doc);
+		here_doc[1]++;
+	}
+	free(here_doc);
+}
+
 int main(int argc, char	**argv, char **envp)
 {
 	char	*buff;
@@ -190,6 +331,7 @@ int main(int argc, char	**argv, char **envp)
 			continue ;
 		}
 		exec_line(pipe, line_args, envp, buff);
+		unlink_here_doc();
 	}
 	free(pipe);
 	// y faut rl_clear_history
