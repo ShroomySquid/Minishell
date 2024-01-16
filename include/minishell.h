@@ -35,6 +35,8 @@ typedef struct t_pipe
 	char	**cmd_args;
 }				s_pipe;
 
+int		execute(char *path, char **args, char **env);
+int		ft_strcmp(const char *s1, const char *s2);
 void	parent_process(s_pipe *pipe, char **line);
 void	parent_close(s_pipe *pipe);
 void	close_child(s_pipe *pipe);
@@ -44,4 +46,5 @@ char	*seek_cmd(char *cmd, char **envp);
 void	seek_all_cmds(char ***cmd_paths, char **line_args, char **envp);
 char	**ft_split_quote(char const *s, char c);
 char	**ft_sub_array(char **array, int start, int end);
+
 #endif

@@ -63,8 +63,8 @@ int	run_single_cmd(char	**line, char *cmd_path,	char **envp, s_pipe *pipe)
 	}
 	if (!pipe->child)
 	{
-		if (execve(cmd_path, line, envp) == -1)
-			perror("execve failed to execute");	
+		if (execute(cmd_path, line, envp) == -1)
+			perror("execve failed to execute");
 	}
 	exit (1);
 }
@@ -83,8 +83,9 @@ int	run_each_cmd(s_pipe *pipes, char **cmd_paths, char **envp, char **line)
 		if (!pipes->child)
 		{
 			child_process(pipes, line);
-			if (execve(cmd_paths[pipes->pipes_nbr - pipes->i], pipes->cmd_args, envp) == -1)
-				perror("execve failed to execute");	
+			if (execute(cmd_paths[pipes->pipes_nbr - pipes->i],
+					pipes->cmd_args, envp) == -1)
+				perror("execve failed to execute");
 		}
 		free_all(pipes->cmd_args);
 		exit (1);

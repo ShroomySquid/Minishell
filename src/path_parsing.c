@@ -19,6 +19,8 @@ char	*find_path(char **possible_paths, char *cmd)
 	char	*valid_path;
 
 	i = 0;
+	if (b_is_builtin(cmd))
+		return (ft_strdup(cmd));
 	while (possible_paths[i])
 	{
 		path = ft_strjoin(possible_paths[i], "/");
@@ -29,7 +31,7 @@ char	*find_path(char **possible_paths, char *cmd)
 		free(valid_path);
 		i++;
 	}
-	ft_printf("Command not found: %s\n", cmd);	
+	ft_printf("Command not found: %s\n", cmd);
 	return (NULL);
 }
 
