@@ -13,3 +13,4 @@ checker_Mac
 imgui.ini
 debug
 ref/*
+*.txt

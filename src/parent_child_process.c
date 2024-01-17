@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:22:07 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/15 13:40:40 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/17 11:17:46 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 void	parent_process(s_pipe *pipe, char **line)
 {
+	if (!pipe->pipes_nbr)
+	{
+		pipe->i--;
+		return ;
+	}
 	if (pipe->fd[0] >= pipe->min_fd)
 	{
 		if (pipe->fd[1] != pipe->max_fd)
@@ -31,6 +36,12 @@ void	parent_process(s_pipe *pipe, char **line)
 
 void	parent_close(s_pipe *pipe)
 {
+	if (!pipe->pipes_nbr)
+	{
+		wait(&pipe->child);
+		free(pipe->child_list);
+		return ;
+	}
 	while (pipe->max_fd >= pipe->min_fd)
 	{
 		close(pipe->max_fd);
@@ -70,8 +81,9 @@ void	close_child(s_pipe *pipe)
 void	child_process(s_pipe *pipe, char **line)
 {
 	int ite;
-
-	close_child(pipe);
+	
+	if (pipe->pipes_nbr)
+		close_child(pipe);
 	ite = 0;
 	while (ft_strncmp("|", line[pipe->cmd_ptr + ite], 2))
 		ite++;

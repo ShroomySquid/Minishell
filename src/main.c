@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/15 14:20:47 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/17 14:29:24 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,49 +28,12 @@ int	seek_pipe(char	**line_args)
 	return (pipe_nbr);
 }
 
-int	check_redirection(char **line)
-{
-	int i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (!ft_strncmp(">", line[i], 2) && access(line[i + 1], W_OK) != 0)
-		{
-			perror("Unable to write on file");
-			return (1);
-		}
-		if (!ft_strncmp("<", line[i], 2) && access(line[i + 1], R_OK) != 0)
-		{
-			perror("Unable to read on file");
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int	run_single_cmd(char	**line, char *cmd_path,	char **envp, s_pipe *pipe)
-{
-	if (check_redirection(line))
-		return (1);
-	if	((pipe->child = fork()) < 0)
-		return (1);
-	if (pipe->child)
-	{
-		waitpid(pipe->child, &pipe->error, 0);
-		return (0);
-	}
-	if (!pipe->child)
-	{
-		if (execute(cmd_path, line, envp) == -1)
-			perror("execve failed to execute");
-	}
-	exit (1);
-}
 
 int	run_each_cmd(s_pipe *pipes, char **cmd_paths, char **envp, char **line)
 {
+	char	**line_args;
+	int		line_args_nbr;
+
 	while (pipes->i >= 0)
 	{
 		if	((pipes->child = fork()) < 0)
@@ -83,6 +46,10 @@ int	run_each_cmd(s_pipe *pipes, char **cmd_paths, char **envp, char **line)
 		if (!pipes->child)
 		{
 			child_process(pipes, line);
+			line_args_nbr = check_redirection(pipes->cmd_args);
+			if (line_args_nbr < 0)
+				return (1);
+			line_args = line_rm_redirection(pipes->cmd_args, line_args_nbr);
 			if (execute(cmd_paths[pipes->pipes_nbr - pipes->i],
 					pipes->cmd_args, envp) == -1)
 				perror("execve failed to execute");
@@ -93,11 +60,11 @@ int	run_each_cmd(s_pipe *pipes, char **cmd_paths, char **envp, char **line)
 	return (0);
 }
 
-int	run_cmds_pipe(char **line, char	**cmd_paths, char **envp, s_pipe *pipes)
+int	run_cmds(char **line, char	**cmd_paths, char **envp, s_pipe *pipes)
 {
 	pipes->i = 0;
 	pipes->cmd_ptr = 0;
-	pipes->child_list = ft_calloc(pipes->pipes_nbr + 2, sizeof(int));
+	pipes->child_list = ft_calloc(pipes->pipes_nbr + 2, sizeof(unsigned long int));
 	while (pipes->i < pipes->pipes_nbr)
 	{
 		pipe(pipes->fd);
@@ -141,21 +108,10 @@ int	exec_line(s_pipe *pipe, char **line_args, char **envp, char *buff)
 	char	**cmd_paths;
 
 	pipe->pipes_nbr = seek_pipe(line_args);
-	if (pipe->pipes_nbr == 0)
-	{
-		cmd_paths = ft_calloc(2, sizeof(char *));
-		cmd_paths[0] = seek_cmd(line_args[0], envp);
-		cmd_paths[1] = 0;
-		if (cmd_paths[0])
-			run_single_cmd(line_args, cmd_paths[0], envp, pipe);
-	}
-	else
-	{
-		cmd_paths = ft_calloc(2 + pipe->pipes_nbr, sizeof(char *));
-		seek_all_cmds(&cmd_paths, line_args, envp);
-		if (!check_cmds(pipe, cmd_paths))
-			run_cmds_pipe(line_args, cmd_paths, envp, pipe);
-	}
+	cmd_paths = ft_calloc((pipe->pipes_nbr) + 2, sizeof(char *));
+	seek_all_cmds(&cmd_paths, line_args, envp);
+	if (!check_cmds(pipe, cmd_paths))
+		run_cmds(line_args, cmd_paths, envp, pipe);
 	free_moi_ca(buff, cmd_paths, line_args);
 	return (0);
 }
@@ -188,7 +144,7 @@ int	main(int argc, char	**argv, char **envp)
 	(void)argc;
 	(void)argv;
 	sig_innit();
-	pipe = ft_calloc(1, sizeof(s_pipe *));
+	pipe = ft_calloc(1, sizeof(s_pipe));
 	while (1)
 	{
 		buff = recieve_input();
@@ -217,6 +173,7 @@ int	main(int argc, char	**argv, char **envp)
 			continue ;
 		}
 		exec_line(pipe, line_args, envp, buff);
+		unlink_here_doc();
 	}
 	return (0);
 }

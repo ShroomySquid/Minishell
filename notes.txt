@@ -8,3 +8,9 @@
  	corriger le cat | cat | ls
  	implémenter readline si pipe est le dernier arg
 	checker leaks
+ Pour les guillemets / ft_split_quote:
+ 	prendre en compte les variables dans les doubles guillemets
+	whitespace
+ Pour redirections:
+ 	multiple here_doc failed
+	here_doc fail aussi avec les pipes

@@ -1,0 +1,10 @@
+Makefile
+README.md
+include
+lib
+minishell
+minishell.dSYM
+notes.txt
+src
+tes.txt
+test.txt
