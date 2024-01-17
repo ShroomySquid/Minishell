@@ -1,41 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sig_center.c                                       :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 15:09:24 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/09 15:09:29 by gcrepin          ###   ########.fr       */
+/*   Created: 2024/01/16 14:42:56 by gcrepin           #+#    #+#             */
+/*   Updated: 2024/01/16 14:43:01 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sig_handling.h"
+#include "minishell.h"
 
-
-
-int	sig_access(int signum)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	static int	sig = 0;
-	int			ret;
+	int	i;
 
-	ret = sig;
-	sig = signum;
-	return (ret);
+	i = 0;
+	if (!s1 || !s2)
+		return (-1);
+	while ((s1[i] == s2[i]) && (s1[i] != '\0'))
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
-
-void sig_ignore(int signum)
-{
-	(void)signum;
-//	rl_redisplay();
-}
-
-void	sig_interactive_handler(int signum)
-{
-	ft_printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	sig_access(signum);
-}
-

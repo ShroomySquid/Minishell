@@ -1,41 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sig_center.c                                       :+:      :+:    :+:   */
+/*   b_builtin.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 15:09:24 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/09 15:09:29 by gcrepin          ###   ########.fr       */
+/*   Created: 2024/01/16 14:54:34 by gcrepin           #+#    #+#             */
+/*   Updated: 2024/01/16 14:54:37 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sig_handling.h"
+#include "minishell.h"
 
-
-
-int	sig_access(int signum)
+const t_builtin	g_builtin[] =
 {
-	static int	sig = 0;
-	int			ret;
+{"echo", b_echo},
+{"cd", b_cd},
+{"pwd", b_pwd},
+{"export", b_export},
+{"unset", b_unset},
+{"env", b_env},
+{"exit", b_exit},
+};
 
-	ret = sig;
-	sig = signum;
-	return (ret);
-}
-
-void sig_ignore(int signum)
+int	b_is_builtin(char *cmd)
 {
-	(void)signum;
-//	rl_redisplay();
-}
+	int	i;
 
-void	sig_interactive_handler(int signum)
-{
-	ft_printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	sig_access(signum);
+	i = 0;
+	while (i < BUILTIN_NUM)
+	{
+		if (ft_strcmp(cmd, g_builtin[i].name) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
 }
-

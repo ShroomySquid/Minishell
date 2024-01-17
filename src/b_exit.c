@@ -1,41 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sig_center.c                                       :+:      :+:    :+:   */
+/*   b_exit.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 15:09:24 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/09 15:09:29 by gcrepin          ###   ########.fr       */
+/*   Created: 2024/01/16 14:25:55 by gcrepin           #+#    #+#             */
+/*   Updated: 2024/01/16 14:26:02 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sig_handling.h"
+#include "minishell.h"
 
-
-
-int	sig_access(int signum)
+//empty b_exit function
+int	b_exit(char **args)
 {
-	static int	sig = 0;
-	int			ret;
-
-	ret = sig;
-	sig = signum;
-	return (ret);
-}
-
-void sig_ignore(int signum)
-{
-	(void)signum;
-//	rl_redisplay();
-}
-
-void	sig_interactive_handler(int signum)
-{
-	ft_printf("\n");
-	rl_on_new_line();
+	(void)args;
 	rl_replace_line("", 0);
-	rl_redisplay();
-	sig_access(signum);
+	rl_clear_history();
+	ft_printf("\n[exit]\n");
+	exit(0);
 }
-

@@ -1,41 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sig_center.c                                       :+:      :+:    :+:   */
+/*   line_reader.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 15:09:24 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/09 15:09:29 by gcrepin          ###   ########.fr       */
+/*   Created: 2024/01/11 15:35:53 by gcrepin           #+#    #+#             */
+/*   Updated: 2024/01/11 15:35:59 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sig_handling.h"
 
-
-
-int	sig_access(int signum)
+char	*line_reader(void)
 {
-	static int	sig = 0;
-	int			ret;
+	char	*line;
 
-	ret = sig;
-	sig = signum;
-	return (ret);
+	line = readline("minishell$ ");
+	if (!line)
+	{
+		ft_printf("exit\n");
+		exit(0);
+	}
+	if (*line)
+		add_history(line);
+	return (line);
 }
-
-void sig_ignore(int signum)
-{
-	(void)signum;
-//	rl_redisplay();
-}
-
-void	sig_interactive_handler(int signum)
-{
-	ft_printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	sig_access(signum);
-}
-

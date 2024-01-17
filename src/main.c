@@ -28,6 +28,7 @@ int	seek_pipe(char	**line_args)
 	return (pipe_nbr);
 }
 
+
 int	run_each_cmd(s_pipe *pipes, char **cmd_paths, char **envp, char **line)
 {
 	char	**line_args;
@@ -49,8 +50,9 @@ int	run_each_cmd(s_pipe *pipes, char **cmd_paths, char **envp, char **line)
 			if (line_args_nbr < 0)
 				return (1);
 			line_args = line_rm_redirection(pipes->cmd_args, line_args_nbr);
-			if (execve(cmd_paths[pipes->pipes_nbr - pipes->i], line_args, envp) == -1)
-				perror("execve failed to execute");	
+			if (execute(cmd_paths[pipes->pipes_nbr - pipes->i],
+					pipes->cmd_args, envp) == -1)
+				perror("execve failed to execute");
 		}
 		free_all(pipes->cmd_args);
 		exit (1);
@@ -113,7 +115,26 @@ int	exec_line(s_pipe *pipe, char **line_args, char **envp, char *buff)
 	return (0);
 }
 
-int main(int argc, char	**argv, char **envp)
+char	*recieve_input(void)
+{
+	char	*buff;
+	char	*temp;
+	char	*prompt;
+
+	temp = b_get_pwd_short(NULL);
+	if (!temp)
+		prompt = ft_strdup("minishell$ ");
+	else
+	{
+		prompt = ft_strjoin(temp, " $ ");
+		free(temp);
+	}
+	buff = readline(prompt);
+	free(prompt);
+	return (buff);
+}
+
+int	main(int argc, char	**argv, char **envp)
 {
 	char	*buff;
 	char	**line_args;
@@ -121,32 +142,37 @@ int main(int argc, char	**argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	pipe = ft_calloc(1, sizeof(s_pipe));
+	sig_innit();
+	pipe = ft_calloc(1, sizeof(s_pipe *));
 	while (1)
 	{
-		buff = readline("> ");
+		buff = recieve_input();
+		if (!buff && errno)
+		{
+			printf("Failed to read line\n");
+			break ;
+		}
+		if (!buff || !ft_strncmp("exit", buff, 5))
+		{
+			if (buff)
+				free(buff);
+			free(pipe);
+			b_exit(NULL);
+			break ;
+		}
 		add_history(buff);
-		if (!buff)
-		{
-			printf("Somehow readline failed to save on buff");
-			break ;
-		}
-		if (!ft_strncmp("exit", buff, 4))
-		{
-			free(buff);
-			break ;
-		}
 		line_args = ft_split_quote(buff, ' ');
-		if (!line_args[0])
+		if (!line_args || !line_args[0])
 		{
-			free(line_args);
 			free(buff);
+			if (line_args)
+				free(line_args);
+			else
+				ft_printf("Failed to parse line\n");
 			continue ;
 		}
 		exec_line(pipe, line_args, envp, buff);
 		unlink_here_doc();
 	}
-	free(pipe);
-	clear_history();
 	return (0);
 }

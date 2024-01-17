@@ -1,10 +1,12 @@
 CFLAGS= -g -Wextra -Wall -Werror -fsanitize=address
 LIBS	:= -lft -L./lib/libft
 NAME = minishell
-OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o src/sig_center.o src/sig_meta.o \
-	src/path_parsing.o	src/parent_child_process.o	src/here_doc.o	src/redirection.o
-DEPS = -I./include -I./lib/libft
-READLINE_LIB = -L/usr/local/lib -I/usr/local/include -lreadline
+OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o src/sig_center.o src/sig_meta.o src/ft_strcmp.o\
+	src/path_parsing.o src/parent_child_process.o src/line_reader.o src/execute.o \
+	src/b_pwd.o	src/b_echo.o src/b_env.o src/b_export.o src/b_unset.o src/b_cd.o src/b_exit.o src/b_builtin.o \
+  src/here_doc.o	src/redirection.o
+DEPS = -I./include -I./lib/libft -I./readline/include
+READLINE_LIB = -L./lib/readline -lreadline -lhistory
 INCLUDES = include/minishell.h
 
 

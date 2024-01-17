@@ -1,41 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sig_center.c                                       :+:      :+:    :+:   */
+/*   b_echo.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 15:09:24 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/09 15:09:29 by gcrepin          ###   ########.fr       */
+/*   Created: 2024/01/16 14:24:30 by gcrepin           #+#    #+#             */
+/*   Updated: 2024/01/16 14:26:21 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sig_handling.h"
+#include "minishell.h"
 
-
-
-int	sig_access(int signum)
+//empty b_echo function
+int	b_echo(char **args)
 {
-	static int	sig = 0;
-	int			ret;
-
-	ret = sig;
-	sig = signum;
-	return (ret);
+	(void)args;
+	ft_printf("function echo not implemented yet\n");
+	return (0);
 }
-
-void sig_ignore(int signum)
-{
-	(void)signum;
-//	rl_redisplay();
-}
-
-void	sig_interactive_handler(int signum)
-{
-	ft_printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	sig_access(signum);
-}
-
