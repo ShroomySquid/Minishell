@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 12:02:04 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/09 13:59:05 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/17 14:19:35 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ char	*find_end_str(char *s, char *end_str, char c)
 
 char	*find_next_str(char *s, char c)
 {
+	s++;
 	if (39 == *(s - 1))
 	{
 		while (*s && 39 != *s)
@@ -119,7 +120,7 @@ char	**ft_split_quote(char const *s, char c)
 	if (!s)
 		return (0);
 	final_array = (char **)malloc(
-			(count_str_quote((char *)s, c) + 1) * sizeof(char *));
+			(count_str_quote((char *)s, c) + 1) * sizeof(unsigned long int));
 	if (!final_array)
 		return (0);
 	return (split_it_quote((char *)s, c, final_array, i));

@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/15 15:32:49 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/17 14:31:11 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ typedef struct t_pipe
 	char	**cmd_args;
 }				s_pipe;
 
+int		check_redirection(char **line);
+int		here_doc(int file, char *delimiter, int *a);
+void	unlink_here_doc(void);
 void	parent_process(s_pipe *pipe, char **line);
 void	parent_close(s_pipe *pipe);
 void	close_child(s_pipe *pipe);
@@ -42,4 +45,5 @@ char	*seek_cmd(char *cmd, char **envp);
 void	seek_all_cmds(char ***cmd_paths, char **line_args, char **envp);
 char	**ft_split_quote(char const *s, char c);
 char	**ft_sub_array(char **array, int start, int end);
+char	**line_rm_redirection(char **line, int args_nbr);
 #endif
