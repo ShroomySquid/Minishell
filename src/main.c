@@ -107,7 +107,8 @@ int	exec_line(s_pipe *pipe, char **line_args, char **envp, char *buff)
 {
 	char	**cmd_paths;
 
-	cmd_paths = ft_calloc(2 + pipe->pipes_nbr, sizeof(unsigned long int));
+	pipe->pipes_nbr = seek_pipe(line_args);
+	cmd_paths = ft_calloc((pipe->pipes_nbr) + 2, sizeof(char *));
 	seek_all_cmds(&cmd_paths, line_args, envp);
 	if (!check_cmds(pipe, cmd_paths))
 		run_cmds(line_args, cmd_paths, envp, pipe);
@@ -143,7 +144,7 @@ int	main(int argc, char	**argv, char **envp)
 	(void)argc;
 	(void)argv;
 	sig_innit();
-	pipe = ft_calloc(1, sizeof(s_pipe *));
+	pipe = ft_calloc(1, sizeof(s_pipe));
 	while (1)
 	{
 		buff = recieve_input();

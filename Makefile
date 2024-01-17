@@ -10,12 +10,14 @@ READLINE_LIB = -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -lhistory
 INCLUDES = include/minishell.h
 
 
-all: space
+all: space lib/libft/libft.a
 	@echo "\033[1;32mMaking libft:\033[0m"
 	@$(MAKE) -C ./lib/libft 2>&1 | (grep -v "make\[1\]" || echo "\033[1;33mNothing to be done for libft\033[0m\n")
 	@echo "\033[1;32mMaking $(NAME):\033[0m"
-	brew install readline
 	@$(MAKE) $(NAME) 2>&1 | (grep -v "make\[1\]" || echo "\033[1;33mNothing to be done for $(NAME)\033[0m\n")
+
+lib/libft/libft.a:
+	brew install readline
 
 $(NAME): $(OBJECTS) $(INCLUDES)
 	@echo
