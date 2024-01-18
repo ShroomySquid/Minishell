@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:22:07 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/17 11:17:46 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/18 10:37:34 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	parent_close(s_pipe *pipe)
 		free(pipe->child_list);
 		return ;
 	}
+	pipe->i++;
 	while (pipe->max_fd >= pipe->min_fd)
 	{
 		close(pipe->max_fd);
