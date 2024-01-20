@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/17 14:29:24 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/19 19:22:14 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	run_each_cmd(s_pipe *pipes, char **cmd_paths, char **envp, char **line)
 				return (1);
 			line_args = line_rm_redirection(pipes->cmd_args, line_args_nbr);
 			if (execute(cmd_paths[pipes->pipes_nbr - pipes->i],
-					pipes->cmd_args, envp) == -1)
+					line_args, envp) == -1)
 				perror("execve failed to execute");
 		}
 		free_all(pipes->cmd_args);

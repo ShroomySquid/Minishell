@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/17 14:27:50 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/19 19:22:16 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	here_doc(int file, char	*delimiter, int *a)
 	if (readline_result < 0)
 		return (-1);
 	file = open(here_doc_name, O_RDONLY, 0000644);
-	close(STDIN_FILENO);
 	dup2(file, STDIN_FILENO);
 	close(file);
 	a += 2;
