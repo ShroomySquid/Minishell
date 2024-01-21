@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/18 11:34:00 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/21 13:59:21 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,32 @@
 # include "sig_handling.h"
 # include "builtin.h"
 
-typedef struct t_pipe
+typedef struct s_exec_st
 {
-	int child;
-	int fd[2];
-	int pipes_nbr;
-	int	i;
-	int	max_fd;
-	int	min_fd;
-	int	cmd_ptr;
-	int	error;
-	int	*child_list;
+	int		child;
+	int		fd[2];
+	int		pipes_nbr;
+	int		i;
+	int		max_fd;
+	int		min_fd;
+	int		cmd_ptr;
+	int		error;
+	int		*child_list;
+	int		nbr_HD;
+	char	**HD_list;
 	char	**cmd_args;
-}				s_pipe;
+}				t_exec_st;
 
-
-int		check_redirection(char **line);
-int		here_doc(int file, char *delimiter, int *a);
+int		check_redirection(char **line, t_exec_st *exec_st);
+int		read_here_doc(int file, t_exec_st *exec_st);
+int		trigger_here_docs(char **line_args, t_exec_st *exec_st);
 void	unlink_here_doc(void);
 int		execute(char *path, char **args, char **env);
 int		ft_strcmp(const char *s1, const char *s2);
-void	parent_process(s_pipe *pipe, char **line);
-void	parent_close(s_pipe *pipe);
-void	close_child(s_pipe *pipe);
-void	child_process(s_pipe *pipe, char **line);
+void	parent_process(t_exec_st *exec_st, char **line);
+void	parent_close(t_exec_st *exec_st);
+void	close_child(t_exec_st *exec_st);
+void	child_process(t_exec_st *exec_st, char **line);
 void	print_array(char **array_str);
 char	*seek_cmd(char *cmd, char **envp);
 void	seek_all_cmds(char ***cmd_paths, char **line_args, char **envp);

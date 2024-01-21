@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/17 14:24:35 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/21 14:08:04 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,17 @@ static int	l_redirect(int file, char *given_file, int *a)
 }
 
 
-int	check_redirection(char **line)
+int	check_redirection(char **line, t_exec_st *exec_st)
 {
 	int i;
 	int	file;
 	int a;
+	int max_here_doc;
 
 	i = 0;
 	a = 0;
+	max_here_doc = 1;
+	file = 0;
 	while (line[i])
 	{
 		if (!ft_strncmp(">", line[i], 2))
@@ -66,10 +69,16 @@ int	check_redirection(char **line)
 		else if (!ft_strncmp("<", line[i], 2))
 			file = l_redirect(file, line[i + 1], &a);
 		else if (!ft_strncmp("<<", line[i], 3))
-			file = here_doc(file, line[i + 1], &a);
+		{
+			if (max_here_doc)
+				file = read_here_doc(file, exec_st);
+			a += 2;
+			max_here_doc = 0;
+		}
 		if (file < 0)
 		{
 			perror("Error");
+			ft_printf("fd: %d\n", file);
 			return (-1);
 		}
 		i++;

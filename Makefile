@@ -1,4 +1,4 @@
-CFLAGS= -g -Wextra -Wall -Werror
+CFLAGS= -g -Wextra -Wall -Werror -fsanitize=address
 LIBS	:= -lft -L./lib/libft
 NAME = minishell
 OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o src/sig_center.o src/sig_meta.o src/ft_strcmp.o \
