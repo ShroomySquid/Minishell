@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/22 13:13:19 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:22:03 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ int	trigger_here_docs(char **line_args, t_exec_st *exec_st)
 	}
 	current_cmd++;
 	exec_st->HD_list[current_cmd] = 0;
+	if (here_doc_name)
+		free(here_doc_name);
 	return (file);
 }
 
