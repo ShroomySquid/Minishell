@@ -165,29 +165,12 @@ int	main(int argc, char	**argv, char **envp)
 	(void)argc;
 	(void)argv;
 	sig_innit();
-<<<<<<< HEAD
-	pipe = ft_calloc(1, sizeof(s_pipe));
-	while (pipe)
-=======
 	exec_st = ft_calloc(1, sizeof(t_exec_st));
-	while (1)
->>>>>>> main
+	while (exec_st)
 	{
 		buff = recieve_input();
 		if (!buff)
 			break ;
-<<<<<<< HEAD
-=======
-		}
-		if (!buff || !ft_strncmp("exit", buff, 5))
-		{
-			if (buff)
-				free(buff);
-			free(exec_st);
-			b_exit(NULL);
-			break ;
-		}
->>>>>>> main
 		add_history(buff);
 		line_args = ft_split_quote(buff, ' ');
 		if (!line_args || !line_args[0])
@@ -204,7 +187,7 @@ int	main(int argc, char	**argv, char **envp)
 		exec_line(exec_st, line_args, envp, buff);
 		unlink_here_doc();
 	}
-	free(pipe);
+	free(exec_st);
 	b_true_exit();
 	return (0);
 }
