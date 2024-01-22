@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/21 15:11:25 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/22 14:29:55 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef struct s_exec_st
 	int		error;
 	int		*child_list;
 	int		nbr_HD;
+	int		cmd;
+	int		HD_bool;
 	char	**HD_list;
 	char	**cmd_args;
 }				t_exec_st;
@@ -50,6 +52,7 @@ void	child_process(t_exec_st *exec_st, char **line);
 void	print_array(char **array_str);
 char	*seek_cmd(char *cmd, char **envp);
 void	seek_all_cmds(char ***cmd_paths, char **line_args, char **envp);
+char	*name_here_doc(void);
 char	**ft_split_quote(char const *s, char c);
 char	**ft_sub_array(char **array, int start, int end);
 char	**line_rm_redirection(char **line, int args_nbr);

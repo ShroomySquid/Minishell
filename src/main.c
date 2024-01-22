@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/22 13:13:32 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/22 14:29:48 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,6 @@ int	exec_line(t_exec_st *exec_st, char **line_args, char **envp, char *buff)
 {
 	char	**cmd_paths;
 
-	//exec_st->pipes_nbr = seek_pipe(line_args, exec_st);
-	//exec_st->HD_list = ft_calloc(exec_st->nbr_HD + 2, sizeof(char *));
 	trigger_here_docs(line_args, exec_st);
 	exec_st->nbr_HD = 0;
 	cmd_paths = ft_calloc((exec_st->pipes_nbr) + 2, sizeof(char *));
