@@ -13,9 +13,10 @@
 #include "minishell.h"
 
 //Empty b_unset function
-int	b_unset(char **args)
+int	b_unset(char **args, char **env)
 {
 	(void)args;
+	(void)env;
 	ft_printf("function unset not implemented yet\n");
 	return (0);
 }

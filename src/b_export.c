@@ -13,9 +13,10 @@
 #include "minishell.h"
 
 //empty b_export function
-int	b_export(char **args)
+int	b_export(char **args, char **env)
 {
 	(void)args;
+	(void)env;
 	ft_printf("function export not implemented yet\n");
 	return (0);
 }

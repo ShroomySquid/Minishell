@@ -51,5 +51,6 @@ void	seek_all_cmds(char ***cmd_paths, char **line_args, char **envp);
 char	**ft_split_quote(char const *s, char c);
 char	**ft_sub_array(char **array, int start, int end);
 char	**line_rm_redirection(char **line, int args_nbr);
+void	get_args(s_pipe *pipe, char **line);
 
 #endif

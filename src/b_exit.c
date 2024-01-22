@@ -12,10 +12,15 @@
 
 #include "minishell.h"
 
-//empty b_exit function
-int	b_exit(char **args)
+int	b_exit(char **args, char **env)
 {
+	(void)env;
 	(void)args;
+	exit(0);
+}
+
+void	b_true_exit(void)
+{
 	rl_replace_line("", 0);
 	rl_clear_history();
 	ft_printf("\n[exit]\n");

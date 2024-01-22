@@ -36,6 +36,17 @@ int	run_each_cmd(s_pipe *pipes, char **cmd_paths, char **envp, char **line)
 
 	while (pipes->i >= 0)
 	{
+		if (b_is_builtin(cmd_paths[pipes->pipes_nbr - pipes->i]))
+		{
+			get_args(pipes, line);
+			execute(cmd_paths[pipes->pipes_nbr - pipes->i], pipes->cmd_args,
+				envp);
+			pipes->i--;
+			while (ft_strncmp("|", line[pipes->cmd_ptr], 2))
+				pipes->cmd_ptr++;
+			pipes->cmd_ptr++;
+			continue ;
+		}
 		if	((pipes->child = fork()) < 0)
 			return (1);
 		if (pipes->child > 0)
@@ -145,22 +156,11 @@ int	main(int argc, char	**argv, char **envp)
 	(void)argv;
 	sig_innit();
 	pipe = ft_calloc(1, sizeof(s_pipe));
-	while (1)
+	while (pipe)
 	{
 		buff = recieve_input();
-		if (!buff && errno)
-		{
-			printf("Failed to read line\n");
+		if (!buff)
 			break ;
-		}
-		if (!buff || !ft_strncmp("exit", buff, 5))
-		{
-			if (buff)
-				free(buff);
-			free(pipe);
-			b_exit(NULL);
-			break ;
-		}
 		add_history(buff);
 		line_args = ft_split_quote(buff, ' ');
 		if (!line_args || !line_args[0])
@@ -175,5 +175,7 @@ int	main(int argc, char	**argv, char **envp)
 		exec_line(pipe, line_args, envp, buff);
 		unlink_here_doc();
 	}
+	free(pipe);
+	b_true_exit();
 	return (0);
 }

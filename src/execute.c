@@ -21,9 +21,26 @@ int	execute(char *path, char **args, char **env)
 		return (-1);
 	while (i < BUILTIN_NUM)
 	{
-		if (ft_strcmp(args[0], g_builtin[i].name) == 0)
-			return ((g_builtin[i].func)(args));
+		if (ft_strcmp(path, g_builtin[i].name) == 0)
+			return ((g_builtin[i].func)(args, env));
 		i++;
 	}
 	return (execve(path, args, env));
+}
+
+void	get_args(s_pipe *pipe, char **line)
+{
+	int ite;
+
+	ite = 0;
+	while (ft_strncmp("|", line[pipe->cmd_ptr + ite], 2))
+		ite++;
+	pipe->cmd_args = ft_calloc(ite + 1, sizeof(char *));
+	ite = 0;
+	while (ft_strncmp("|", line[pipe->cmd_ptr + ite], 2))
+	{
+		pipe->cmd_args[ite] = ft_strdup(line[pipe->cmd_ptr + ite]);
+		ite++;
+	}
+	pipe->cmd_args[ite] = 0;
 }

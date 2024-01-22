@@ -12,11 +12,12 @@
 
 #include "minishell.h"
 
-int	b_pwd(char **args)
+int	b_pwd(char **args, char **env)
 {
 	char	*pwd;
 
 	(void)args;
+	(void)env;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
