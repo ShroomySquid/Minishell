@@ -13,9 +13,10 @@
 #include "minishell.h"
 
 //empty b_echo function
-int	b_echo(char **args)
+int	b_echo(char **args, char **env)
 {
 	(void)args;
+	(void)env;
 	ft_printf("function echo not implemented yet\n");
 	return (0);
 }

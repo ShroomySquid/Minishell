@@ -12,9 +12,31 @@
 
 #include "minishell.h"
 
-int	b_cd(char **args)
+int	b_cd(char **args, char **env)
 {
-	(void)args;
-	ft_printf("function cd not implemented yet\n");
+	int	err;
+
+	(void)env;
+	err = chdir(args[1]);
+	if (err == -1)
+	{
+		if (errno == EACCES)
+		{
+			ft_printf("minishell: cd: %s: Permission denied\n", args[1]);
+		}
+		else if (errno == ENOENT)
+		{
+			ft_printf("minishell: cd: %s: No such file or directory\n",
+				args[1]);
+		}
+		else if (errno == ENOTDIR)
+		{
+			ft_printf("minishell: cd: %s: Not a directory\n", args[1]);
+		}
+		else
+		{
+			ft_printf("minishell: cd: %s: %s\n", args[1], strerror(errno));
+		}
+	}
 	return (0);
 }

@@ -50,7 +50,7 @@ char	*seek_cmd(char *cmd, char **envp)
 			return (ft_strdup(cmd));
 		}
 		ft_printf("Command not found: %s\n", cmd);
-		return (NULL);	
+		return (NULL);
 	}
 	while (!ft_strnstr(envp[i], "PATH", 4))
 		i++;

@@ -13,9 +13,10 @@
 #include "minishell.h"
 
 //empty b_env function
-int	b_env(char **args)
+int	b_env(char **args, char **env)
 {
 	(void)args;
+	(void)env;
 	ft_printf("function env not implemented yet\n");
 	return (0);
 }

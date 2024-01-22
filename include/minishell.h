@@ -56,5 +56,6 @@ char	*name_here_doc(void);
 char	**ft_split_quote(char const *s, char c);
 char	**ft_sub_array(char **array, int start, int end);
 char	**line_rm_redirection(char **line, int args_nbr);
+void	get_args(s_pipe *pipe, char **line);
 
 #endif
