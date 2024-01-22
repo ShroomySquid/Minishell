@@ -6,23 +6,23 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/21 14:58:42 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:13:19 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void name_here_doc(char	*here_doc_name)
+char *name_here_doc(void)
 {
-	if (!here_doc_name)
-	{
-		here_doc_name = ft_calloc(3, sizeof(char));
-		here_doc_name[0] = '.';
-		here_doc_name[1] = 'A';
-		here_doc_name[2] = '\0';
-	}
+	char	*here_doc_name;
+
+	here_doc_name = ft_calloc(3, sizeof(char));
+	here_doc_name[0] = '.';
+	here_doc_name[1] = 'A';
+	here_doc_name[2] = '\0';
 	while (!access(here_doc_name, F_OK))
 		here_doc_name[1] += 1;
+	return (here_doc_name);
 }
 
 static int here_doc_readline(char *delimiter, int file)
@@ -72,9 +72,11 @@ int	trigger_here_docs(char **line_args, t_exec_st *exec_st)
 	here_doc_name = 0;
 	while (line_args[i] && line_args[i + 1])
 	{
-		if (!ft_strncmp("<<", line_args[i], 3) && line_args[i + 1])
+		if (!ft_strncmp("<<", line_args[i], 3))
 		{
-			name_here_doc(here_doc_name);
+			if (here_doc_name)
+				free(here_doc_name);
+			here_doc_name = name_here_doc();
 			file = here_doc(file, line_args[i + 1], here_doc_name);
 			if (file < 0)
 			{
@@ -82,7 +84,7 @@ int	trigger_here_docs(char **line_args, t_exec_st *exec_st)
 				return (file);
 			}
 			if (exec_st->HD_list[current_cmd])
-				free(exec_st-> HD_list[current_cmd]);
+				free(exec_st->HD_list[current_cmd]);
 			exec_st->HD_list[current_cmd] = ft_strdup(here_doc_name);
 			is_here_doc = 1;
 		}
