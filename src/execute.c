@@ -28,19 +28,19 @@ int	execute(char *path, char **args, char **env)
 	return (execve(path, args, env));
 }
 
-void	get_args(s_pipe *pipe, char **line)
+void	get_args(t_exec_st *exec_st, char **line)
 {
-	int ite;
+	int	ite;
 
 	ite = 0;
-	while (ft_strncmp("|", line[pipe->cmd_ptr + ite], 2))
+	while (ft_strncmp("|", line[exec_st->cmd_ptr + ite], 2))
 		ite++;
-	pipe->cmd_args = ft_calloc(ite + 1, sizeof(char *));
+	exec_st->cmd_args = ft_calloc(ite + 1, sizeof(char *));
 	ite = 0;
-	while (ft_strncmp("|", line[pipe->cmd_ptr + ite], 2))
+	while (ft_strncmp("|", line[exec_st->cmd_ptr + ite], 2))
 	{
-		pipe->cmd_args[ite] = ft_strdup(line[pipe->cmd_ptr + ite]);
+		exec_st->cmd_args[ite] = ft_strdup(line[exec_st->cmd_ptr + ite]);
 		ite++;
 	}
-	pipe->cmd_args[ite] = 0;
+	exec_st->cmd_args[ite] = 0;
 }

@@ -22,6 +22,7 @@ int	b_exit(char **args, char **env)
 void	b_true_exit(void)
 {
 	rl_replace_line("", 0);
+	rl_on_new_line();
 	rl_clear_history();
 	ft_printf("\n[exit]\n");
 	exit(0);
