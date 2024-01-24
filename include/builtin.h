@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 15:55:06 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/15 15:55:14 by gcrepin          ###   ########.fr       */
+/*   Updated: 2024/01/22 15:26:49 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		b_unset(char **args, char **env);
 int		b_env(char **args, char **env);
 int		b_exit(char **args, char **env);
 int		b_is_builtin(char *cmd);
-void	b_true_exit(void);
+void	b_true_exit(char **buff);
 
 extern const t_builtin	g_builtin[];
 
