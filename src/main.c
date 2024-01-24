@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/24 13:11:53 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:23:17 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int	run_cmds(char **line, char	**cmd_paths, char **envp, t_exec_st *exec_st)
 	return (0);
 }
 
+/*
 int	check_cmds(t_exec_st *exec_st, char **cmd_paths)
 {
 	exec_st->i = 0;
@@ -115,6 +116,7 @@ int	check_cmds(t_exec_st *exec_st, char **cmd_paths)
 		return (1);
 	return (0);
 }
+*/
 
 void	free_moi_ca(char *buff, char **cmd_paths, char **line_args, t_exec_st *exec_st)
 {
@@ -136,8 +138,8 @@ int	exec_line(t_exec_st *exec_st, char **line_args, char **envp, char *buff)
 	exec_st->nbr_HD = 0;
 	cmd_paths = ft_calloc((exec_st->pipes_nbr) + 2, sizeof(char *));
 	seek_all_cmds(&cmd_paths, line_args, envp);
-	if (!check_cmds(exec_st, cmd_paths))
-		run_cmds(line_args, cmd_paths, envp, exec_st);
+	//if (!check_cmds(exec_st, cmd_paths))
+	run_cmds(line_args, cmd_paths, envp, exec_st);
 	free_moi_ca(buff, cmd_paths, line_args, exec_st);
 	return (0);
 }
