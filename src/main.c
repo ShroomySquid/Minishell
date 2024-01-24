@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc_bonus.c                                   :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
+/*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/22 14:29:48 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/22 15:41:22 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,6 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, char **envp, char **line)
 
 	while (exec_st->i >= 0)
 	{
-		if (b_is_builtin(cmd_paths[exec_st->pipes_nbr - exec_st->i]))
-		{
-			get_args(exec_st, line);
-			execute(cmd_paths[exec_st->pipes_nbr - exec_st->i],
-				exec_st->cmd_args, envp);
-			exec_st->i--;
-			while (ft_strncmp("|", line[exec_st->cmd_ptr], 2))
-				exec_st->cmd_ptr++;
-			exec_st->cmd_ptr++;
-			continue ;
-		}
 		if	((exec_st->child = fork()) < 0)
 			return (1);
 		if (exec_st->child > 0)
@@ -89,7 +78,7 @@ int	run_cmds(char **line, char	**cmd_paths, char **envp, t_exec_st *exec_st)
 		pipe(exec_st->fd);
 		if (exec_st->i == 0)
 			exec_st->min_fd = exec_st->fd[0];
-		exec_st->i++;	
+		exec_st->i++;
 	}
 	exec_st->max_fd = exec_st->fd[1];
 	if (run_each_cmd(exec_st, cmd_paths, envp, line))
@@ -117,10 +106,14 @@ int	check_cmds(t_exec_st *exec_st, char **cmd_paths)
 
 void	free_moi_ca(char *buff, char **cmd_paths, char **line_args, t_exec_st *exec_st)
 {
-	free_all(line_args);
-	free_all(cmd_paths);
-	free(buff);
-	free_all(exec_st->HD_list);
+	if (line_args)
+		free_all(line_args);
+	if (cmd_paths)
+		free_all(cmd_paths);
+	if (buff)
+		free(buff);
+	if (exec_st)
+		free_all(exec_st->HD_list);
 }
 
 int	exec_line(t_exec_st *exec_st, char **line_args, char **envp, char *buff)
@@ -184,10 +177,22 @@ int	main(int argc, char	**argv, char **envp)
 		}
 		exec_st->pipes_nbr = seek_pipe(line_args, exec_st);
 		exec_st->HD_list = ft_calloc(exec_st->nbr_HD + 3, sizeof(char *));
-		exec_line(exec_st, line_args, envp, buff);
+		if (exec_st->pipes_nbr == 0)
+		{
+			if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))
+			{
+				free(buff);
+				b_true_exit(line_args);
+			}
+			trigger_here_docs(line_args, exec_st);
+			execute(line_args[0], line_args, envp);
+			free_moi_ca(buff, NULL, line_args, exec_st);
+		}
+		else
+			exec_line(exec_st, line_args, envp, buff);
 		unlink_here_doc();
 	}
 	free(exec_st);
-	b_true_exit();
+	b_true_exit(NULL);
 	return (0);
 }
