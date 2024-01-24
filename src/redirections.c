@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/21 14:08:04 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:10:23 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	check_redirection(char **line, t_exec_st *exec_st)
 		else if (!ft_strncmp("<<", line[i], 3))
 		{
 			if (max_here_doc)
-				file = read_here_doc(file, exec_st);
+				file = read_here_doc(exec_st);
 			a += 2;
 			max_here_doc = 0;
 		}

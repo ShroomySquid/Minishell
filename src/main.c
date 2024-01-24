@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/22 14:29:48 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:11:53 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,13 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, char **envp, char **line)
 		{
 			child_process(exec_st, line);
 			line_args_nbr = check_redirection(exec_st->cmd_args, exec_st);
-			if (line_args_nbr < 0)
-				return (1);
-			line_args = line_rm_redirection(exec_st->cmd_args, line_args_nbr);
-			if (execute(cmd_paths[exec_st->pipes_nbr - exec_st->i],
-					line_args, envp) == -1)
-				perror("execve failed to execute");
+			if (line_args_nbr >= 0)
+			{
+				line_args = line_rm_redirection(exec_st->cmd_args, line_args_nbr);
+				if (execute(cmd_paths[exec_st->pipes_nbr - exec_st->i],
+						line_args, envp) == -1)
+					perror("execve failed to execute");
+			}
 		}
 		free_all(exec_st->cmd_args);
 		exit (1);
@@ -117,10 +118,14 @@ int	check_cmds(t_exec_st *exec_st, char **cmd_paths)
 
 void	free_moi_ca(char *buff, char **cmd_paths, char **line_args, t_exec_st *exec_st)
 {
-	free_all(line_args);
-	free_all(cmd_paths);
-	free(buff);
-	free_all(exec_st->HD_list);
+	if (line_args)
+		free_all(line_args);
+	if (cmd_paths)
+		free_all(cmd_paths);
+	if (buff)
+		free(buff);
+	if (exec_st->HD_list)
+		free(exec_st->HD_list);
 }
 
 int	exec_line(t_exec_st *exec_st, char **line_args, char **envp, char *buff)
@@ -183,9 +188,9 @@ int	main(int argc, char	**argv, char **envp)
 			continue ;
 		}
 		exec_st->pipes_nbr = seek_pipe(line_args, exec_st);
-		exec_st->HD_list = ft_calloc(exec_st->nbr_HD + 3, sizeof(char *));
+		exec_st->HD_list = ft_calloc(exec_st->nbr_HD + 3, sizeof(int));
 		exec_line(exec_st, line_args, envp, buff);
-		unlink_here_doc();
+		//unlink_here_doc();
 	}
 	free(exec_st);
 	b_true_exit();

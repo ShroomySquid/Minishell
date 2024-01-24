@@ -6,12 +6,13 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/22 14:26:22 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:55:06 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
 char *name_here_doc(void)
 {
 	char	*here_doc_name;
@@ -24,14 +25,14 @@ char *name_here_doc(void)
 		here_doc_name[1] += 1;
 	return (here_doc_name);
 }
+*/
 
-int read_here_doc(int file, t_exec_st *exec_st)
+int read_here_doc(t_exec_st *exec_st)
 {
-	file = open(exec_st->HD_list[exec_st->nbr_HD], O_RDONLY, 0000644);
-	dup2(file, STDIN_FILENO);
-	close(file);
+	dup2(exec_st->HD_list[exec_st->nbr_HD], STDIN_FILENO);
+	//close(exec_st->HD_list[exec_st->cmd]);
 	exec_st->nbr_HD++;
-	return (file);
+	return (0);
 }
 
 void	unlink_here_doc(void)
