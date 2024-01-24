@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:37:41 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/16 14:34:34 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:21:33 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ char	*find_path(char **possible_paths, char *cmd)
 		free(valid_path);
 		i++;
 	}
-	ft_printf("Command not found: %s\n", cmd);
-	return (NULL);
+	//ft_printf("Command not found: %s\n", cmd);
+	return (ft_strdup(cmd));
 }
 
 char	*seek_cmd(char *cmd, char **envp)
@@ -44,13 +44,15 @@ char	*seek_cmd(char *cmd, char **envp)
 	i = 0;
 	if (ft_strchr(cmd, 47))
 	{
+		/*
 		if (!access(cmd, X_OK))
 		{
 			ft_printf("valid cmd: %s\n", cmd);
 			return (ft_strdup(cmd));
 		}
 		ft_printf("Command not found: %s\n", cmd);
-		return (NULL);
+		*/
+		return (ft_strdup(cmd));
 	}
 	while (!ft_strnstr(envp[i], "PATH", 4))
 		i++;

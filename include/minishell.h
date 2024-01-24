@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/22 14:29:55 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/24 11:27:37 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ typedef struct s_exec_st
 	int		nbr_HD;
 	int		cmd;
 	int		HD_bool;
-	char	**HD_list;
+	int		*HD_list;
 	char	**cmd_args;
 }				t_exec_st;
 
 int		check_redirection(char **line, t_exec_st *exec_st);
-int		read_here_doc(int file, t_exec_st *exec_st);
+int		read_here_doc(t_exec_st *exec_st);
 int		trigger_here_docs(char **line_args, t_exec_st *exec_st);
 void	unlink_here_doc(void);
 int		execute(char *path, char **args, char **env);
