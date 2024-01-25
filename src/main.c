@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/24 13:23:17 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/25 13:24:33 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,22 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, char **envp, char **line)
 	char	**line_args;
 	int		line_args_nbr;
 
-	while (exec_st->i >= 0)
+	while (exec_st->i <= exec_st->pipes_nbr)
 	{
-		if (b_is_builtin(cmd_paths[exec_st->pipes_nbr - exec_st->i]))
+		if (b_is_builtin(cmd_paths[exec_st->i]))
 		{
 			get_args(exec_st, line);
-			execute(cmd_paths[exec_st->pipes_nbr - exec_st->i],
+			execute(cmd_paths[exec_st->i],
 				exec_st->cmd_args, envp);
-			exec_st->i--;
+			exec_st->i++;
 			while (ft_strncmp("|", line[exec_st->cmd_ptr], 2))
 				exec_st->cmd_ptr++;
 			exec_st->cmd_ptr++;
 			continue ;
 		}
+		parent_process(exec_st, line);
 		if	((exec_st->child = fork()) < 0)
 			return (1);
-		if (exec_st->child > 0)
-		{
-			parent_process(exec_st, line);
-			continue ;
-		}
 		if (!exec_st->child)
 		{
 			child_process(exec_st, line);
@@ -69,13 +65,19 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, char **envp, char **line)
 			if (line_args_nbr >= 0)
 			{
 				line_args = line_rm_redirection(exec_st->cmd_args, line_args_nbr);
-				if (execute(cmd_paths[exec_st->pipes_nbr - exec_st->i],
+				if (execute(cmd_paths[exec_st->i],
 						line_args, envp) == -1)
 					perror("execve failed to execute");
 			}
+			free_all(exec_st->cmd_args);
+			exit (1);
 		}
-		free_all(exec_st->cmd_args);
-		exit (1);
+		else
+		{
+			dprintf(2, "child id: %d\n", exec_st->child);
+			exec_st->child_list[exec_st->i] = exec_st->child;
+			exec_st->i++;
+		}
 	}
 	return (0);
 }
@@ -85,6 +87,8 @@ int	run_cmds(char **line, char	**cmd_paths, char **envp, t_exec_st *exec_st)
 	exec_st->i = 0;
 	exec_st->cmd_ptr = 0;
 	exec_st->child_list = ft_calloc(exec_st->pipes_nbr + 2, sizeof(char *));
+	exec_st->child_list[exec_st->pipes_nbr + 1] = 0;
+	/*
 	while (exec_st->i < exec_st->pipes_nbr)
 	{
 		pipe(exec_st->fd);
@@ -93,6 +97,7 @@ int	run_cmds(char **line, char	**cmd_paths, char **envp, t_exec_st *exec_st)
 		exec_st->i++;	
 	}
 	exec_st->max_fd = exec_st->fd[1];
+	*/
 	if (run_each_cmd(exec_st, cmd_paths, envp, line))
 	{
 		parent_close(exec_st);
@@ -173,6 +178,8 @@ int	main(int argc, char	**argv, char **envp)
 	(void)argv;
 	sig_innit();
 	exec_st = ft_calloc(1, sizeof(t_exec_st));
+	exec_st->temp_STDOUT = dup(STDOUT_FILENO);
+	exec_st->temp_STDIN = dup(STDIN_FILENO);
 	while (exec_st)
 	{
 		buff = recieve_input();
