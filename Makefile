@@ -1,5 +1,5 @@
 #CFLAGS= -g -Wextra -Wall -Werror -fsanitize=address
-CFLAGS= -g -Wextra -Wall -Werror
+CFLAGS= -g -Wextra -Wall -Werror -MMD
 LIBS	:= -lft -L./lib/libft
 NAME = minishell
 OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o src/sig_center.o src/sig_meta.o src/ft_strcmp.o \
@@ -8,7 +8,7 @@ OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o src/sig_center.o
 	src/here_doc.o	src/redirections.o	src/here_doc_utils.o
 DEPS = -I./include -I./lib/libft -I/Users/$(USER)/.brew/opt/readline/include
 READLINE_LIB = -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -lhistory
-INCLUDES = include/minishell.h
+INCLUDES = $(OBJECTS:.o=.d)
 
 
 all: space lib/libft/libft.a
@@ -20,7 +20,7 @@ all: space lib/libft/libft.a
 lib/libft/libft.a:
 	brew install readline
 
-$(NAME): $(OBJECTS) $(INCLUDES)
+$(NAME): $(OBJECTS)
 	@echo
 	$(CC) $(OBJECTS) $(LIBS) -o $(NAME) $(CFLAGS) $(DEPS) $(READLINE_LIB)
 	@echo "\033[1;32m$(NAME) compiled\033[0m"
@@ -41,7 +41,9 @@ re: fclean space all
 space:
 	@echo
 
-%.o: %.c $(INCLUDES)
+%.o: %.c
 	cc -c -o $@ $< $(CFLAGS) $(DEPS)
 
 .PHONY: clean fclean re all libclean space
+
+-include $(INCLUDES)
