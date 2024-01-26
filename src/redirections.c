@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/25 11:10:32 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/26 14:40:37 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	r_redirect(int file, char *given_file, int *a)
 	file = open(given_file, O_CREAT | O_WRONLY | O_TRUNC, 0000644);
 	if (file < 0)
 		return (file);
-	close(STDOUT_FILENO);
 	dup2(file, STDOUT_FILENO);
 	close(file);
 	a += 2;
@@ -29,7 +28,6 @@ static int	ra_redirect(int file, char *given_file, int *a)
 	file = open(given_file, O_CREAT | O_WRONLY | O_APPEND, 0000644);
 	if (file < 0)
 		return (file);
-	close(STDOUT_FILENO);
 	dup2(file, STDOUT_FILENO);
 	close(file);
 	a += 2;
@@ -41,7 +39,6 @@ static int	l_redirect(int file, char *given_file, int *a)
 	file = open(given_file, O_RDONLY, 0000644);
 	if (file < 0)
 		return (file);
-	close(STDIN_FILENO);
 	dup2(file, STDIN_FILENO);
 	close(file);
 	a += 2;
