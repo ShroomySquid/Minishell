@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/25 13:24:33 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/26 12:03:51 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,11 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, char **envp, char **line)
 			return (1);
 		if (!exec_st->child)
 		{
-			child_process(exec_st, line);
+			if (child_process(exec_st, line, cmd_paths))
+			{
+				free_all(exec_st->cmd_args);
+				exit (1);
+			}
 			line_args_nbr = check_redirection(exec_st->cmd_args, exec_st);
 			if (line_args_nbr >= 0)
 			{
@@ -113,7 +117,7 @@ int	check_cmds(t_exec_st *exec_st, char **cmd_paths)
 	exec_st->i = 0;
 	while (exec_st->i < (exec_st->pipes_nbr + 1))
 	{
-		if (!cmd_paths[exec_st->i])
+f		if (!cmd_paths[exec_st->i])
 			break ;
 		exec_st->i++;
 	}
@@ -201,6 +205,8 @@ int	main(int argc, char	**argv, char **envp)
 		exec_line(exec_st, line_args, envp, buff);
 		//unlink_here_doc();
 	}
+	ft_printf("Return value close: %d\n", close(exec_st->temp_STDIN));
+	ft_printf("Return value close: %d\n", close(exec_st->temp_STDOUT));
 	free(exec_st);
 	b_true_exit();
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:22:07 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/25 13:24:31 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/26 12:02:16 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ int	parent_process(t_exec_st *exec_st, char **line)
 		close(exec_st->fd[1]);
 	}
 	else if (exec_st->pipes_nbr)
-	{
 		dup2(exec_st->temp_STDOUT, STDOUT_FILENO);
-	}
 	//exec_st->i++;
 	/*
 	if (!exec_st->pipes_nbr)
@@ -80,7 +78,8 @@ void	parent_close(t_exec_st *exec_st)
 	i = 0;
 	close(exec_st->fd[0]);
 	close(exec_st->fd[1]);
-	dup2(exec_st->temp_STDIN, STDIN_FILENO);
+	if (exec_st->pipes_nbr)
+		dup2(exec_st->temp_STDIN, STDIN_FILENO);
 	while (exec_st->child_list[i])
 	{
 		ft_printf("Waiting for: %d\n", exec_st->child_list[i]);
@@ -114,12 +113,12 @@ void	close_child(t_exec_st *exec_st)
 	}
 }
 */
-void	child_process(t_exec_st *exec_st, char **line)
+int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 {
 	int ite;
+	int return_value;
 	
-	//if (exec_st->pipes_nbr)
-	//	close_child(exec_st);	
+	return_value = 0;
 	ite = 0;
 	while (ft_strncmp("|", line[exec_st->cmd_ptr + ite], 2))
 		ite++;
@@ -131,4 +130,13 @@ void	child_process(t_exec_st *exec_st, char **line)
 		ite++;
 	}
 	exec_st->cmd_args[ite] = 0;
+	if (access(cmd_paths[exec_st->i], X_OK < 0) < 0)
+	{
+		return_value = 1;
+		dup2(exec_st->temp_STDOUT, STDOUT_FILENO);
+		ft_printf("Minishell: %s: command not found\n", cmd_paths[exec_st->i]);
+	}
+	close(exec_st->temp_STDIN);
+	close(exec_st->temp_STDOUT);
+	return (return_value);
 }
