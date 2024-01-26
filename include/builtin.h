@@ -30,7 +30,7 @@ int		b_echo(char **args, char **env);
 int		b_cd(char **args, char **env);
 int		b_export(char **args, char **env);
 int		b_unset(char **args, char **env);
-int		b_env(char **args, char **env);
+int		b_env(char **args, char **envp);
 int		b_exit(char **args, char **env);
 int		b_is_builtin(char *cmd);
 void	b_true_exit(char **buff);

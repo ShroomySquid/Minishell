@@ -37,7 +37,7 @@ int	seek_pipe(char	**line_args, t_exec_st *exec_st)
 }
 
 
-int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, char **envp, char **line)
+int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 {
 	char	**line_args;
 	int		line_args_nbr;
@@ -59,7 +59,7 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, char **envp, char **line)
 			{
 				line_args = line_rm_redirection(exec_st->cmd_args, line_args_nbr);
 				if (execute(cmd_paths[exec_st->i],
-						line_args, envp) == -1)
+						line_args, env) == -1)
 					perror("execve failed to execute");
 			}
 			free_all(exec_st->cmd_args);
@@ -75,7 +75,7 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, char **envp, char **line)
 	return (0);
 }
 
-int	run_cmds(char **line, char	**cmd_paths, char **envp, t_exec_st *exec_st)
+int	run_cmds(char **line, char	**cmd_paths, t_env *env, t_exec_st *exec_st)
 {
 	exec_st->i = 0;
 	exec_st->cmd_ptr = 0;
@@ -91,7 +91,7 @@ int	run_cmds(char **line, char	**cmd_paths, char **envp, t_exec_st *exec_st)
 	}
 	exec_st->max_fd = exec_st->fd[1];
 	*/
-	if (run_each_cmd(exec_st, cmd_paths, envp, line))
+	if (run_each_cmd(exec_st, cmd_paths, env, line))
 	{
 		parent_close(exec_st);
 		return (1);
@@ -128,16 +128,16 @@ void	free_moi_ca(char *buff, char **cmd_paths, char **line_args, t_exec_st *exec
 		free(exec_st->HD_list);
 }
 
-int	exec_line(t_exec_st *exec_st, char **line_args, char **envp, char *buff)
+int	exec_line(t_exec_st *exec_st, char **line_args, t_env *env, char *buff)
 {
 	char	**cmd_paths;
 
 	trigger_here_docs(line_args, exec_st);
 	exec_st->nbr_HD = 0;
 	cmd_paths = ft_calloc((exec_st->pipes_nbr) + 2, sizeof(char *));
-	seek_all_cmds(&cmd_paths, line_args, envp);
+	seek_all_cmds(&cmd_paths, line_args, env);
 	//if (!check_cmds(exec_st, cmd_paths))
-	run_cmds(line_args, cmd_paths, envp, exec_st);
+	run_cmds(line_args, cmd_paths, env, exec_st);
 	free_moi_ca(buff, cmd_paths, line_args, exec_st);
 	return (0);
 }
@@ -166,10 +166,12 @@ int	main(int argc, char	**argv, char **envp)
 	char	*buff;
 	char	**line_args;
 	t_exec_st	*exec_st;
+	t_env	*env;
 
 	(void)argc;
 	(void)argv;
 	sig_innit();
+	env = env_innit(envp);
 	exec_st = ft_calloc(1, sizeof(t_exec_st));
 	exec_st->temp_STDOUT = dup(STDOUT_FILENO);
 	exec_st->temp_STDIN = dup(STDIN_FILENO);
@@ -199,11 +201,11 @@ int	main(int argc, char	**argv, char **envp)
 				b_true_exit(line_args);
 			}
 			trigger_here_docs(line_args, exec_st);
-			execute(line_args[0], line_args, envp);
+			execute(line_args[0], line_args, env);
 			free_moi_ca(buff, NULL, line_args, exec_st);
 		}
 		else
-			exec_line(exec_st, line_args, envp, buff);
+			exec_line(exec_st, line_args, env, buff);
 		//unlink_here_doc();
 	}
 	free(exec_st);
