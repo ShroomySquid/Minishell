@@ -82,9 +82,9 @@ void	parent_close(t_exec_st *exec_st)
 		dup2(exec_st->temp_STDIN, STDIN_FILENO);
 	while (exec_st->child_list[i])
 	{
-		ft_printf("Waiting for: %d\n", exec_st->child_list[i]);
+//		ft_printf("Waiting for: %d\n", exec_st->child_list[i]);
 		a = waitpid(0, &exec_st->child_list[i], 0);
-		ft_printf("Waiting done for: %d, wait returned : %d\n", exec_st->child_list[i], a);
+//		ft_printf("Waiting done for: %d, wait returned : %d\n", exec_st->child_list[i], a);
 		i++;
 	}
 	free(exec_st->child_list);

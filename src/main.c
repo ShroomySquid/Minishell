@@ -67,7 +67,7 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, char **envp, char **line)
 		}
 		else
 		{
-			dprintf(2, "child id: %d\n", exec_st->child);
+//			dprintf(2, "child id: %d\n", exec_st->child);
 			exec_st->child_list[exec_st->i] = exec_st->child;
 			exec_st->i++;
 		}
