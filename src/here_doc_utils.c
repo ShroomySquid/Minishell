@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/26 15:48:45 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/26 16:00:56 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,16 @@
 
 int read_here_doc(t_exec_st *exec_st)
 {
+	int i;
+
+	i = 0;
 	dup2(exec_st->HD_list[exec_st->cmd], STDIN_FILENO);
-	close(exec_st->HD_list[exec_st->cmd]);
+	//close(exec_st->HD_list[exec_st->cmd]);
+	while (exec_st->HD_list[i])
+	{
+		close(exec_st->HD_list[i]);
+		i++;
+	}
 	return (0);
 }
 
