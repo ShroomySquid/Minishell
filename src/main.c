@@ -180,7 +180,7 @@ int	main(int argc, char	**argv, char **envp)
 		}
 		exec_st->pipes_nbr = seek_pipe(line_args, exec_st);
 		exec_st->HD_list = ft_calloc(exec_st->nbr_HD + 3, sizeof(int));
-		if (exec_st->pipes_nbr == 0)
+		if (exec_st->pipes_nbr == 0 && b_is_builtin(line_args[0]))
 		{
 			if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))
 			{
