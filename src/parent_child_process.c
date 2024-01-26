@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:22:07 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/26 12:02:16 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/26 14:21:09 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,12 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 		dup2(exec_st->temp_STDOUT, STDOUT_FILENO);
 		ft_printf("Minishell: %s: command not found\n", cmd_paths[exec_st->i]);
 	}
+	if (exec_st->i == exec_st->pipes_nbr)
+	{
+		close(exec_st->fd[0]);
+		close(exec_st->fd[1]);
+	}
+	close(exec_st->fd[0]);
 	close(exec_st->temp_STDIN);
 	close(exec_st->temp_STDOUT);
 	return (return_value);
