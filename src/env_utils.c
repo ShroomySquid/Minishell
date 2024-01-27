@@ -34,12 +34,31 @@ t_env	*env_new(char *name, char *value)
 	return (new);
 }
 
-void	env_add_front(t_env **env, t_env *new)
+void	env_delone(t_env **env, char *name)
 {
-	if (!env || !new)
+	t_env	*tmp;
+	t_env	*prev;
+
+	if (!env || !*env)
 		return ;
-	new->next = *env;
-	*env = new;
+	tmp = *env;
+	prev = NULL;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->name, name))
+		{
+			if (prev)
+				prev->next = tmp->next;
+			else
+				*env = tmp->next;
+			free(tmp->name);
+			free(tmp->value);
+			free(tmp);
+			return ;
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
 }
 
 void	env_add_back(t_env **env, t_env *new)

@@ -1,41 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_unset.c                                          :+:      :+:    :+:   */
+/*   exec_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 14:25:30 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/16 14:26:08 by gcrepin          ###   ########.fr       */
+/*   Created: 2024/01/26 18:12:56 by gcrepin           #+#    #+#             */
+/*   Updated: 2024/01/26 18:14:09 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Empty b_unset function
-int	b_unset(char **args, char **env)
+int	is_env_cmd(char *path)
 {
-	(void)args;
-	(void)env;
-	return (0);
+	ft_printf("path = %s\n", path);
+	return (!strcmp(path, "export") || !strcmp(path, "unset"));
 }
 
-int	b_parent_unset(char **args, t_env *env)
+int	exec_env(char *path, char **args, t_env *envp)
 {
-	int	i;
-
-	i = 1;
-	while (args[i])
-	{
-		if (env_find(env, args[i]))
-			env_delone(&env, args[i]);
-		else
-		{
-			ft_printf("minishell: unset: `%s': not a valid identifier\n",
-				args[i]);
-			return (1);
-		}
-		i++;
-	}
+	if (!strcmp(path, "export"))
+		return (b_parent_export(args, envp));
+	else if (!strcmp(path, "unset"))
+		return (b_parent_unset(args, envp));
 	return (0);
 }

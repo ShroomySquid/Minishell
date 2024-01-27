@@ -115,9 +115,9 @@ void	close_child(t_exec_st *exec_st)
 */
 int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 {
-	int ite;
-	int return_value;
-	
+	int	ite;
+	int	return_value;
+
 	return_value = 0;
 	ite = 0;
 	while (ft_strncmp("|", line[exec_st->cmd_ptr + ite], 2))
@@ -130,7 +130,8 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 		ite++;
 	}
 	exec_st->cmd_args[ite] = 0;
-	if (access(cmd_paths[exec_st->i], X_OK < 0) < 0)
+	if (access(cmd_paths[exec_st->i], X_OK < 0) < 0
+		&& !b_is_builtin(cmd_paths[exec_st->i]))
 	{
 		return_value = 1;
 		dup2(exec_st->temp_STDOUT, STDOUT_FILENO);

@@ -18,9 +18,9 @@
 # include <readline/history.h>
 # include <errno.h>
 # include "libft.h"
+# include "env.h"
 # include "sig_handling.h"
 # include "builtin.h"
-# include "env.h"
 
 typedef struct s_exec_st
 {

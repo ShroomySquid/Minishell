@@ -25,11 +25,11 @@ typedef struct	s_env
 
 t_env			*env_innit(char **env);
 void			env_add_back(t_env **alst, t_env *new);
-void			env_add_front(t_env **alst, t_env *new);
 t_env			*env_new(char *name, char *value);
 void			env_clear(t_env **lst);
 t_env			*env_dup(t_env *env);
 char			**env_to_tab(t_env *env);
 t_env			*env_find(t_env *env, char *name);
+void			env_delone(t_env **env, char *name);
 
 #endif

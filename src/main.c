@@ -200,6 +200,12 @@ int	main(int argc, char	**argv, char **envp)
 				free(buff);
 				b_true_exit(line_args);
 			}
+			else if (is_env_cmd(line_args[0]))
+			{
+				exec_env(line_args[0], line_args, env);
+				free_moi_ca(buff, NULL, line_args, exec_st);
+				continue ;
+			}
 			trigger_here_docs(line_args, exec_st);
 			execute(line_args[0], line_args, env);
 			free_moi_ca(buff, NULL, line_args, exec_st);
