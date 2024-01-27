@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/24 13:13:33 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/26 15:52:47 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,17 @@ void	finish_here_doc(t_exec_st *exec_st)
 {
 	exec_st->cmd++;
 	exec_st->HD_list[exec_st->cmd] = 0;
+	exec_st->cmd = 0;
 }
 
 int	here_doc_input(t_exec_st *exec_st, char **line_args, int i)
 {
 	int file;
-	int fd_add;
 
-	fd_add = 100;
+	if (exec_st->HD_list[exec_st->cmd])
+		close(exec_st->HD_list[exec_st->cmd]);
 	if (pipe(exec_st->fd) < 0)
 		return (-1);
-	file = dup2(exec_st->fd[0], exec_st->fd[0] + fd_add);
-	dup2(exec_st->fd[1], exec_st->fd[1] + fd_add);
-	close(exec_st->fd[0]);
-	close(exec_st->fd[1]);
-	exec_st->fd[0] = exec_st->fd[0] + fd_add;
-	exec_st->fd[1] = exec_st->fd[1] + fd_add;
-	fd_add += 2;
 	file = here_doc(line_args[i + 1], exec_st);
 	if (file < 0)
 	{
