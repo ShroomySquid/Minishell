@@ -14,7 +14,6 @@
 
 int	is_env_cmd(char *path)
 {
-	ft_printf("path = %s\n", path);
 	return (!strcmp(path, "export") || !strcmp(path, "unset"));
 }
 
