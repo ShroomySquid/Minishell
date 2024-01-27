@@ -37,6 +37,8 @@ char	**free_all(char **final_array)
 	int	i;
 
 	i = 0;
+	if (!final_array)
+		return (NULL);
 	while (final_array[i])
 	{
 		free(final_array[i]);

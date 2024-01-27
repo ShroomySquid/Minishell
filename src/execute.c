@@ -12,20 +12,29 @@
 
 #include "minishell.h"
 
-int	execute(char *path, char **args, char **env)
+int	execute(char *path, char **args, t_env *env)
 {
 	int		i;
+	char	**envp;
+	int		ret;
 
 	i = 0;
-	if (!path)
+	envp = env_to_tab(env);
+	if (!path || !args || !envp)
 		return (-1);
 	while (i < BUILTIN_NUM)
 	{
 		if (ft_strcmp(path, g_builtin[i].name) == 0)
-			return ((g_builtin[i].func)(args, env));
+		{
+			ret = (g_builtin[i].func)(args, envp);
+			free_all(envp);
+			return (ret);
+		}
 		i++;
 	}
-	return (execve(path, args, env));
+	ret = execve(path, args, envp);
+	free_all(envp);
+	return (ret);
 }
 
 void	get_args(t_exec_st *exec_st, char **line)

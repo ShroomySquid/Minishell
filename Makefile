@@ -5,7 +5,7 @@ NAME = minishell
 OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o src/sig_center.o src/sig_meta.o src/ft_strcmp.o \
 	src/path_parsing.o src/parent_child_process.o src/line_reader.o src/execute.o \
 	src/b_pwd.o	src/b_echo.o src/b_env.o src/b_export.o src/b_unset.o src/b_cd.o src/b_exit.o src/b_builtin.o \
-	src/here_doc.o	src/redirections.o	src/here_doc_utils.o
+	src/here_doc.o	src/redirections.o	src/here_doc_utils.o src/env_utils.o src/env.o src/exec_env.o
 DEPS = -I./include -I./lib/libft -I/Users/$(USER)/.brew/opt/readline/include
 READLINE_LIB = -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -lhistory
 INCLUDES = $(OBJECTS:.o=.d)
@@ -26,8 +26,10 @@ $(NAME): $(OBJECTS)
 	@echo "\033[1;32m$(NAME) compiled\033[0m"
 	@echo
 
+update: clean all
+
 clean:
-	@rm -f $(OBJECTS)
+	@rm -f $(OBJECTS) $(INCLUDES)
 	@echo "\033[1;31m$(NAME) cleaned\033[0m"
 
 fclean: libclean clean
@@ -44,6 +46,6 @@ space:
 %.o: %.c
 	cc -c -o $@ $< $(CFLAGS) $(DEPS)
 
-.PHONY: clean fclean re all libclean space
+.PHONY: clean fclean re all libclean space update
 
 -include $(INCLUDES)
