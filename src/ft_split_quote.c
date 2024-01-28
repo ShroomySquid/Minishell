@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 12:02:04 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/28 11:27:03 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/28 14:00:52 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ char	*find_end_str(char *s, char *end_str, char c)
 	if (39 == *s)
 	{
 		s++;
-		end_str = ft_strchr(s, 39);
+		end_str = ft_strchr(s, 39) + 1;
 	}
 	else if (34 == *s)
 	{
 		s++;
-		end_str = ft_strchr(s, 34);
+		end_str = ft_strchr(s, 34) + 1;
 	}
 	else
 		end_str = ft_strchr(s, c);
@@ -95,8 +95,6 @@ static char	**split_it_quote(char *s, char c, char **final_array, int i)
 		if (*s)
 		{
 			end_str = find_end_str(s, end_str, c);
-			if (39 == *s || 34 == *s)
-				s++;
 			if (end_str)
 				final_array[i++] = ft_substr(s, 0, (end_str - s));
 			else

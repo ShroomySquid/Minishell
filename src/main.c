@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/28 11:52:23 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/28 13:51:49 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ int	main(int argc, char	**argv, char **envp)
 			break ;
 		add_history(buff);
 		line_args = ft_split_quote(buff, ' ');
+		print_array(line_args);
 		if (!line_args || !line_args[0])
 		{
 			free(buff);
@@ -215,7 +216,6 @@ int	main(int argc, char	**argv, char **envp)
 		}
 		else
 			exec_line(exec_st, line_args, env, buff);
-		//unlink_here_doc();
 	}
 	close(exec_st->temp_STDIN);
 	close(exec_st->temp_STDOUT);
