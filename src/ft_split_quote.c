@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 12:02:04 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/28 14:00:52 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/28 15:11:25 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*skip_quote(char *s, char quote)
 		s++;
 	if (*s)
 		s++;
+	if (*s == 39 || *s == 34)
+		return (skip_quote(s, quote));
 	return (s);
 }
 
@@ -56,6 +58,8 @@ char	*find_end_str(char *s, char *end_str, char c)
 		s++;
 		end_str = ft_strchr(s, 34) + 1;
 	}
+	if (39 == *s || 34 == *s)
+		return (find_end_str(s, end_str, c));
 	else
 		end_str = ft_strchr(s, c);
 	return (end_str);
@@ -76,6 +80,8 @@ char	*find_next_str(char *s, char c)
 			s++;
 		s++;
 	}
+	if (39 == *s || 34 == *s)
+		return (find_next_str(s, c));
 	else 
 	{
 		while (*s != c && *s)

@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/28 13:51:49 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/28 15:21:03 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,72 @@ char	*recieve_input(void)
 	free(prompt);
 	return (buff);
 }
+/*
+char **parse_redirect(char **temp_line)
+{
+	int i;
+
+	i = 0;
+	while(temp_line[i])
+	{
+		if (temp_line[i][0] != 39 && temp_line[i][0] != 34 && (ft_strchr(temp_line[i], '<') || ft_strchr(temp_line[i], '>')))
+		{
+			
+		}
+		i++;
+	}
+}
+*/
+
+int remove_quote(char **temp_line)
+{
+	int i;
+	int a;
+	int b;
+	char *temp_arg;
+
+	i = 0;
+	a = 0;
+	while(temp_line[i])
+	{
+		if (temp_line[i][0] == 39 || temp_line[i][0] == 34)
+		{
+			while(temp_line[i][a])
+			{
+				if (temp_line[i][a] != 39 || temp_line[i][a] != 34)
+					b++;
+				a++;
+			}
+			b++;
+			temp_arg = ft_calloc(b, sizeof(char));
+			if (!temp_arg)
+				return (1);
+			a = 0;
+			while(temp_line[i][a] && temp_line[i][a + 1] != temp_line[i][0])
+			{
+				temp_arg[a] = temp_line[i][a + 1];
+				a++;
+			}
+			temp_arg[a] = 0;
+			free(temp_line[i]);
+			temp_line[i] = strdup(temp_arg);
+			free(temp_arg);
+		}
+		i++;
+		a = 0;
+	}
+	return (0);
+}
+
+char **parsing_line(char *buff)
+{
+	char** temp_line;
+
+	temp_line = ft_split_quote(buff, ' ');
+	//temp_line = parse_redirect(temp_line);
+	//remove_quote(temp_line);
+	return (temp_line);
+}
 
 int	main(int argc, char	**argv, char **envp)
 {
@@ -177,7 +243,7 @@ int	main(int argc, char	**argv, char **envp)
 		if (!buff)
 			break ;
 		add_history(buff);
-		line_args = ft_split_quote(buff, ' ');
+		line_args = parsing_line(buff);
 		print_array(line_args);
 		if (!line_args || !line_args[0])
 		{
