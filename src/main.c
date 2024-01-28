@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/26 16:00:48 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/28 11:40:23 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,12 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 			if (line_args_nbr >= 0)
 			{
 				line_args = line_rm_redirection(exec_st->cmd_args, line_args_nbr);
-				if (execute(cmd_paths[exec_st->i],
+				if (!line_args || execute(cmd_paths[exec_st->i],
 						line_args, env) == -1)
-					perror("execve failed to execute");
+					perror("Cmd failed to execute");
 			}
+			if (line_args)
+				free_all(line_args);
 			free_all(exec_st->cmd_args);
 			exit (1);
 		}
@@ -79,6 +81,11 @@ int	run_cmds(char **line, char	**cmd_paths, t_env *env, t_exec_st *exec_st)
 	exec_st->i = 0;
 	exec_st->cmd_ptr = 0;
 	exec_st->child_list = ft_calloc(exec_st->pipes_nbr + 2, sizeof(char *));
+	if (!exec_st->child_list)
+	{
+		perror("Malloc failed for exec_st->child_list");
+		return (1);
+	}
 	exec_st->child_list[exec_st->pipes_nbr + 1] = 0;
 	if (run_each_cmd(exec_st, cmd_paths, env, line))
 	{
@@ -107,6 +114,12 @@ int	exec_line(t_exec_st *exec_st, char **line_args, t_env *env, char *buff)
 
 	trigger_here_docs(line_args, exec_st);
 	cmd_paths = ft_calloc((exec_st->pipes_nbr) + 2, sizeof(char *));
+	if (!cmd_paths)
+	{
+		perror("Malloc failed for: cmd_paths");	
+		free_moi_ca(buff, cmd_paths, line_args, exec_st);
+		return (1);
+	}
 	seek_all_cmds(&cmd_paths, line_args, env);
 	run_cmds(line_args, cmd_paths, env, exec_st);
 	free_moi_ca(buff, cmd_paths, line_args, exec_st);
@@ -144,8 +157,20 @@ int	main(int argc, char	**argv, char **envp)
 	sig_innit();
 	env = env_innit(envp);
 	exec_st = ft_calloc(1, sizeof(t_exec_st));
+	if (!exec_st)
+	{
+		perror("Malloc failed for exec_st");
+		return (1);
+	}
 	exec_st->temp_STDOUT = dup(STDOUT_FILENO);
 	exec_st->temp_STDIN = dup(STDIN_FILENO);
+	if (!exec_st->temp_STDIN || !exec_st->temp_STDOUT)
+	{
+		perror("dup failed");
+		free(exec_st);
+		return (1);
+	}
+	//printf("stdin: %d stdout: %d\n", exec_st->temp_STDIN, exec_st->temp_STDOUT); 
 	while (exec_st)
 	{
 		buff = recieve_input();
@@ -164,6 +189,13 @@ int	main(int argc, char	**argv, char **envp)
 		}
 		exec_st->pipes_nbr = seek_pipe(line_args, exec_st);
 		exec_st->HD_list = ft_calloc(exec_st->nbr_HD + 3, sizeof(int));
+		if (!exec_st->HD_list)
+		{
+			perror("Malloc failed for HD_list");
+			free_all(line_args);
+			free(exec_st);
+			return (1);
+		}
 		if (exec_st->pipes_nbr == 0 && b_is_builtin(line_args[0]))
 		{
 			if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))

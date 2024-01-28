@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:22:07 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/26 15:52:38 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/28 11:12:11 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	parent_process(t_exec_st *exec_st, char **line)
 		ft_printf("Pipe func failed\n");
 		return (1);
 	}
+	//dprintf(2, "Pipe0: %d pipe1: %d\n", exec_st->fd[0], exec_st->fd[1]); 
 	if (exec_st->i != exec_st->pipes_nbr)
 	{
 		dup2(exec_st->fd[1], STDOUT_FILENO);
@@ -100,10 +101,7 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 		ft_printf("Minishell: %s: command not found\n", cmd_paths[exec_st->i]);
 	}
 	if (exec_st->i == exec_st->pipes_nbr)
-	{
-		close(exec_st->fd[0]);
 		close(exec_st->fd[1]);
-	}
 	close(exec_st->fd[0]);
 	close(exec_st->temp_STDIN);
 	close(exec_st->temp_STDOUT);

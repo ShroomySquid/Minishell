@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/26 14:40:37 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/28 11:30:26 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,11 @@ char	**line_rm_redirection(char **line, int args_nbr)
 	i = 0;
 	a = 0;
 	line_args = ft_calloc(args_nbr + 1, sizeof(unsigned long int));
+	if (!line_args)
+	{
+		perror("malloc failed for line_args");
+		return (0);
+	}
 	while (line[i])
 	{
 		if (!ft_strncmp("<", line[i], 2) || !ft_strncmp("<<", line[i], 3) || !ft_strncmp(">", line[i], 2) || !ft_strncmp(">>", line[i], 3))

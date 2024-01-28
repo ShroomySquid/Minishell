@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:37:41 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/26 12:04:01 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/28 11:39:49 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ char	*find_path(char **possible_paths, char *cmd)
 	{
 		path = ft_strjoin(possible_paths[i], "/");
 		valid_path = ft_strjoin(path, cmd);
-		free(path);
+		if (path)
+			free(path);
 		if (valid_path && !access(valid_path, X_OK))
 			return (valid_path);
-		free(valid_path);
+		if (valid_path)
+			free(valid_path);
 		i++;
 	}
-	//ft_printf("Command not found: %s\n", cmd);
 	return (ft_strdup(cmd));
 }
 
@@ -43,17 +44,7 @@ char	*seek_cmd(char *cmd, t_env *env)
 
 	i = 0;
 	if (ft_strchr(cmd, 47))
-	{
-		/*
-		if (!access(cmd, X_OK))
-		{
-			ft_printf("valid cmd: %s\n", cmd);
-			return (ft_strdup(cmd));
-		}
-		ft_printf("Command not found: %s\n", cmd);
-		*/
 		return (ft_strdup(cmd));
-	}
 	env = env_find(env, "PATH");
 	possible_paths = ft_split(env->value + 5, ':');
 	if (!possible_paths)
