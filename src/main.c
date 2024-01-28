@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/28 11:40:23 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/28 11:52:23 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 				if (!line_args || execute(cmd_paths[exec_st->i],
 						line_args, env) == -1)
 					perror("Cmd failed to execute");
+				if (line_args)
+					free_all(line_args);
 			}
-			if (line_args)
-				free_all(line_args);
 			free_all(exec_st->cmd_args);
 			exit (1);
 		}

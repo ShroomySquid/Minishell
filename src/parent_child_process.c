@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:22:07 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/28 11:12:11 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/28 11:53:43 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,15 @@ void	parent_close(t_exec_st *exec_st)
 	free(exec_st->child_list);
 }
 
+int failed_cmd_msg(t_exec_st *exec_st, char **cmd_paths)
+{
+	dup2(exec_st->temp_STDOUT, STDOUT_FILENO);
+	ft_putstr_fd("Minishell: ", 2);
+	ft_putstr_fd(cmd_paths[exec_st->i], 2);
+	ft_putstr_fd(": command not found\n", 2);
+	return (1);
+}
+
 int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 {
 	int	ite;
@@ -95,11 +104,7 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 	exec_st->cmd_args[ite] = 0;
 	if (access(cmd_paths[exec_st->i], X_OK < 0) < 0
 		&& !b_is_builtin(cmd_paths[exec_st->i]))
-	{
-		return_value = 1;
-		dup2(exec_st->temp_STDOUT, STDOUT_FILENO);
-		ft_printf("Minishell: %s: command not found\n", cmd_paths[exec_st->i]);
-	}
+		return_value = failed_cmd_msg(exec_st, cmd_paths);
 	if (exec_st->i == exec_st->pipes_nbr)
 		close(exec_st->fd[1]);
 	close(exec_st->fd[0]);
