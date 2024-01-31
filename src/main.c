@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/28 15:21:03 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/01/31 15:37:56 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ char	*recieve_input(void)
 	return (buff);
 }
 /*
-char **parse_redirect(char **temp_line)
+char *parse_redirect(char *buff)
 {
 	int i;
 
@@ -161,42 +161,123 @@ char **parse_redirect(char **temp_line)
 }
 */
 
-int remove_quote(char **temp_line)
+char *make_pipe_quote_s()
 {
-	int i;
+	char *str;
+	str = malloc(sizeof(char) * 4);
+	if (!str)
+		return (NULL);
+	str[0] = 39;
+	str[1] = 124;
+	str[2] = 39;
+	str[3] = 0;
+	return (str);
+}
+
+char *make_pipe_quote_d()
+{
+	char *str;
+	str = malloc(sizeof(char) * 4);
+	if (!str)
+		return (NULL);
+	str[0] = 34;
+	str[1] = 124;
+	str[2] = 34;
+	str[3] = 0;
+	return (str);
+}
+
+int new_length(char *arg, int i, int a)
+{
+	int quote;
+
+	while (arg[i])
+	{
+		if (arg[i] == 39 || arg[i] == 34)
+		{
+			quote = arg[i];
+			i++;
+			while (arg[i] != quote)
+			{
+				i++;
+				a++;
+			}
+			if (arg[i])
+				i++;
+		}
+		else
+		{
+			i++;
+			a++;
+		}
+	}
+	return (a);
+}
+
+char *remove_quote_arg(char *arg)
+{
+	char *new_arg;
+	int quote;
 	int a;
-	int b;
-	char *temp_arg;
+	int i;
 
 	i = 0;
 	a = 0;
+	new_arg = ft_calloc((new_length(arg, i, a) + 1), sizeof(char));
+	if (!new_arg)
+		return (NULL);
+	while (arg[i])
+	{
+		if (arg[i] == 39 || arg[i] == 34)
+		{
+			quote = arg[i];
+			i++;
+			while (arg[i] && arg[i] != quote)
+			{
+				new_arg[a] = arg[i];
+				i++;
+				a++;
+			}
+			if (arg[i] == quote)
+				i++;
+		}
+		else if (arg[i])
+		{
+			new_arg[a] = arg[i];
+			i++;
+			a++;
+		}	
+	}
+	new_arg[a] = 0;
+	free(arg);
+	return (new_arg);	
+}
+
+int remove_quotes(char **temp_line)
+{
+	int i;
+	char *pipe_quote_d;
+	char *pipe_quote_s;
+
+	i = 0;
+	pipe_quote_d = make_pipe_quote_d();
+	pipe_quote_s = make_pipe_quote_s();
+	if (!pipe_quote_d || !pipe_quote_s)
+		return (1);	
 	while(temp_line[i])
 	{
-		if (temp_line[i][0] == 39 || temp_line[i][0] == 34)
+		if (!ft_strncmp(pipe_quote_s, temp_line[i], 4) || !ft_strncmp(pipe_quote_d, temp_line[i], 4))
 		{
-			while(temp_line[i][a])
-			{
-				if (temp_line[i][a] != 39 || temp_line[i][a] != 34)
-					b++;
-				a++;
-			}
-			b++;
-			temp_arg = ft_calloc(b, sizeof(char));
-			if (!temp_arg)
+			i++;
+			continue ;
+		}
+		if (ft_strchr(temp_line[i], 34) || ft_strchr(temp_line[i], 39))
+		{
+			temp_line[i] = remove_quote_arg(temp_line[i]);
+			if (!temp_line[i])
 				return (1);
-			a = 0;
-			while(temp_line[i][a] && temp_line[i][a + 1] != temp_line[i][0])
-			{
-				temp_arg[a] = temp_line[i][a + 1];
-				a++;
-			}
-			temp_arg[a] = 0;
-			free(temp_line[i]);
-			temp_line[i] = strdup(temp_arg);
-			free(temp_arg);
 		}
 		i++;
-		a = 0;
 	}
 	return (0);
 }
@@ -204,10 +285,13 @@ int remove_quote(char **temp_line)
 char **parsing_line(char *buff)
 {
 	char** temp_line;
+	int i;
+	//char* temp_buff;
 
+	//temp_buff = parse_redirect(temp_line);
+	//temp_buff = parse_pipe(temp_line);
 	temp_line = ft_split_quote(buff, ' ');
-	//temp_line = parse_redirect(temp_line);
-	//remove_quote(temp_line);
+	i = remove_quotes(temp_line);
 	return (temp_line);
 }
 
