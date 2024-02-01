@@ -1,16 +1,10 @@
- > après une commande renvoie le contenu de la commande vers le lieu indiqué.
- >> même chose mais on rajoute au lieu de remplacer.
- < après la commande indique ou la commande doit aller chercher son contenu.
- << même chose mais arrête lorsqu'on rencontre le terme donné.
-
-
+ Checker les leaks
+ Implémenter les variables d'env
  Pour les pipes:
- 	corriger le cat | cat | ls
- 	implémenter readline si pipe est le dernier arg
-	checker leaks
  Pour les guillemets / ft_split_quote:
  	prendre en compte les variables dans les doubles guillemets
 	whitespace
+	seg fault/double malloc si guillements encore ouvert
+	parsing des opérateurs
  Pour redirections:
- 	multiple here_doc failed
-	here_doc fail aussi avec les pipes
+ 	implémenter les variables d'environnements dans here_doc

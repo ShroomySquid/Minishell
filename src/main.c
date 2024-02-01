@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/31 15:37:56 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:41:23 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ int	exec_line(t_exec_st *exec_st, char **line_args, t_env *env, char *buff)
 	return (0);
 }
 
+// leak si interrompu avec CRTL-D
 char	*recieve_input(void)
 {
 	char	*buff;
@@ -144,22 +145,109 @@ char	*recieve_input(void)
 	free(prompt);
 	return (buff);
 }
-/*
-char *parse_redirect(char *buff)
-{
-	int i;
 
-	i = 0;
-	while(temp_line[i])
+void to_end_quote_length(char quote, char *buff, int *i, int *a)
+{
+	*i += 1;
+	*a += 1;
+	while (buff[*i] && buff[*i] != quote)
 	{
-		if (temp_line[i][0] != 39 && temp_line[i][0] != 34 && (ft_strchr(temp_line[i], '<') || ft_strchr(temp_line[i], '>')))
-		{
-			
-		}
-		i++;
+		*i += 1;
+		*a += 1;
 	}
 }
-*/
+
+void to_end_quote(char quote, char *buff, char *temp_buff, int *i, int *a)
+{
+	temp_buff[*i + *a] = buff[*i];
+	*i += 1;
+	while (buff[*i] && buff[*i] != quote)
+	{
+		temp_buff[*i + *a] = buff[*i];
+		*i += 1;
+	}
+	if (buff[*i])
+	{	
+		temp_buff[*i + *a] = buff[*i];
+		*i += 1;
+	}
+}
+
+int tb_length(char *buff)
+{
+	int i;
+	int a;
+
+	i = 0;
+	a = 0;
+	while (buff[i])
+	{
+		if (buff[i] == 34 || 39 == buff[i])
+			to_end_quote_length(buff[i], buff, &i, &a);
+		if (buff[i] && (buff[i] == '<' || buff[i] == '>' || buff[i] == '|'))
+		{
+			if (buff[i - 1] && buff[i -1] != ' ')
+				a++;
+			if (buff[i + 1] && buff[i + 1] != ' ')
+				a++;
+			if (buff[i] == '<' && buff[i + 1] && buff[i + 1] == '<')
+			{
+				if (buff[i + 2] && buff[i + 2] != ' ')
+					a++;
+			}
+			if (buff[i] == '<' && buff[i + 1] && buff[i + 1] == '<')
+			{
+				if (buff[i + 2] && buff[i + 2] != ' ')
+					a++;
+			}
+		}
+		i++;
+		a++;
+	}
+	a++;
+	return (a);
+}
+
+char *parse_operators(char *buff)
+{
+	char *temp_buff;
+	int i;
+	int a;
+	
+	temp_buff = ft_calloc(tb_length(buff), sizeof(char));
+	if (!temp_buff)
+		return (NULL);
+	i = 0;
+	a = 0;
+	while (buff[i])
+	{
+		if (buff[i] == 34 || 39 == buff[i])
+			to_end_quote(buff[i], buff, temp_buff, &i, &a);
+		if (buff[i] == '<' || buff[i] == '>' || buff[i] == '|')
+		{
+			if (buff[i - 1] && buff[i - 1] != ' ' && buff[i - 1] != buff[i])
+			{
+				temp_buff[i + a] = ' ';
+				a++;	
+			}
+			temp_buff[i + a] = buff[i];
+			if ((buff[i] == '<' || buff[i] == '>') && buff[i + 1] && buff[i + 1] == buff[i])
+			{
+				i++;
+				temp_buff[i + a] = buff[i];
+			}
+			if (buff[i + 1] && buff[i + 1] != ' ')
+			{
+				a++;
+				temp_buff[i + a] = ' ';
+			}
+		}
+		else
+			temp_buff[i + a] = buff[i];
+		i++;
+	}
+	return (temp_buff);
+}
 
 char *make_pipe_quote_s()
 {
@@ -286,11 +374,10 @@ char **parsing_line(char *buff)
 {
 	char** temp_line;
 	int i;
-	//char* temp_buff;
+	char* temp_buff;
 
-	//temp_buff = parse_redirect(temp_line);
-	//temp_buff = parse_pipe(temp_line);
-	temp_line = ft_split_quote(buff, ' ');
+	temp_buff = parse_operators(buff);
+	temp_line = ft_split_quote(temp_buff, ' ');
 	i = remove_quotes(temp_line);
 	return (temp_line);
 }
