@@ -19,8 +19,10 @@ int	execute(char *path, char **args, t_env *env)
 	int		ret;
 
 	i = 0;
+	if (!path || !args)
+		return (-1);
 	envp = env_to_tab(env);
-	if (!path || !args || !envp)
+	if (!envp)
 		return (-1);
 	while (i < BUILTIN_NUM)
 	{

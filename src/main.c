@@ -141,14 +141,15 @@ int	main(int argc, char	**argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	sig_innit();
 	env = env_innit(envp);
 	exec_st = ft_calloc(1, sizeof(t_exec_st));
 	exec_st->temp_STDOUT = dup(STDOUT_FILENO);
 	exec_st->temp_STDIN = dup(STDIN_FILENO);
-	while (exec_st)
+	while (1)
 	{
+		setup_interactive();
 		buff = recieve_input();
+		setup_non_interactive();
 		if (!buff)
 			break ;
 		add_history(buff);
@@ -168,8 +169,9 @@ int	main(int argc, char	**argv, char **envp)
 		{
 			if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))
 			{
-				free(buff);
-				b_true_exit(line_args);
+				free_moi_ca(buff, NULL, NULL, exec_st);
+				b_true_exit(line_args, exec_st, env);
+				continue ;
 			}
 			else if (is_env_cmd(line_args[0]))
 			{
@@ -188,6 +190,6 @@ int	main(int argc, char	**argv, char **envp)
 	close(exec_st->temp_STDIN);
 	close(exec_st->temp_STDOUT);
 	free(exec_st);
-	b_true_exit(NULL);
+	b_true_exit(NULL, NULL, env);
 	return (0);
 }

@@ -28,5 +28,6 @@ void	sig_ignore(int signum);
 void	setup_terminal(void);
 void	setup_interactive(void);
 void	sig_innit(void);
+void	setup_non_interactive(void);
 
 #endif

@@ -35,6 +35,8 @@ void	setup_interactive(void)
 	t_sigaction act;
 	t_sigaction ign;
 
+	act = (t_sigaction){0};
+	ign = (t_sigaction){0};
 	act.sa_handler = sig_interactive_handler;
 	act.sa_flags = 0;
 //	act.sa_flags = SA_INTERRUPT;
@@ -45,3 +47,12 @@ void	setup_interactive(void)
 	sigaction(CTRLSL, &ign, NULL);
 }
 
+void	setup_non_interactive(void)
+{
+	t_sigaction act;
+
+	act = (t_sigaction){0};
+	act.sa_handler = SIG_IGN;
+	sigaction(CTRLC, &act, NULL);
+	sigaction(CTRLSL, &act, NULL);
+}

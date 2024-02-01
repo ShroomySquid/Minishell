@@ -11,12 +11,28 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdbool.h>
 
-//empty b_echo function
 int	b_echo(char **args, char **env)
 {
-	(void)args;
+	bool n_flag;
+
 	(void)env;
-	ft_printf("function echo not implemented yet\n");
+	n_flag = false;
+	args++;
+	if (args[0] && ft_strcmp(args[0], "-n") == 0)
+	{
+		n_flag = true;
+		args++;
+	}
+	while (*args)
+	{
+		ft_printf("%s", *args);
+		args++;
+		if (*args)
+			ft_printf(" ");
+	}
+	if (!n_flag)
+		ft_printf("\n");
 	return (0);
 }
