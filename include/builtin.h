@@ -33,7 +33,7 @@ int		b_unset(char **args, char **env);
 int		b_env(char **args, char **envp);
 int		b_exit(char **args, char **env);
 int		b_is_builtin(char *cmd);
-void	b_true_exit(char **buff);
+int b_true_exit(char **buff, void *exec_st, t_env *env);
 int		b_parent_export(char **args, t_env *env);
 int		b_parent_unset(char **args, t_env *env);
 int		is_env_cmd(char *path);
