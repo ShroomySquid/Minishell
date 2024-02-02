@@ -4,6 +4,5 @@
  Pour les guillemets / ft_split_quote:
  	prendre en compte les variables dans les doubles guillemets
 	whitespace
-	seg fault/double malloc si guillements encore ouvert
  Pour redirections:
  	implémenter les variables d'environnements dans here_doc
