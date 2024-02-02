@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/26 15:00:19 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/02 11:40:20 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ typedef struct s_exec_st
 	int		fd[2];
 	int		pipes_nbr;
 	int		i;
-//	int		max_fd;
-//	int		min_fd;
 	int		cmd_ptr;
 	int		error;
 	int		temp_STDIN;
@@ -40,6 +38,7 @@ typedef struct s_exec_st
 	int		HD_bool;
 	int		*HD_list;
 	char	**cmd_args;
+	char	**ope_quotes;
 }				t_exec_st;
 
 int		check_redirection(char **line, t_exec_st *exec_st);
@@ -60,5 +59,7 @@ char	**ft_split_quote(char const *s, char c);
 char	**ft_sub_array(char **array, int start, int end);
 char	**line_rm_redirection(char **line, int args_nbr);
 void	get_args(t_exec_st *pipe, char **line);
+char	**set_ope_quotes();
+int		verify_ope_quotes(char **quotes_array);
 
 #endif

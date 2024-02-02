@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/28 11:30:26 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/02 09:32:40 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,6 @@ char	**line_rm_redirection(char **line, int args_nbr)
 		i++;
 	}
 	line_args[i - a] = 0;
+	free_all(line);
 	return (line_args);
 }
