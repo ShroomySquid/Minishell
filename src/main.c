@@ -6,37 +6,11 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/02 11:39:53 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:51:17 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char *make_pipe_quote_s()
-{
-	char *str;
-	str = malloc(sizeof(char) * 4);
-	if (!str)
-		return (NULL);
-	str[0] = 39;
-	str[1] = 124;
-	str[2] = 39;
-	str[3] = 0;
-	return (str);
-}
-
-char *make_pipe_quote_d()
-{
-	char *str;
-	str = malloc(sizeof(char) * 4);
-	if (!str)
-		return (NULL);
-	str[0] = 34;
-	str[1] = 124;
-	str[2] = 34;
-	str[3] = 0;
-	return (str);
-}
 
 int	seek_pipe(char	**line_args, t_exec_st *exec_st)
 {
@@ -62,34 +36,6 @@ int	seek_pipe(char	**line_args, t_exec_st *exec_st)
 	return (pipe_nbr);
 }
 
-void fix_quotes(char ***line)
-{
-	int i;
-	char *pipe_s;
-	char *pipe_d;
-
-	i = 0;
-	if (!line[0])
-		return ;
-	pipe_s = make_pipe_quote_s();
-	pipe_d = make_pipe_quote_d();
-	while (line[0][i])
-	{
-		if (!ft_strncmp(line[0][i], pipe_s, 4) || !ft_strncmp(line[0][i], pipe_d, 4))
-		{
-			free(line[0][i]);
-			line[0][i] = ft_calloc(2, sizeof(char));
-			if (!line[0][i])
-				break ;
-			line[0][i][0] = '|';
-			line[0][i][1] = '\0';
-		}
-		i++;
-	}
-	free(pipe_s);
-	free(pipe_d);
-}
-
 int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 {
 	char	**line_args;
@@ -111,7 +57,8 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 			if (line_args_nbr >= 0)
 			{
 				line_args = line_rm_redirection(exec_st->cmd_args, line_args_nbr);
-				fix_quotes(&line_args);
+				fix_quotes(&line_args, exec_st);
+				dprintf(2, "1st: %sY\n", line_args[0]);
 				if (!line_args || execute(cmd_paths[exec_st->i],
 						line_args, env) == -1)
 					perror("Cmd failed to execute");
@@ -159,8 +106,6 @@ void	free_moi_ca(char *buff, char **cmd_paths, char **line_args, t_exec_st *exec
 	if (buff)
 		free(buff);
 	if (exec_st->HD_list)
-		free(exec_st->HD_list);
-	if (exec_st->ope_quotes)
 		free(exec_st->HD_list);
 }
 
@@ -304,120 +249,17 @@ char *parse_operators(char *buff)
 	return (temp_buff);
 }
 
-int new_length(char *arg, int i, int a)
-{
-	int quote;
-
-	while (arg[i])
-	{
-		if (arg[i] == 39 || arg[i] == 34)
-		{
-			quote = arg[i];
-			i++;
-			while (arg[i] != quote)
-			{
-				i++;
-				a++;
-			}
-			if (arg[i])
-				i++;
-		}
-		else
-		{
-			i++;
-			a++;
-		}
-	}
-	return (a);
-}
-
-char *remove_quote_arg(char *arg)
-{
-	char *new_arg;
-	int quote;
-	int a;
-	int i;
-
-	i = 0;
-	a = 0;
-	new_arg = ft_calloc((new_length(arg, i, a) + 1), sizeof(char));
-	if (!new_arg)
-		return (NULL);
-	while (arg[i])
-	{
-		if (arg[i] == 39 || arg[i] == 34)
-		{
-			quote = arg[i];
-			i++;
-			while (arg[i] && arg[i] != quote)
-			{
-				new_arg[a] = arg[i];
-				i++;
-				a++;
-			}
-			if (arg[i] == quote)
-				i++;
-		}
-		else if (arg[i])
-		{
-			new_arg[a] = arg[i];
-			i++;
-			a++;
-		}	
-	}
-	new_arg[a] = 0;
-	free(arg);
-	return (new_arg);	
-}
-
-int remove_quotes(char **temp_line)
-{
-	int i;
-	char *pipe_d;
-	char *pipe_s;
-
-	i = 0;
-	pipe_d = make_pipe_quote_d();
-	if (!pipe_d)
-		return (1);
-	pipe_s = make_pipe_quote_s();
-	if (!pipe_s)
-	{
-		free(pipe_d);
-		return (1);	
-	}
-	while(temp_line[i])
-	{
-		if (!ft_strncmp(pipe_s, temp_line[i], 4) || !ft_strncmp(pipe_d, temp_line[i], 4))
-		{
-			i++;
-			continue ;
-		}
-		if (ft_strchr(temp_line[i], 34) || ft_strchr(temp_line[i], 39))
-		{
-			temp_line[i] = remove_quote_arg(temp_line[i]);
-			if (!temp_line[i])
-			{
-				free(pipe_d);
-				free(pipe_s);
-				return (1);
-			}
-		}
-		i++;
-	}
-	free(pipe_d);
-	free(pipe_s);
-	return (0);
-}
-
-char **parsing_line(char *buff)
+char **parsing_line(char *buff, t_exec_st *exec_st)
 {
 	char** temp_line;
 	char* temp_buff;
 
 	temp_buff = parse_operators(buff);
+	ft_printf("%s\n", temp_buff);
 	temp_line = ft_split_quote(temp_buff, ' ');
-	remove_quotes(temp_line);
+	print_array(temp_line);
+	remove_quotes(temp_line, exec_st);
+	print_array(temp_line);
 	return (temp_line);
 }
 
@@ -452,16 +294,13 @@ int	main(int argc, char	**argv, char **envp)
 		free(exec_st);
 		return (1);
 	}
-	print_array(exec_st->ope_quotes);
-	//printf("stdin: %d stdout: %d\n", exec_st->temp_STDIN, exec_st->temp_STDOUT); 
 	while (exec_st)
 	{
 		buff = recieve_input();
 		if (!buff)
 			break ;
 		add_history(buff);
-		line_args = parsing_line(buff);
-		//print_array(line_args);
+		line_args = parsing_line(buff, exec_st);
 		if (!line_args || !line_args[0])
 		{
 			free(buff);
@@ -502,6 +341,7 @@ int	main(int argc, char	**argv, char **envp)
 	}
 	close(exec_st->temp_STDIN);
 	close(exec_st->temp_STDOUT);
+	free_all(exec_st->ope_quotes);
 	free(exec_st);
 	b_true_exit(NULL);
 	return (0);

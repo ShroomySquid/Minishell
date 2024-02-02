@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/02/02 11:40:20 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/02 15:22:04 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,8 @@ char	**line_rm_redirection(char **line, int args_nbr);
 void	get_args(t_exec_st *pipe, char **line);
 char	**set_ope_quotes();
 int		verify_ope_quotes(char **quotes_array);
+int		check_operators(t_exec_st *exec_st, char* arg);
+void	fix_quotes(char ***line, t_exec_st *exec_st);
+int		remove_quotes(char **temp_line, t_exec_st *exec_st);
 
 #endif

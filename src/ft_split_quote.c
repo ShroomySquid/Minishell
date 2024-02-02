@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 12:02:04 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/28 15:11:25 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/02 15:22:09 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,21 @@ char	*find_end_str(char *s, char *end_str, char c)
 
 char	*find_next_str(char *s, char c)
 {
+	ft_printf("before FNS: %s\n", s);
 	s++;
 	if (39 == *(s - 1))
 	{
 		while (*s && 39 != *s)
 			s++;
-		s++;
+		if (*s)
+			s++;
 	}
 	else if (34 == *(s - 1))
 	{
 		while (*s && 34 != *s)
 			s++;
-		s++;
+		if (*s)
+			s++;
 	}
 	if (39 == *s || 34 == *s)
 		return (find_next_str(s, c));
@@ -87,6 +90,7 @@ char	*find_next_str(char *s, char c)
 		while (*s != c && *s)
 			s++;
 	}
+	ft_printf("after FNS: %s\n", s);
 	return (s);
 }
 
@@ -105,6 +109,7 @@ static char	**split_it_quote(char *s, char c, char **final_array, int i)
 				final_array[i++] = ft_substr(s, 0, (end_str - s));
 			else
 				final_array[i++] = ft_substr(s, 0, ft_strlen(s));
+			printf("FTSplit: %s\n", final_array[i - 1]);
 			if (!final_array[i - 1])
 				return (free_all(final_array));
 			s = find_next_str(s, c);

@@ -5,6 +5,5 @@
  	prendre en compte les variables dans les doubles guillemets
 	whitespace
 	seg fault/double malloc si guillements encore ouvert
-	parsing des opérateurs
  Pour redirections:
  	implémenter les variables d'environnements dans here_doc

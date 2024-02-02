@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/02 11:40:18 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:37:37 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,27 @@ int verify_ope_quotes(char **quotes_array)
 			i--;
 		}
 		free(quotes_array);
+	}
+	return (return_value);
+}
+
+int check_operators(t_exec_st *exec_st, char* arg)
+{
+	int i;
+	int return_value;
+	int len;
+
+	i = 0;
+	return_value = 0;
+	while (exec_st->ope_quotes[i])
+	{
+		len = ft_strlen(exec_st->ope_quotes[i]);
+		if (!ft_strncmp(exec_st->ope_quotes[i], arg, len))
+		{
+			return_value = 1;
+			break ;
+		}
+		i++;
 	}
 	return (return_value);
 }
