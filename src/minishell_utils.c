@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:06:19 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/28 11:34:50 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/04 10:06:07 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,11 @@ char    **ft_sub_array(char **array, int start, int end)
 	}
 	sub_array[i] = 0;
 	return (sub_array);
+}
+
+int is_white_space(char c)
+{
+	if ((c < 14 && c > 8) || c == 32)
+		return (1);
+	return (0);
 }

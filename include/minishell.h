@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/02/02 15:22:04 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/04 10:25:23 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	print_array(char **array_str);
 char	*seek_cmd(char *cmd, t_env *env);
 void	seek_all_cmds(char ***cmd_paths, char **line_args, t_env *env);
 char	*name_here_doc(void);
-char	**ft_split_quote(char const *s, char c);
+char	**ft_split_quote(char const *s);
 char	**ft_sub_array(char **array, int start, int end);
 char	**line_rm_redirection(char **line, int args_nbr);
 void	get_args(t_exec_st *pipe, char **line);
@@ -64,5 +64,7 @@ int		verify_ope_quotes(char **quotes_array);
 int		check_operators(t_exec_st *exec_st, char* arg);
 void	fix_quotes(char ***line, t_exec_st *exec_st);
 int		remove_quotes(char **temp_line, t_exec_st *exec_st);
+char	*parse_operators(char *buff);
+int		is_white_space(char c);
 
 #endif
