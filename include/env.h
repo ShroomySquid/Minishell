@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:13:53 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/26 16:14:00 by gcrepin          ###   ########.fr       */
+/*   Updated: 2024/02/04 11:32:48 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,7 @@
 #ifndef ENV_H
 # define ENV_H
 
-typedef struct	s_env
-{
-	char			*name;
-	char			*value;
-	struct s_env	*next;
-}				t_env;
-
+# include "define.h"
 # include "minishell.h"
 
 t_env			*env_innit(char **env);

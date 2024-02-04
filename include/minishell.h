@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/02/04 10:25:23 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/04 11:36:18 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,8 @@
 # include "env.h"
 # include "sig_handling.h"
 # include "builtin.h"
-
-typedef struct s_exec_st
-{
-	int		child;
-	int		fd[2];
-	int		pipes_nbr;
-	int		i;
-	int		cmd_ptr;
-	int		error;
-	int		temp_STDIN;
-	int		temp_STDOUT;
-	int		*child_list;
-	int		nbr_HD;
-	int		cmd;
-	int		HD_bool;
-	int		*HD_list;
-	char	**cmd_args;
-	char	**ope_quotes;
-}				t_exec_st;
+# include "define.h"
+# include "error.h"
 
 int		check_redirection(char **line, t_exec_st *exec_st);
 int		read_here_doc(t_exec_st *exec_st);
@@ -66,5 +49,6 @@ void	fix_quotes(char ***line, t_exec_st *exec_st);
 int		remove_quotes(char **temp_line, t_exec_st *exec_st);
 char	*parse_operators(char *buff);
 int		is_white_space(char c);
+int		exec_line(t_exec_st *exec_st, char **line_args, t_env *env);
 
 #endif
