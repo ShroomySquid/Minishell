@@ -42,18 +42,12 @@ char	*seek_cmd(char *cmd, t_env *env)
 	char	*valid_path;
 
 	i = 0;
-	if (ft_strchr(cmd, 47))
-	{
-		/*
-		if (!access(cmd, X_OK))
-		{
-			ft_printf("valid cmd: %s\n", cmd);
-			return (ft_strdup(cmd));
-		}
-		ft_printf("Command not found: %s\n", cmd);
-		*/
+	if (!cmd)
+		return (0);
+	if (cmd[0] == '~' && cmd[1] == '/')
+		return (ft_strjoin(env_find(env, "HOME")->value, cmd + 1));
+	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
-	}
 	env = env_find(env, "PATH");
 	possible_paths = ft_split(env->value + 5, ':');
 	if (!possible_paths)
