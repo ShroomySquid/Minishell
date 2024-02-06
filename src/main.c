@@ -81,7 +81,7 @@ char **parsing_line(char *buff, t_exec_st *exec_st)
 int exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
 {
 	if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))
-		b_true_exit(line_args);
+		b_true_exit(line_args, exec_st, env);
 	else if (is_env_cmd(line_args[0]))
 	{
 		exec_env(line_args[0], line_args, env);
@@ -128,9 +128,11 @@ int	main(int argc, char	**argv, char **envp)
 	if (innit_main(argc, argv, &exec_st))
 		return (1);
 	env = env_innit(envp);
-	while (exec_st)
+	while (1)
 	{
+		setup_interactive();
 		buff = recieve_input();
+		setup_non_interactive();
 		if (!buff)
 			break ;
 		add_history(buff);
@@ -157,6 +159,6 @@ int	main(int argc, char	**argv, char **envp)
 	close(exec_st->temp_STDOUT);
 	free_all(exec_st->ope_quotes);
 	free(exec_st);
-	b_true_exit(NULL);
+	b_true_exit(NULL, NULL, env);
 	return (0);
 }
