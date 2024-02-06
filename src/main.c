@@ -157,8 +157,6 @@ int	main(int argc, char	**argv, char **envp)
 	}
 	close(exec_st->temp_STDIN);
 	close(exec_st->temp_STDOUT);
-	free_all(exec_st->ope_quotes);
-	free(exec_st);
-	b_true_exit(NULL, NULL, env, true);
+	b_true_exit(NULL, exec_st, env, true);
 	return (0);
 }
