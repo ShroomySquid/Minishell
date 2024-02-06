@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdbool.h>
 #include "minishell.h"
 
 int	seek_pipe(char	**line_args, t_exec_st *exec_st)
@@ -73,15 +74,15 @@ char **parsing_line(char *buff, t_exec_st *exec_st)
 	temp_buff = parse_operators(buff);
 	temp_line = ft_split_quote(temp_buff);
 	remove_quotes(temp_line, exec_st);
-	print_array(temp_line);
-	free (buff);
+	free(temp_buff);
+	free(buff);
 	return (temp_line);
 }
 
 int exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
 {
 	if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))
-		b_true_exit(line_args, exec_st, env);
+		b_true_exit(line_args, exec_st, env, true);
 	else if (is_env_cmd(line_args[0]))
 	{
 		exec_env(line_args[0], line_args, env);
@@ -90,7 +91,6 @@ int exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
 	}
 	trigger_here_docs(line_args, exec_st);
 	execute(line_args[0], line_args, env);
-	free_moi_ca(NULL, line_args, exec_st);
 	return (0);
 }
 
@@ -159,6 +159,6 @@ int	main(int argc, char	**argv, char **envp)
 	close(exec_st->temp_STDOUT);
 	free_all(exec_st->ope_quotes);
 	free(exec_st);
-	b_true_exit(NULL, NULL, env);
+	b_true_exit(NULL, NULL, env, true);
 	return (0);
 }

@@ -109,6 +109,5 @@ char	**line_rm_redirection(char **line, int args_nbr)
 		i++;
 	}
 	line_args[i - a] = 0;
-	free_all(line);
 	return (line_args);
 }
