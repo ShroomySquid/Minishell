@@ -81,7 +81,7 @@ char **parsing_line(char *buff, t_exec_st *exec_st)
 int exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
 {
 	if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))
-		b_true_exit(line_args);
+		b_true_exit(line_args, exec_st, env);
 	else if (is_env_cmd(line_args[0]))
 	{
 		exec_env(line_args[0], line_args, env);
