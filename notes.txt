@@ -5,3 +5,4 @@
  	prendre en compte les variables dans les doubles guillemets
  Pour redirections:
  	implémenter les variables d'environnements dans here_doc
+ Pour builtins: double free sur cmd

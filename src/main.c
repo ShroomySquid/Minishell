@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/04 11:36:13 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/06 10:33:54 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,12 @@ int	seek_pipe(char	**line_args, t_exec_st *exec_st)
 	return (pipe_nbr);
 }
 
-void	free_moi_ca(char *buff, char **cmd_paths, char **line_args, t_exec_st *exec_st)
+void	free_moi_ca(char **cmd_paths, char **line_args, t_exec_st *exec_st)
 {
 	if (line_args)
 		free_all(line_args);
 	if (cmd_paths)
 		free_all(cmd_paths);
-	if (buff)
-		free(buff);
 	if (exec_st->HD_list)
 		free(exec_st->HD_list);
 }
@@ -76,8 +74,48 @@ char **parsing_line(char *buff, t_exec_st *exec_st)
 	temp_line = ft_split_quote(temp_buff);
 	remove_quotes(temp_line, exec_st);
 	print_array(temp_line);
-	//free buff?
+	free (buff);
 	return (temp_line);
+}
+
+int exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
+{
+	if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))
+		b_true_exit(line_args);
+	else if (is_env_cmd(line_args[0]))
+	{
+		exec_env(line_args[0], line_args, env);
+		free_moi_ca(NULL, line_args, exec_st);
+		return (1);
+	}
+	trigger_here_docs(line_args, exec_st);
+	execute(line_args[0], line_args, env);
+	free_moi_ca(NULL, line_args, exec_st);
+	return (0);
+}
+
+int innit_main(int argc, char **argv, t_exec_st **exec_st)
+{
+	(void)argc;
+	(void)argv;
+	sig_innit();
+	*exec_st = ft_calloc(1, sizeof(t_exec_st));
+	if (!*exec_st)
+	{
+		perror("Malloc failed for exec_st");
+		return (1);
+	}
+	(*exec_st)->temp_STDOUT = dup(STDOUT_FILENO);
+	(*exec_st)->temp_STDIN = dup(STDIN_FILENO);
+	if (!(*exec_st)->temp_STDIN || !(*exec_st)->temp_STDOUT)
+		return(error_dup(*exec_st));
+	(*exec_st)->ope_quotes = set_ope_quotes();
+	if (verify_ope_quotes((*exec_st)->ope_quotes))
+	{
+		free(*exec_st);
+		return (1);
+	}
+	return (0);
 }
 
 int	main(int argc, char	**argv, char **envp)
@@ -87,26 +125,9 @@ int	main(int argc, char	**argv, char **envp)
 	t_exec_st	*exec_st;
 	t_env	*env;
 
-	(void)argc;
-	(void)argv;
-	sig_innit();
+	if (innit_main(argc, argv, &exec_st))
+		return (1);
 	env = env_innit(envp);
-	exec_st = ft_calloc(1, sizeof(t_exec_st));
-	if (!exec_st)
-	{
-		perror("Malloc failed for exec_st");
-		return (1);
-	}
-	exec_st->temp_STDOUT = dup(STDOUT_FILENO);
-	exec_st->temp_STDIN = dup(STDIN_FILENO);
-	if (!exec_st->temp_STDIN || !exec_st->temp_STDOUT)
-		return(error_dup(exec_st));
-	exec_st->ope_quotes = set_ope_quotes();
-	if (verify_ope_quotes(exec_st->ope_quotes))
-	{
-		free(exec_st);
-		return (1);
-	}
 	while (exec_st)
 	{
 		buff = recieve_input();
@@ -116,33 +137,21 @@ int	main(int argc, char	**argv, char **envp)
 		line_args = parsing_line(buff, exec_st);
 		if (!line_args || !line_args[0])
 		{
-			error_parsing(buff, line_args);
+			error_parsing(line_args);
 			continue ;
 		}
 		exec_st->pipes_nbr = seek_pipe(line_args, exec_st);
 		exec_st->HD_list = ft_calloc(exec_st->nbr_HD + 3, sizeof(int));
 		if (!exec_st->HD_list)
-			error_malloc_HD(exec_st, line_args, buff);
+			error_malloc_HD(exec_st, line_args);
 		if (exec_st->pipes_nbr == 0 && b_is_builtin(line_args[0]))
 		{
-			if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))
-			{
-				free(buff);
-				b_true_exit(line_args);
-			}
-			else if (is_env_cmd(line_args[0]))
-			{
-				exec_env(line_args[0], line_args, env);
-				free_moi_ca(buff, NULL, line_args, exec_st);
+			if (exec_builtin(line_args, env, exec_st) == 1)
 				continue ;
-			}
-			trigger_here_docs(line_args, exec_st);
-			execute(line_args[0], line_args, env);
-			free_moi_ca(buff, NULL, line_args, exec_st);
 		}
 		else
 			exec_line(exec_st, line_args, env);
-		free_moi_ca(buff, NULL, line_args, exec_st);
+		free_moi_ca(NULL, line_args, exec_st);
 	}
 	close(exec_st->temp_STDIN);
 	close(exec_st->temp_STDOUT);
