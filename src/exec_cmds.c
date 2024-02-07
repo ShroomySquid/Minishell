@@ -6,11 +6,16 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/06 19:25:58 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/07 10:13:10 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int child()
+{
+
+}
 
 int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 {
@@ -21,7 +26,6 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 	{
 		parent_process(exec_st, line);
 		exec_st->child = fork();
-		//ft_printf("process: %d, in/out %d %d\n", exec_st->child, exec_st->temp_STDIN, exec_st->temp_STDOUT);
 		if	(exec_st->child < 0)
 			return (1);
 		if (!exec_st->child)

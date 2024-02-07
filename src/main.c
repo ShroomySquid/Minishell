@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/06 19:25:56 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/07 09:46:36 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ char **parsing_line(char *buff, t_exec_st *exec_st, t_env *env)
 
 	temp_buff = parse_operators(buff);
 	temp_buff = parse_env_var(temp_buff, env);
+	printf("temp_buff: %s\n", temp_buff);
 	temp_line = ft_split_quote(temp_buff);
 	remove_quotes(temp_line, exec_st);
 	print_array(temp_line);
