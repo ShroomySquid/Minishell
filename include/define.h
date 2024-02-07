@@ -19,7 +19,7 @@ typedef struct s_exec_st
 	int		pipes_nbr;
 	int		i;
 	int		cmd_ptr;
-	int		error;
+	int		ret;
 	int		temp_STDIN;
 	int		temp_STDOUT;
 	int		*child_list;

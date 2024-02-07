@@ -71,11 +71,16 @@ void	parent_close(t_exec_st *exec_st)
 	be_patient();
 	while (exec_st->child_list[i])
 	{
-		ft_printf("Waiting for child: %d\n", exec_st->child_list[i]);
-		waitpid(exec_st->child_list[i], &stat_loc, 0); //HOLLY SHIT How was that working before???
-		ft_printf("Child: %d exited\n", exec_st->child_list[i]);
+		waitpid(exec_st->child_list[i], &stat_loc, 0);
+		if (WIFEXITED(stat_loc))
+			exec_st->ret = WEXITSTATUS(stat_loc);
+		else if (WIFSIGNALED(stat_loc))
+			exec_st->ret = WTERMSIG(stat_loc) + 128;
+		else if (WIFSTOPPED(stat_loc))
+			exec_st->ret = WSTOPSIG(stat_loc) + 128;
 		i++;
 	}
+	ft_printf("ret: %d\n", exec_st->ret);
 	setup_interactive();
 	free(exec_st->child_list);
 }

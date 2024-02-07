@@ -26,14 +26,15 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 			return (1);
 		if (!exec_st->child)
 		{
-			ft_printf("Child: %d\n", getpid());
 			setup_non_interactive();
+			exec_st->ret = 0;
 			if (child_process(exec_st, line, cmd_paths))
 			{
 				free_all(exec_st->cmd_args);
 				free_all(cmd_paths);
 				free_all(line);
 				free(exec_st->child_list);
+				exec_st->ret = 127;
 				b_true_exit(NULL, exec_st, env, false);
 			}
 			line_args_nbr = check_redirection(exec_st->cmd_args, exec_st);
@@ -42,7 +43,7 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 				line_args = line_rm_redirection(exec_st->cmd_args, line_args_nbr);
 				fix_quotes(&line_args, exec_st);
 				if (!line_args || execute(cmd_paths[exec_st->i],
-						line_args, env) == -1)
+										  line_args, env, &exec_st->ret) == -1)
 					perror("Cmd failed to execute");
 				if (line_args)
 					free_all(line_args);
@@ -55,7 +56,6 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 		}
 		else
 		{
-			ft_printf("Parent saw child: %d\n", exec_st->child);
 			exec_st->child_list[exec_st->i] = exec_st->child;
 			exec_st->i++;
 		}

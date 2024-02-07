@@ -45,6 +45,7 @@ void	free_moi_ca(char **cmd_paths, char **line_args, t_exec_st *exec_st)
 		free_all(cmd_paths);
 	if (exec_st->HD_list)
 		free(exec_st->HD_list);
+	exec_st->HD_list = NULL;
 }
 
 char	*recieve_input(void)
@@ -81,6 +82,7 @@ char **parsing_line(char *buff, t_exec_st *exec_st)
 
 int exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
 {
+	exec_st->ret = 0;
 	if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))
 		b_true_exit(line_args, exec_st, env, true);
 	else if (is_env_cmd(line_args[0]))
@@ -90,7 +92,7 @@ int exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
 		return (1);
 	}
 	trigger_here_docs(line_args, exec_st);
-	execute(line_args[0], line_args, env);
+	execute(line_args[0], line_args, env, &exec_st->ret);
 	return (0);
 }
 
@@ -155,6 +157,7 @@ int	main(int argc, char	**argv, char **envp)
 			exec_line(exec_st, line_args, env);
 		free_moi_ca(NULL, line_args, exec_st);
 	}
+	exec_st->ret = 0;
 	close(exec_st->temp_STDIN);
 	close(exec_st->temp_STDOUT);
 	b_true_exit(NULL, exec_st, env, true);
