@@ -98,7 +98,7 @@ int innit_main(int argc, char **argv, t_exec_st **exec_st)
 {
 	(void)argc;
 	(void)argv;
-	sig_innit();
+	rl_catch_signals = 0;
 	*exec_st = ft_calloc(1, sizeof(t_exec_st));
 	if (!*exec_st)
 	{
@@ -132,7 +132,7 @@ int	main(int argc, char	**argv, char **envp)
 	{
 		setup_interactive();
 		buff = recieve_input();
-		setup_non_interactive();
+//		setup_non_interactive();
 		if (!buff)
 			break ;
 		add_history(buff);

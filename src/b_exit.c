@@ -65,6 +65,7 @@ int b_true_exit(char **buff, void *exec_st_t, t_env *env, bool verbose)
 {
 	t_exec_st *exec_st;
 
+	ft_printf("PID: %d\n", getpid());
 	exec_st = (t_exec_st *)exec_st_t;
 	if (buff && buff[1] && buff[2])
 	{

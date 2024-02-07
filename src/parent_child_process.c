@@ -61,18 +61,22 @@ int	parent_process(t_exec_st *exec_st, char **line)
 void	parent_close(t_exec_st *exec_st)
 {
 	int i;
-	int a;
+	int stat_loc;
 
 	i = 0;
 	close(exec_st->fd[0]);
 	close(exec_st->fd[1]);
 	if (exec_st->pipes_nbr)
 		dup2(exec_st->temp_STDIN, STDIN_FILENO);
+	be_patient();
 	while (exec_st->child_list[i])
 	{
-		a = waitpid(0, &exec_st->child_list[i], 0);
+		ft_printf("Waiting for child: %d\n", exec_st->child_list[i]);
+		waitpid(exec_st->child_list[i], &stat_loc, 0); //HOLLY SHIT How was that working before???
+		ft_printf("Child: %d exited\n", exec_st->child_list[i]);
 		i++;
 	}
+	setup_interactive();
 	free(exec_st->child_list);
 }
 

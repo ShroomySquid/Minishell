@@ -19,12 +19,15 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 
 	while (exec_st->i <= exec_st->pipes_nbr)
 	{
+		setup_interactive();
 		parent_process(exec_st, line);
 		exec_st->child = fork();
 		if	(exec_st->child < 0)
 			return (1);
 		if (!exec_st->child)
 		{
+			ft_printf("Child: %d\n", getpid());
+			setup_non_interactive();
 			if (child_process(exec_st, line, cmd_paths))
 			{
 				free_all(exec_st->cmd_args);
@@ -52,6 +55,7 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 		}
 		else
 		{
+			ft_printf("Parent saw child: %d\n", exec_st->child);
 			exec_st->child_list[exec_st->i] = exec_st->child;
 			exec_st->i++;
 		}

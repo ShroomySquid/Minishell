@@ -12,30 +12,20 @@
 
 #include "sig_handling.h"
 
-
-
-int	sig_access(int signum)
-{
-	static int	sig = 0;
-	int			ret;
-
-	ret = sig;
-	sig = signum;
-	return (ret);
-}
-
-void sig_ignore(int signum)
+void	sig_while_waiting(int signum)
 {
 	(void)signum;
-//	rl_redisplay();
+//	ft_printf("\n");
+//	rl_on_new_line();
+//	rl_replace_line("", 0);
 }
 
 void	sig_interactive_handler(int signum)
 {
+	(void)signum;
 	ft_printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	sig_access(signum);
 }
 
