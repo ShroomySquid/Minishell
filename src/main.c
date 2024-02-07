@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/06 10:33:54 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/06 19:25:56 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,13 @@ char	*recieve_input(void)
 	return (buff);
 }
 
-char **parsing_line(char *buff, t_exec_st *exec_st)
+char **parsing_line(char *buff, t_exec_st *exec_st, t_env *env)
 {
 	char** temp_line;
 	char* temp_buff;
 
 	temp_buff = parse_operators(buff);
+	temp_buff = parse_env_var(temp_buff, env);
 	temp_line = ft_split_quote(temp_buff);
 	remove_quotes(temp_line, exec_st);
 	print_array(temp_line);
@@ -88,7 +89,7 @@ int exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
 		free_moi_ca(NULL, line_args, exec_st);
 		return (1);
 	}
-	trigger_here_docs(line_args, exec_st);
+	trigger_here_docs(line_args, exec_st, env);
 	execute(line_args[0], line_args, env);
 	free_moi_ca(NULL, line_args, exec_st);
 	return (0);
@@ -107,6 +108,7 @@ int innit_main(int argc, char **argv, t_exec_st **exec_st)
 	}
 	(*exec_st)->temp_STDOUT = dup(STDOUT_FILENO);
 	(*exec_st)->temp_STDIN = dup(STDIN_FILENO);
+	ft_printf("fds : %d %d\n", (*exec_st)->temp_STDIN, (*exec_st)->temp_STDOUT);
 	if (!(*exec_st)->temp_STDIN || !(*exec_st)->temp_STDOUT)
 		return(error_dup(*exec_st));
 	(*exec_st)->ope_quotes = set_ope_quotes();
@@ -136,7 +138,7 @@ int	main(int argc, char	**argv, char **envp)
 		if (!buff)
 			break ;
 		add_history(buff);
-		line_args = parsing_line(buff, exec_st);
+		line_args = parsing_line(buff, exec_st, env);
 		if (!line_args || !line_args[0])
 		{
 			error_parsing(line_args);

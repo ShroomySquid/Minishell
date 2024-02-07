@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/06 10:34:15 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/06 19:25:58 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 	while (exec_st->i <= exec_st->pipes_nbr)
 	{
 		parent_process(exec_st, line);
-		if	((exec_st->child = fork()) < 0)
+		exec_st->child = fork();
+		//ft_printf("process: %d, in/out %d %d\n", exec_st->child, exec_st->temp_STDIN, exec_st->temp_STDOUT);
+		if	(exec_st->child < 0)
 			return (1);
 		if (!exec_st->child)
 		{
@@ -76,7 +78,7 @@ int	exec_line(t_exec_st *exec_st, char **line_args, t_env *env)
 {
 	char	**cmd_paths;
 
-	trigger_here_docs(line_args, exec_st);
+	trigger_here_docs(line_args, exec_st, env);
 	cmd_paths = ft_calloc((exec_st->pipes_nbr) + 2, sizeof(char *));
 	if (!cmd_paths)
 	{

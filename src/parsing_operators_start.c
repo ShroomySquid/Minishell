@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/04 09:45:33 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/06 19:10:40 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ char *parse_operators(char *buff)
 			temp_buff[i + a] = buff[i];
 		i++;
 	}
+	temp_buff[i + a] = '\0';
 	return (temp_buff);
 }
