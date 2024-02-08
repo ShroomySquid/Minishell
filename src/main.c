@@ -88,7 +88,7 @@ int	exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
 		b_true_exit(line_args, exec_st, env, true);
 	else if (is_env_cmd(line_args[0]))
 	{
-		exec_env(line_args[0], line_args, env);
+		exec_st->ret = exec_env(line_args[0], line_args, env);
 		free_moi_ca(NULL, line_args, exec_st);
 		return (1);
 	}

@@ -30,8 +30,12 @@ int	b_cd(char **args, char **env)
 				err = chdir(env[i] + 5);
 				if (err == -1)
 				{
-					ft_printf("minishell: cd: %s: %s\n", env[i] + 5,
-						strerror(errno));
+					ft_putstr_fd("minishell: cd: ", 2);
+					ft_putstr_fd(env[i] + 5, 2);
+					ft_putstr_fd(": ", 2);
+					ft_putstr_fd(strerror(errno), 2);
+					ft_putstr_fd("\n", 2);
+					return (1);
 				}
 				return (0);
 			}
@@ -44,21 +48,31 @@ int	b_cd(char **args, char **env)
 	{
 		if (errno == EACCES)
 		{
-			ft_printf("minishell: cd: %s: Permission denied\n", args[1]);
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(args[1], 2);
+			ft_putstr_fd(": Permission denied\n", 2);
 		}
 		else if (errno == ENOENT)
 		{
-			ft_printf("minishell: cd: %s: No such file or directory\n",
-				args[1]);
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(args[1], 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
 		}
 		else if (errno == ENOTDIR)
 		{
-			ft_printf("minishell: cd: %s: Not a directory\n", args[1]);
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(args[1], 2);
+			ft_putstr_fd(": Not a directory\n", 2);
 		}
 		else
 		{
-			ft_printf("minishell: cd: %s: %s\n", args[1], strerror(errno));
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(args[1], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putstr_fd(strerror(errno), 2);
+			ft_putstr_fd("\n", 2);
 		}
+		return (1);
 	}
 	return (0);
 }
