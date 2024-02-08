@@ -12,8 +12,7 @@
 
 #include "minishell.h"
 
-const t_builtin	g_builtin[] =
-{
+const t_builtin	g_builtin[] = {
 {"echo", b_echo},
 {"cd", b_cd},
 {"pwd", b_pwd},

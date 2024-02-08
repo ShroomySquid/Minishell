@@ -12,14 +12,6 @@
 
 #include "sig_handling.h"
 
-void	sig_while_waiting(int signum)
-{
-	(void)signum;
-//	ft_printf("\n");
-//	rl_on_new_line();
-//	rl_replace_line("", 0);
-}
-
 void	sig_interactive_handler(int signum)
 {
 	(void)signum;
@@ -28,4 +20,3 @@ void	sig_interactive_handler(int signum)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
-

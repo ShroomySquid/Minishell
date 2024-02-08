@@ -12,27 +12,27 @@
 
 #include "minishell.h"
 
-void    print_array(char **array_str)
+void	print_array(char **array_str)
 {
-        int i;
+	int	i;
 
-        i = 0;
-        while (array_str[i])
-        {
-                ft_printf("%s\n", array_str[i]);
-                i++;
-        }
+	i = 0;
+	while (array_str[i])
+	{
+		ft_printf("%s\n", array_str[i]);
+		i++;
+	}
 }
 
-char    **ft_sub_array(char **array, int start, int end)
+char	**ft_sub_array(char **array, int start, int end)
 {
-	char    **sub_array;
-	int i;
-	
+	char	**sub_array;
+	int		i;
+
 	i = 0;
 	if (start >= end)
-	        return (NULL);
-	sub_array = ft_calloc(end - start + 1, sizeof(char*));
+		return (NULL);
+	sub_array = ft_calloc(end - start + 1, sizeof(char *));
 	if (!sub_array)
 	{
 		perror("malloc faild for: sub_array");
@@ -47,7 +47,7 @@ char    **ft_sub_array(char **array, int start, int end)
 	return (sub_array);
 }
 
-int is_white_space(char c)
+int	is_white_space(char c)
 {
 	if ((c < 14 && c > 8) || c == 32)
 		return (1);

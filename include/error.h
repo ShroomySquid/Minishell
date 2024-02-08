@@ -13,9 +13,8 @@
 #ifndef ERROR_H
 # define ERROR_H
 
-int 	error_dup(t_exec_st *exec_st);
-int		error_malloc_HD(t_exec_st *exec_st, char **line_args);
+int		error_dup(t_exec_st *exec_st);
+int		error_malloc_hd(t_exec_st *exec_st, char **line_args);
 void	error_parsing(char **line_args);
-
 
 #endif

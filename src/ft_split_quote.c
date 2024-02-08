@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_split.c                                      :+:      :+:    :+:   */
+/*   ft_split_quotes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -48,7 +48,7 @@ int	count_str_quote(char *s)
 
 char	*find_next_str(char *s)
 {
-	char quote;
+	char	quote;
 
 	while (*s && !is_white_space(*s))
 	{
@@ -67,10 +67,12 @@ char	*find_next_str(char *s)
 	return (s);
 }
 
-static char	**split_it_quote(char *s, char **final_array, int i)
+static char	**split_it_quote(char *s, char **final_array)
 {
 	char	*end_str;
+	int		i;
 
+	i = 0;
 	while (*s)
 	{
 		while (*s && is_white_space(*s))
@@ -78,10 +80,7 @@ static char	**split_it_quote(char *s, char **final_array, int i)
 		if (*s)
 		{
 			end_str = find_next_str(s);
-			if (end_str)
-				final_array[i++] = ft_substr(s, 0, (end_str - s));
-			else
-				final_array[i++] = ft_substr(s, 0, ft_strlen(s));
+			final_array[i++] = ft_substr(s, 0, (end_str - s));
 			if (!final_array[i - 1])
 				return (free_all(final_array));
 			s = end_str;
@@ -95,14 +94,12 @@ static char	**split_it_quote(char *s, char **final_array, int i)
 char	**ft_split_quote(char const *s)
 {
 	char	**final_array;
-	int		i;
 
-	i = 0;
 	if (!s)
 		return (0);
 	final_array = (char **)malloc(
 			(count_str_quote((char *)s) + 1) * sizeof(unsigned long int));
 	if (!final_array)
 		return (0);
-	return (split_it_quote((char *)s, final_array, i));
+	return (split_it_quote((char *) s, final_array));
 }

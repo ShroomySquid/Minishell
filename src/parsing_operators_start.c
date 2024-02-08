@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parsing_operators_start.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -23,8 +23,11 @@ void to_end_quote_length(char quote, char *buff, int *i, int *a)
 	}
 }
 
-void to_end_quote(char quote, char *buff, char *temp_buff, int *i, int *a)
+void to_end_quote(char *buff, char *temp_buff, int *i, int *a)
 {
+	char	quote;
+
+	quote = buff[*i];
 	temp_buff[*i + *a] = buff[*i];
 	*i += 1;
 	while (buff[*i] && buff[*i] != quote)
@@ -33,7 +36,7 @@ void to_end_quote(char quote, char *buff, char *temp_buff, int *i, int *a)
 		*i += 1;
 	}
 	if (buff[*i])
-	{	
+	{
 		temp_buff[*i + *a] = buff[*i];
 		*i += 1;
 	}
@@ -88,13 +91,13 @@ char *parse_operators(char *buff)
 	while (buff[i])
 	{
 		if (buff[i] == 34 || 39 == buff[i])
-			to_end_quote(buff[i], buff, temp_buff, &i, &a);
+			to_end_quote(buff, temp_buff, &i, &a);
 		if (buff[i] == '<' || buff[i] == '>' || buff[i] == '|')
 		{
 			if (buff[i - 1] && buff[i - 1] != ' ' && buff[i - 1] != buff[i])
 			{
 				temp_buff[i + a] = ' ';
-				a++;	
+				a++;
 			}
 			temp_buff[i + a] = buff[i];
 			if ((buff[i] == '<' || buff[i] == '>') && buff[i + 1] && buff[i + 1] == buff[i])

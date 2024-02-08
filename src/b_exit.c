@@ -13,12 +13,11 @@
 #include <stdbool.h>
 #include "minishell.h"
 
-
 int	b_exit_mock(char **args, char **env)
 {
 	(void)env;
 	if (!args)
-		return(0);
+		return (0);
 	if (args[1] && args[2])
 	{
 		ft_printf("minishell: exit: too many arguments\n");
@@ -32,7 +31,7 @@ int	b_exit_mock(char **args, char **env)
 	}
 	else if (args[1])
 		return (ft_atoi(args[1]));
-	return(0);
+	return (0);
 }
 
 int	b_exit(char **args, int custom_exit)
@@ -57,7 +56,7 @@ int	b_exit(char **args, int custom_exit)
 	exit(exit_code);
 }
 
-int b_true_exit(char **buff, void *exec_st_t, t_env *env, bool verbose)
+int	b_true_exit(char **buff, void *exec_st_t, t_env *env, bool verbose)
 {
 	t_exec_st	*exec_st;
 	int			ret;
@@ -69,8 +68,8 @@ int b_true_exit(char **buff, void *exec_st_t, t_env *env, bool verbose)
 		ft_printf("exit\nminishell: exit: too many arguments\n");
 		return (1);
 	}
-	if (exec_st->HD_list)
-		free(exec_st->HD_list);
+	if (exec_st->hd_list)
+		free(exec_st->hd_list);
 	if (exec_st->ope_quotes)
 		free_all(exec_st->ope_quotes);
 	free(exec_st);

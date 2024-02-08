@@ -115,7 +115,7 @@ char *parse_env_var(char *buff, t_env *env)
 	while (buff[i])
 	{
 		if ('\'' == buff[i])
-			to_end_quote(buff[i], buff, temp_buff, &i, &a);
+			to_end_quote(buff, temp_buff, &i, &a);
 		if (buff[i] && buff[i] == '$' && !is_white_space(buff[i + 1]))
 			get_name(buff, temp_buff, &i, &a, env);
 		else

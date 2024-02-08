@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <sys/wait.h>
@@ -28,7 +27,7 @@ int		check_redirection(char **line, t_exec_st *exec_st);
 int		read_here_doc(t_exec_st *exec_st);
 int		trigger_here_docs(char **line_args, t_exec_st *exec_st, t_env *env);
 void	unlink_here_doc(void);
-int execute(char *path, char **args, t_env *env, int *ret);
+int		execute(char *path, char **args, t_env *env, int *ret);
 int		ft_strcmp(const char *s1, const char *s2);
 int		parent_process(t_exec_st *exec_st, char **line);
 void	parent_close(t_exec_st *exec_st);
@@ -42,16 +41,16 @@ char	**ft_split_quote(char const *s);
 char	**ft_sub_array(char **array, int start, int end);
 char	**line_rm_redirection(char **line, int args_nbr);
 void	get_args(t_exec_st *pipe, char **line);
-char	**set_ope_quotes();
+char	**set_ope_quotes(void);
 int		verify_ope_quotes(char **quotes_array);
-int		check_operators(t_exec_st *exec_st, char* arg);
+int		check_operators(t_exec_st *exec_st, char *arg);
 void	fix_quotes(char ***line, t_exec_st *exec_st);
 int		remove_quotes(char **temp_line, t_exec_st *exec_st);
 char	*parse_operators(char *buff);
 int		is_white_space(char c);
 int		exec_line(t_exec_st *exec_st, char **line_args, t_env *env);
 void	to_end_quote_length(char quote, char *buff, int *i, int *a);
-void	to_end_quote(char quote, char *buff, char *temp_buff, int *i, int *a);
+void	to_end_quote(char *buff, char *temp_buff, int *i, int *a);
 char	*parse_env_var(char *buff, t_env *env);
 
 #endif

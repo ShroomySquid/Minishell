@@ -12,6 +12,7 @@
 
 #ifndef DEFINE_H
 # define DEFINE_H
+
 typedef struct s_exec_st
 {
 	int		child;
@@ -20,13 +21,13 @@ typedef struct s_exec_st
 	int		i;
 	int		cmd_ptr;
 	int		ret;
-	int		temp_STDIN;
-	int		temp_STDOUT;
+	int		temp_stdin;
+	int		temp_stdout;
 	int		*child_list;
-	int		nbr_HD;
+	int		nbr_hd;
 	int		cmd;
-	int		HD_bool;
-	int		*HD_list;
+	int		hd_bool;
+	int		*hd_list;
 	char	**cmd_args;
 	char	**ope_quotes;
 }				t_exec_st;
@@ -38,4 +39,4 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
-# endif
+#endif

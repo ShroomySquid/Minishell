@@ -14,8 +14,8 @@
 
 void	setup_interactive(void)
 {
-	t_sigaction act;
-	t_sigaction ign;
+	t_sigaction	act;
+	t_sigaction	ign;
 
 	act = (t_sigaction){0};
 	ign = (t_sigaction){0};
@@ -29,7 +29,7 @@ void	setup_interactive(void)
 
 void	setup_non_interactive(void)
 {
-	t_sigaction act;
+	t_sigaction	act;
 
 	act = (t_sigaction){0};
 	act.sa_handler = SIG_DFL;
@@ -40,10 +40,10 @@ void	setup_non_interactive(void)
 
 void	be_patient(void)
 {
-	t_sigaction act;
+	t_sigaction	act;
 
 	act = (t_sigaction){0};
-	act.sa_handler = sig_while_waiting;
+	act.sa_handler = SIG_IGN;
 	act.sa_flags = SA_RESTART;
 	sigaction(CTRLC, &act, NULL);
 	sigaction(CTRLSL, &act, NULL);

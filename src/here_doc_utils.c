@@ -12,15 +12,15 @@
 
 #include "minishell.h"
 
-int read_here_doc(t_exec_st *exec_st)
+int	read_here_doc(t_exec_st *exec_st)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	dup2(exec_st->HD_list[exec_st->cmd], STDIN_FILENO);
-	while (exec_st->HD_list[i])
+	dup2(exec_st->hd_list[exec_st->cmd], STDIN_FILENO);
+	while (exec_st->hd_list[i])
 	{
-		close(exec_st->HD_list[i]);
+		close(exec_st->hd_list[i]);
 		i++;
 	}
 	return (0);

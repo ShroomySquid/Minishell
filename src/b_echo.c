@@ -15,7 +15,7 @@
 
 int	b_echo(char **args, char **env)
 {
-	bool n_flag;
+	bool	n_flag;
 
 	(void)env;
 	n_flag = false;

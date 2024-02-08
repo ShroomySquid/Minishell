@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-void	increment_cmd_here_doc(t_exec_st *exec_st, char** line)
+void	increment_cmd_here_doc(t_exec_st *exec_st, char **line)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (ft_strncmp("|", line[exec_st->cmd_ptr + i], 2))
 	{
@@ -40,14 +40,13 @@ int	parent_process(t_exec_st *exec_st, char **line)
 		ft_printf("Pipe func failed\n");
 		return (1);
 	}
-	//dprintf(2, "Pipe0: %d pipe1: %d\n", exec_st->fd[0], exec_st->fd[1]); 
 	if (exec_st->i != exec_st->pipes_nbr)
 	{
 		dup2(exec_st->fd[1], STDOUT_FILENO);
 		close(exec_st->fd[1]);
 	}
 	else if (exec_st->pipes_nbr)
-		dup2(exec_st->temp_STDOUT, STDOUT_FILENO);
+		dup2(exec_st->temp_stdout, STDOUT_FILENO);
 	while (ft_strncmp("|", line[exec_st->cmd_ptr], 2) && exec_st->i)
 		exec_st->cmd_ptr++;
 	if (exec_st->i)
@@ -60,14 +59,14 @@ int	parent_process(t_exec_st *exec_st, char **line)
 
 void	parent_close(t_exec_st *exec_st)
 {
-	int i;
-	int stat_loc;
+	int	i;
+	int	stat_loc;
 
 	i = 0;
 	close(exec_st->fd[0]);
 	close(exec_st->fd[1]);
 	if (exec_st->pipes_nbr)
-		dup2(exec_st->temp_STDIN, STDIN_FILENO);
+		dup2(exec_st->temp_stdin, STDIN_FILENO);
 	be_patient();
 	while (exec_st->child_list[i])
 	{
@@ -85,9 +84,9 @@ void	parent_close(t_exec_st *exec_st)
 	free(exec_st->child_list);
 }
 
-int failed_cmd_msg(t_exec_st *exec_st, char **cmd_paths)
+int	failed_cmd_msg(t_exec_st *exec_st, char **cmd_paths)
 {
-	dup2(exec_st->temp_STDOUT, STDOUT_FILENO);
+	dup2(exec_st->temp_stdout, STDOUT_FILENO);
 	ft_putstr_fd("Minishell: ", 2);
 	ft_putstr_fd(cmd_paths[exec_st->i], 2);
 	ft_putstr_fd(": command not found\n", 2);
@@ -117,7 +116,7 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 	if (exec_st->i == exec_st->pipes_nbr)
 		close(exec_st->fd[1]);
 	close(exec_st->fd[0]);
-	close(exec_st->temp_STDIN);
-	close(exec_st->temp_STDOUT);
+	close(exec_st->temp_stdin);
+	close(exec_st->temp_stdout);
 	return (return_value);
 }

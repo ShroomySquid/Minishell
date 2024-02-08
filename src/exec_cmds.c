@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -22,7 +22,7 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 		setup_interactive();
 		parent_process(exec_st, line);
 		exec_st->child = fork();
-		if	(exec_st->child < 0)
+		if (exec_st->child < 0)
 			return (1);
 		if (!exec_st->child)
 		{
@@ -40,10 +40,11 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 			line_args_nbr = check_redirection(exec_st->cmd_args, exec_st);
 			if (line_args_nbr >= 0)
 			{
-				line_args = line_rm_redirection(exec_st->cmd_args, line_args_nbr);
+				line_args = line_rm_redirection(exec_st->cmd_args,
+						line_args_nbr);
 				fix_quotes(&line_args, exec_st);
 				if (!line_args || execute(cmd_paths[exec_st->i],
-										  line_args, env, &exec_st->ret) == -1)
+						line_args, env, &exec_st->ret) == -1)
 					perror("Cmd failed to execute");
 				if (line_args)
 					free_all(line_args);
@@ -91,7 +92,7 @@ int	exec_line(t_exec_st *exec_st, char **line_args, t_env *env)
 	cmd_paths = ft_calloc((exec_st->pipes_nbr) + 2, sizeof(char *));
 	if (!cmd_paths)
 	{
-		perror("Malloc failed for: cmd_paths");	
+		perror("Malloc failed for: cmd_paths");
 		free_all(cmd_paths);
 		return (1);
 	}

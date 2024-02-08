@@ -15,8 +15,30 @@
 int	b_cd(char **args, char **env)
 {
 	int	err;
+	int	i;
 
 	(void)env;
+	if (!args)
+		return (1);
+	if (!args[1])
+	{
+		i = 0;
+		while (env[i])
+		{
+			if (ft_strncmp(env[i], "HOME=", 5) == 0)
+			{
+				err = chdir(env[i] + 5);
+				if (err == -1)
+				{
+					ft_printf("minishell: cd: %s: %s\n", env[i] + 5,
+						strerror(errno));
+				}
+				return (0);
+			}
+			i++;
+		}
+		return (0);
+	}
 	err = chdir(args[1]);
 	if (err == -1)
 	{

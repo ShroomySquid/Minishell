@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int error_dup(t_exec_st *exec_st)
+int	error_dup(t_exec_st *exec_st)
 {
 	perror("dup failed");
 	free(exec_st);
@@ -27,9 +27,9 @@ void	error_parsing(char **line_args)
 		ft_printf("Failed to parse line\n");
 }
 
-int error_malloc_HD(t_exec_st *exec_st, char **line_args)
+int	error_malloc_hd(t_exec_st *exec_st, char **line_args)
 {
-	perror("Malloc failed for HD_list");
+	perror("Malloc failed for hd_list");
 	free_all(line_args);
 	free(exec_st);
 	return (1);

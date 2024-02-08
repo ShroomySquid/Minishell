@@ -14,11 +14,10 @@
 # define BUILTIN_H
 # define BUILTIN_NUM 7
 
-#include <stdbool.h>
+# include <stdbool.h>
 # include "minishell.h"
 
-
-typedef struct	s_builtin
+typedef struct s_builtin
 {
 	char	*name;
 	int		(*func)(char **args, char **env);
@@ -35,7 +34,7 @@ int		b_env(char **args, char **envp);
 int		b_exit(char **args, int custom_exit);
 int		b_exit_mock(char **args, char **env);
 int		b_is_builtin(char *cmd);
-int 	b_true_exit(char **buff, void *exec_st, t_env *env, bool verbose);
+int		b_true_exit(char **buff, void *exec_st, t_env *env, bool verbose);
 int		b_parent_export(char **args, t_env *env);
 int		b_parent_unset(char **args, t_env *env);
 int		is_env_cmd(char *path);

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utils.c                                      :+:      :+:    :+:   */
+/*   path_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -60,8 +60,8 @@ char	*seek_cmd(char *cmd, t_env *env)
 
 char	*cut_path(char *path)
 {
-	int	i;
-	char *path_buffer;
+	int		i;
+	char	*path_buffer;
 
 	i = 0;
 	while (path[i] && path[i] != 47)

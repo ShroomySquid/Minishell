@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc_bonus.c                                   :+:      :+:    :+:   */
+/*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -19,8 +19,8 @@ static int	r_redirect(int file, char *given_file, int *a)
 		return (file);
 	dup2(file, STDOUT_FILENO);
 	close(file);
-	a += 2;
-	return (file);	
+	*a += 2;
+	return (file);
 }
 
 static int	ra_redirect(int file, char *given_file, int *a)
@@ -30,8 +30,8 @@ static int	ra_redirect(int file, char *given_file, int *a)
 		return (file);
 	dup2(file, STDOUT_FILENO);
 	close(file);
-	a += 2;
-   return (file);	
+	*a += 2;
+	return (file);
 }
 
 static int	l_redirect(int file, char *given_file, int *a)
@@ -41,17 +41,16 @@ static int	l_redirect(int file, char *given_file, int *a)
 		return (file);
 	dup2(file, STDIN_FILENO);
 	close(file);
-	a += 2;
-   return (file);	
+	*a += 2;
+	return (file);
 }
-
 
 int	check_redirection(char **line, t_exec_st *exec_st)
 {
-	int i;
+	int	i;
 	int	file;
-	int a;
-	int max_here_doc;
+	int	a;
+	int	max_here_doc;
 
 	i = 0;
 	a = 0;
@@ -86,8 +85,8 @@ int	check_redirection(char **line, t_exec_st *exec_st)
 char	**line_rm_redirection(char **line, int args_nbr)
 {
 	char	**line_args;
-	int i;
-	int a;
+	int		i;
+	int		a;
 
 	i = 0;
 	a = 0;
@@ -99,7 +98,8 @@ char	**line_rm_redirection(char **line, int args_nbr)
 	}
 	while (line[i])
 	{
-		if (!ft_strncmp("<", line[i], 2) || !ft_strncmp("<<", line[i], 3) || !ft_strncmp(">", line[i], 2) || !ft_strncmp(">>", line[i], 3))
+		if (!ft_strncmp("<", line[i], 2) || !ft_strncmp("<<", line[i], 3)
+			|| !ft_strncmp(">", line[i], 2) || !ft_strncmp(">>", line[i], 3))
 		{
 			i += 2;
 			a += 2;
