@@ -23,21 +23,21 @@ void	to_end_quote_length(char quote, char *buff, int *i, int *a)
 	}
 }
 
-void	to_end_quote(const char *buff, char *temp_buff, int *i, const int *a)
+void	to_end_quote(const char *buff, char *temp_buff, int *i, const int a)
 {
 	char	quote;
 
 	quote = buff[*i];
-	temp_buff[*i + *a] = buff[*i];
+	temp_buff[*i + a] = buff[*i];
 	*i += 1;
 	while (buff[*i] && buff[*i] != quote)
 	{
-		temp_buff[*i + *a] = buff[*i];
+		temp_buff[*i + a] = buff[*i];
 		*i += 1;
 	}
 	if (buff[*i])
 	{
-		temp_buff[*i + *a] = buff[*i];
+		temp_buff[*i + a] = buff[*i];
 		*i += 1;
 	}
 }
@@ -91,7 +91,7 @@ char	*parse_operators(char *buff)
 	while (buff[i])
 	{
 		if (buff[i] == 34 || 39 == buff[i])
-			to_end_quote(buff, temp_buff, &i, &a);
+			to_end_quote(buff, temp_buff, &i, a);
 		if (buff[i] == '<' || buff[i] == '>' || buff[i] == '|')
 		{
 			if (buff[i - 1] && buff[i - 1] != ' ' && buff[i - 1] != buff[i])

@@ -108,16 +108,18 @@ char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
 	char	*temp_buff;
 	int		i;
 	int		a;
+	int		useless;
 
 	temp_buff = ft_calloc(tb_length_env(buff, env, exec_st), sizeof(char));
 	if (!temp_buff)
 		return (NULL);
 	i = 0;
 	a = 0;
+	useless = 0;
 	while (buff[i])
 	{
 		if ('\'' == buff[i])
-			to_end_quote(buff, temp_buff, &i, &a);
+			to_end_quote(buff, temp_buff, &useless, a);
 		if (buff[i] && buff[i] == '$' && buff[i + 1] == '?')
 			get_exit_code(&i, &a, exec_st, temp_buff);
 		if (buff[i] && buff[i] == '$' && !is_white_space(buff[i + 1]))
@@ -128,6 +130,7 @@ char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
 			i++;
 			a++;
 		}
+		useless = 0;
 	}
 	temp_buff[a] = '\0';
 	free (buff);
