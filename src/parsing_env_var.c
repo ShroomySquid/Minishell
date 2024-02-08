@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/07 10:07:53 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:32:50 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void get_name_length(int *i, int *a, char *buff, t_env *env)
 	}
 }
 
-int tb_length_env(char *buff, t_env *env)
+int tb_length_env(char *buff, t_env *env, t_exec_st *exec_st)
 {
 	int i;
 	int a;
@@ -53,6 +53,8 @@ int tb_length_env(char *buff, t_env *env)
 	{
 		if ('\'' == buff[i])
 			to_end_quote_length(buff[i], buff, &i, &a);
+		if (buff[i] && buff[i] == '$' && buff[i + 1] == '?')
+			get_exit_code_length(&a, &i, exec_st);
 		if (buff[i] && buff[i] == '$' && !is_white_space(buff[i + 1]))
 			get_name_length(&i, &a, buff, env);
 		else
@@ -101,13 +103,13 @@ void get_name(char *buff, char *temp_buff, int *i, int *a, t_env *env)
 	}
 }
 
-char *parse_env_var(char *buff, t_env *env)
+char *parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
 {
 	char *temp_buff;
 	int i;
 	int a;
 	
-	temp_buff = ft_calloc(tb_length_env(buff, env), sizeof(char));
+	temp_buff = ft_calloc(tb_length_env(buff, env, exec_st), sizeof(char));
 	if (!temp_buff)
 		return (NULL);
 	i = 0;
@@ -115,7 +117,9 @@ char *parse_env_var(char *buff, t_env *env)
 	while (buff[i])
 	{
 		if ('\'' == buff[i])
-			to_end_quote(buff, temp_buff, &i, &a);
+			to_end_quote(buff[i], buff, temp_buff, &i, &a);
+		if (buff[i] && buff[i] == '$' && buff[i + 1] == '?')
+			get_exit_code(&i, &a, exec_st, temp_buff);
 		if (buff[i] && buff[i] == '$' && !is_white_space(buff[i + 1]))
 			get_name(buff, temp_buff, &i, &a, env);
 		else
