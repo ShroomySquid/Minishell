@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/02/06 19:24:53 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:30:21 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int		is_white_space(char c);
 int		exec_line(t_exec_st *exec_st, char **line_args, t_env *env);
 void	to_end_quote_length(char quote, char *buff, int *i, int *a);
 void	to_end_quote(char quote, char *buff, char *temp_buff, int *i, int *a);
-char	*parse_env_var(char *buff, t_env *env);
+char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st);
+int     get_exit_code_length(int *i, int *a, t_exec_st *exec_st);
+int     get_exit_code(int *i, int *a, t_exec_st *exec_st, char *temp_buff);
 
 #endif

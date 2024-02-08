@@ -6,13 +6,13 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/06 19:25:16 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:32:12 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int here_doc_readline(char *delimiter, int file, t_env *env)
+static int here_doc_readline(char *delimiter, int file, t_env *env, t_exec_st *exec_st)
 {
 	char	*buff;
 
@@ -23,7 +23,7 @@ static int here_doc_readline(char *delimiter, int file, t_env *env)
 			return (-1);
 		if (!ft_strncmp(delimiter, buff, ft_strlen(delimiter)))
 			break ;
-		buff = parse_env_var(buff, env);
+		buff = parse_env_var(buff, env, exec_st);
 		write(file, buff, ft_strlen(buff));
 		write(file, "\n", 1);
 		free(buff);
@@ -37,7 +37,7 @@ int	here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env)
 {
 	int		readline_result;
 
-	readline_result = here_doc_readline(delimiter, exec_st->fd[1], env);
+	readline_result = here_doc_readline(delimiter, exec_st->fd[1], env, exec_st);
 	close(exec_st->fd[1]);
 	return (readline_result);
 }
