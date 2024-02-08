@@ -20,7 +20,7 @@ const t_builtin	g_builtin[] =
 {"export", b_export},
 {"unset", b_unset},
 {"env", b_env},
-{"exit", b_exit},
+{"exit", b_exit_mock},
 };
 
 int	b_is_builtin(char *cmd)
