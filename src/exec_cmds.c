@@ -6,11 +6,16 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/06 10:34:15 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/07 10:13:10 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int child()
+{
+
+}
 
 int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 {
@@ -87,7 +92,7 @@ int	exec_line(t_exec_st *exec_st, char **line_args, t_env *env)
 {
 	char	**cmd_paths;
 
-	trigger_here_docs(line_args, exec_st);
+	trigger_here_docs(line_args, exec_st, env);
 	cmd_paths = ft_calloc((exec_st->pipes_nbr) + 2, sizeof(char *));
 	if (!cmd_paths)
 	{

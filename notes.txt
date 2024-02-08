@@ -1,8 +1,5 @@
  Checker les leaks
- Implémenter les variables d'env
  Pour les pipes:
  Pour les guillemets / ft_split_quote:
- 	prendre en compte les variables dans les doubles guillemets
  Pour redirections:
- 	implémenter les variables d'environnements dans here_doc
- Pour builtins: double free sur cmd
+ Faire le $?
