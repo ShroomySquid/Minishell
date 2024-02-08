@@ -111,7 +111,6 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 		ite++;
 	}
 	exec_st->cmd_args[ite] = 0;
-	ft_printf("cmd_paths[exec_st->i] = %s\n", cmd_paths[exec_st->i]);
 	if (b_is_builtin(exec_st->cmd_args[0]))
 		return_value = 0;
 	else if (!ft_strchr(cmd_paths[exec_st->i], '/'))

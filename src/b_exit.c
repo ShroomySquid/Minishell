@@ -20,7 +20,7 @@ int	b_exit_mock(char **args, char **env)
 		return (0);
 	if (args[1] && args[2])
 	{
-		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
 	else if (args[1] && !ft_isdigit(*(args[1])) && args[1][0] != '-' && args[1][0] != '+')
@@ -68,7 +68,8 @@ int	b_true_exit(char **buff, void *exec_st_t, t_env *env, bool verbose)
 	ret = exec_st->ret;
 	if (buff && buff[1] && buff[2])
 	{
-		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
+		ft_putstr_fd("exit: too many arguments\n", 2);
+		exec_st->ret = 1;
 		return (1);
 	}
 	if (exec_st->hd_list)
