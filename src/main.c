@@ -73,7 +73,7 @@ char	**parsing_line(char *buff, t_exec_st *exec_st, t_env *env)
 	char	*temp_buff;
 
 	temp_buff = parse_operators(buff);
-	temp_buff = parse_env_var(temp_buff, env);
+	temp_buff = parse_env_var(temp_buff, env, exec_st);
 	temp_line = ft_split_quote(temp_buff);
 	remove_quotes(temp_line, exec_st);
 	free(temp_buff);

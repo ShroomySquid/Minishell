@@ -12,7 +12,8 @@
 
 #include "minishell.h"
 
-static int	here_doc_readline(char *delimiter, int file, t_env *env)
+static int	here_doc_readline(char *delimiter, int file, t_env *env,
+		t_exec_st *exec_st)
 {
 	char	*buff;
 
@@ -36,7 +37,8 @@ int	here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env)
 {
 	int		readline_result;
 
-	readline_result = here_doc_readline(delimiter, exec_st->fd[1], env, exec_st);
+	readline_result = here_doc_readline(delimiter, exec_st->fd[1], env,
+			exec_st);
 	close(exec_st->fd[1]);
 	return (readline_result);
 }

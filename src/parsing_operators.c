@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-char *make_str_quote(char *str, char quote)
+char	*make_str_quote(char *str, char quote)
 {
-	char *final_str;
-	int i;
+	char	*final_str;
+	int		i;
 
 	final_str = ft_calloc(ft_strlen(str) + 3, sizeof(char));
 	if (!final_str)
@@ -32,10 +32,11 @@ char *make_str_quote(char *str, char quote)
 	return (final_str);
 }
 
-char **set_ope_quotes()
+char	**set_ope_quotes(void)
 {
-	char **str_array;
-	str_array = ft_calloc(11, sizeof(char*));
+	char	**str_array;
+
+	str_array = ft_calloc(11, sizeof(char *));
 	if (!str_array)
 		return (NULL);
 	str_array[0] = make_str_quote("|", 39);
@@ -52,10 +53,11 @@ char **set_ope_quotes()
 	return (str_array);
 }
 
-int verify_ope_quotes(char **quotes_array)
+int	verify_ope_quotes(char **quotes_array)
 {
-	int i;
-	int return_value;
+	int	i;
+	int	return_value;
+
 	if (!quotes_array)
 		return (1);
 	i = 0;
@@ -76,11 +78,11 @@ int verify_ope_quotes(char **quotes_array)
 	return (return_value);
 }
 
-int check_operators(t_exec_st *exec_st, char* arg)
+int	check_operators(t_exec_st *exec_st, char *arg)
 {
-	int i;
-	int return_value;
-	int len;
+	int		i;
+	int		return_value;
+	size_t	len;
 
 	i = 0;
 	return_value = 0;

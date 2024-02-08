@@ -61,6 +61,7 @@ int	b_true_exit(char **buff, void *exec_st_t, t_env *env, bool verbose)
 	t_exec_st	*exec_st;
 	int			ret;
 
+	(void) verbose;
 	exec_st = (t_exec_st *)exec_st_t;
 	ret = exec_st->ret;
 	if (buff && buff[1] && buff[2])
@@ -74,13 +75,13 @@ int	b_true_exit(char **buff, void *exec_st_t, t_env *env, bool verbose)
 		free_all(exec_st->ope_quotes);
 	free(exec_st);
 	env_clear(&env);
-	if (verbose)
-	{
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_clear_history();
-		ft_printf("\n[exit]\n");
-	}
+//	if (verbose)
+//	{
+//		rl_replace_line("", 0);
+//		rl_on_new_line();
+//		rl_clear_history();
+//		ft_printf("\n[exit]\n");
+//	}
 	b_exit(buff, ret);
 	return (0);
 }

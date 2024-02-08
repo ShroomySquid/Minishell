@@ -52,7 +52,7 @@ int		exec_line(t_exec_st *exec_st, char **line_args, t_env *env);
 void	to_end_quote_length(char quote, char *buff, int *i, int *a);
 int		get_exit_code_length(int *i, int *a, t_exec_st *exec_st);
 int		get_exit_code(int *i, int *a, t_exec_st *exec_st, char *temp_buff);
-void	to_end_quote(char *buff, char *temp_buff, int *i, int *a);
-char	*parse_env_var(char *buff, t_env *env);
+void	to_end_quote(const char *buff, char *temp_buff, int *i, const int *a);
+char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st);
 
 #endif

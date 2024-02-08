@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void to_end_quote_length(char quote, char *buff, int *i, int *a)
+void	to_end_quote_length(char quote, char *buff, int *i, int *a)
 {
 	*i += 1;
 	*a += 1;
@@ -23,7 +23,7 @@ void to_end_quote_length(char quote, char *buff, int *i, int *a)
 	}
 }
 
-void to_end_quote(char *buff, char *temp_buff, int *i, int *a)
+void	to_end_quote(const char *buff, char *temp_buff, int *i, const int *a)
 {
 	char	quote;
 
@@ -42,10 +42,10 @@ void to_end_quote(char *buff, char *temp_buff, int *i, int *a)
 	}
 }
 
-int tb_length(char *buff)
+int	tb_length(char *buff)
 {
-	int i;
-	int a;
+	int	i;
+	int	a;
 
 	i = 0;
 	a = 0;
@@ -77,12 +77,12 @@ int tb_length(char *buff)
 	return (a);
 }
 
-char *parse_operators(char *buff)
+char	*parse_operators(char *buff)
 {
-	char *temp_buff;
-	int i;
-	int a;
-	
+	char	*temp_buff;
+	int		i;
+	int		a;
+
 	temp_buff = ft_calloc(tb_length(buff), sizeof(char));
 	if (!temp_buff)
 		return (NULL);
@@ -100,7 +100,8 @@ char *parse_operators(char *buff)
 				a++;
 			}
 			temp_buff[i + a] = buff[i];
-			if ((buff[i] == '<' || buff[i] == '>') && buff[i + 1] && buff[i + 1] == buff[i])
+			if ((buff[i] == '<' || buff[i] == '>') && buff[i + 1]
+				&& buff[i + 1] == buff[i])
 			{
 				i++;
 				temp_buff[i + a] = buff[i];

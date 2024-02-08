@@ -79,7 +79,6 @@ void	parent_close(t_exec_st *exec_st)
 			exec_st->ret = WSTOPSIG(stat_loc) + 128;
 		i++;
 	}
-	ft_printf("ret: %d\n", exec_st->ret);
 	setup_interactive();
 	free(exec_st->child_list);
 }

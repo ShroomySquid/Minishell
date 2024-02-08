@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-void fix_quotes(char ***line, t_exec_st *exec_st)
+void	fix_quotes(char ***line, t_exec_st *exec_st)
 {
 	int		i;
 	int		a;
 	char	*temp_arg;
-	
+
 	i = 0;
 	while (line[0][i])
 	{
@@ -40,9 +40,9 @@ void fix_quotes(char ***line, t_exec_st *exec_st)
 	}
 }
 
-int new_length(char *arg, int i, int a)
+int	new_length(const char *arg, int i, int a)
 {
-	int quote;
+	char	quote;
 
 	while (arg[i])
 	{
@@ -67,9 +67,9 @@ int new_length(char *arg, int i, int a)
 	return (a);
 }
 
-void remove_a_quote(char *arg, int *i, int *a, char *new_arg)
+void	remove_a_quote(const char *arg, int *i, int *a, char *new_arg)
 {
-	char quote;
+	char	quote;
 
 	quote = arg[*i];
 	*i += 1;
@@ -80,14 +80,14 @@ void remove_a_quote(char *arg, int *i, int *a, char *new_arg)
 		*a += 1;
 	}
 	if (arg[*i] == quote)
-		*i +=1;
+		*i += 1;
 }
 
-char *remove_quote_arg(char *arg)
+char	*remove_quote_arg(char *arg)
 {
-	char *new_arg;
-	int a;
-	int i;
+	char	*new_arg;
+	int		a;
+	int		i;
 
 	i = 0;
 	a = 0;
@@ -103,19 +103,19 @@ char *remove_quote_arg(char *arg)
 			new_arg[a] = arg[i];
 			i++;
 			a++;
-		}	
+		}
 	}
 	new_arg[a] = 0;
 	free(arg);
-	return (new_arg);	
+	return (new_arg);
 }
 
-int remove_quotes(char **temp_line, t_exec_st *exec_st)
+int	remove_quotes(char **temp_line, t_exec_st *exec_st)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(temp_line[i])
+	while (temp_line[i])
 	{
 		if (check_operators(exec_st, temp_line[i]))
 		{
@@ -132,4 +132,3 @@ int remove_quotes(char **temp_line, t_exec_st *exec_st)
 	}
 	return (0);
 }
-
