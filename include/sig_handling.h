@@ -23,11 +23,9 @@ typedef struct sigaction t_sigaction;
 #define CTRLSL SIGQUIT
 
 void	sig_interactive_handler(int signum);
-int		sig_access(int signum);
-void	sig_ignore(int signum);
-void	setup_terminal(void);
+void	be_patient(void);
 void	setup_interactive(void);
-void	sig_innit(void);
 void	setup_non_interactive(void);
+void	sig_while_waiting(int signum);
 
 #endif

@@ -28,7 +28,7 @@ int		check_redirection(char **line, t_exec_st *exec_st);
 int		read_here_doc(t_exec_st *exec_st);
 int		trigger_here_docs(char **line_args, t_exec_st *exec_st, t_env *env);
 void	unlink_here_doc(void);
-int		execute(char *path, char **args, t_env *env);
+int execute(char *path, char **args, t_env *env, int *ret);
 int		ft_strcmp(const char *s1, const char *s2);
 int		parent_process(t_exec_st *exec_st, char **line);
 void	parent_close(t_exec_st *exec_st);

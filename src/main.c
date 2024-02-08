@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdbool.h>
 #include "minishell.h"
 
 int	seek_pipe(char	**line_args, t_exec_st *exec_st)
@@ -44,6 +45,7 @@ void	free_moi_ca(char **cmd_paths, char **line_args, t_exec_st *exec_st)
 		free_all(cmd_paths);
 	if (exec_st->HD_list)
 		free(exec_st->HD_list);
+	exec_st->HD_list = NULL;
 }
 
 char	*recieve_input(void)
@@ -75,24 +77,24 @@ char **parsing_line(char *buff, t_exec_st *exec_st, t_env *env)
 	printf("temp_buff: %s\n", temp_buff);
 	temp_line = ft_split_quote(temp_buff);
 	remove_quotes(temp_line, exec_st);
-	print_array(temp_line);
-	free (buff);
+	free(temp_buff);
+	free(buff);
 	return (temp_line);
 }
 
 int exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
 {
+	exec_st->ret = 0;
 	if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))
-		b_true_exit(line_args, exec_st, env);
+		b_true_exit(line_args, exec_st, env, true);
 	else if (is_env_cmd(line_args[0]))
 	{
 		exec_env(line_args[0], line_args, env);
 		free_moi_ca(NULL, line_args, exec_st);
 		return (1);
 	}
-	trigger_here_docs(line_args, exec_st, env);
-	execute(line_args[0], line_args, env);
-	free_moi_ca(NULL, line_args, exec_st);
+	trigger_here_docs(line_args, exec_st);
+	execute(line_args[0], line_args, env, &exec_st->ret);
 	return (0);
 }
 
@@ -100,7 +102,7 @@ int innit_main(int argc, char **argv, t_exec_st **exec_st)
 {
 	(void)argc;
 	(void)argv;
-	sig_innit();
+	rl_catch_signals = 0;
 	*exec_st = ft_calloc(1, sizeof(t_exec_st));
 	if (!*exec_st)
 	{
@@ -135,7 +137,7 @@ int	main(int argc, char	**argv, char **envp)
 	{
 		setup_interactive();
 		buff = recieve_input();
-		setup_non_interactive();
+//		setup_non_interactive();
 		if (!buff)
 			break ;
 		add_history(buff);
@@ -158,10 +160,9 @@ int	main(int argc, char	**argv, char **envp)
 			exec_line(exec_st, line_args, env);
 		free_moi_ca(NULL, line_args, exec_st);
 	}
+	exec_st->ret = 0;
 	close(exec_st->temp_STDIN);
 	close(exec_st->temp_STDOUT);
-	free_all(exec_st->ope_quotes);
-	free(exec_st);
-	b_true_exit(NULL, NULL, env);
+	b_true_exit(NULL, exec_st, env, true);
 	return (0);
 }

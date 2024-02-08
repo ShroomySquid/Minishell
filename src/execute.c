@@ -12,11 +12,10 @@
 
 #include "minishell.h"
 
-int	execute(char *path, char **args, t_env *env)
+int execute(char *path, char **args, t_env *env, int *ret)
 {
 	int		i;
 	char	**envp;
-	int		ret;
 
 	i = 0;
 	if (!path || !args)
@@ -28,15 +27,16 @@ int	execute(char *path, char **args, t_env *env)
 	{
 		if (ft_strcmp(path, g_builtin[i].name) == 0)
 		{
-			ret = (g_builtin[i].func)(args, envp);
+			*ret = (g_builtin[i].func)(args, envp);
 			free_all(envp);
-			return (ret);
+			return (*ret);
 		}
 		i++;
 	}
-	ret = execve(path, args, envp);
+	*ret = execve(path, args, envp);
+	ft_printf("execve returned %d\n", *ret);
 	free_all(envp);
-	return (ret);
+	return (*ret);
 }
 
 void	get_args(t_exec_st *exec_st, char **line)

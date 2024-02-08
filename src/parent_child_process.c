@@ -61,18 +61,27 @@ int	parent_process(t_exec_st *exec_st, char **line)
 void	parent_close(t_exec_st *exec_st)
 {
 	int i;
-	int a;
+	int stat_loc;
 
 	i = 0;
 	close(exec_st->fd[0]);
 	close(exec_st->fd[1]);
 	if (exec_st->pipes_nbr)
 		dup2(exec_st->temp_STDIN, STDIN_FILENO);
+	be_patient();
 	while (exec_st->child_list[i])
 	{
-		a = waitpid(0, &exec_st->child_list[i], 0);
+		waitpid(exec_st->child_list[i], &stat_loc, 0);
+		if (WIFEXITED(stat_loc))
+			exec_st->ret = WEXITSTATUS(stat_loc);
+		else if (WIFSIGNALED(stat_loc))
+			exec_st->ret = WTERMSIG(stat_loc) + 128;
+		else if (WIFSTOPPED(stat_loc))
+			exec_st->ret = WSTOPSIG(stat_loc) + 128;
 		i++;
 	}
+	ft_printf("ret: %d\n", exec_st->ret);
+	setup_interactive();
 	free(exec_st->child_list);
 }
 

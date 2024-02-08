@@ -52,16 +52,7 @@ char	*find_next_str(char *s)
 
 	while (*s && !is_white_space(*s))
 	{
-		if (39 == *s)
-		{
-			quote = *s;
-			s++;
-			while (*s && *s != quote)
-				s++;
-			if (*s == quote)
-				s++;
-		}
-		else if (34 == *s)
+		if (39 == *s || 34 == *s)
 		{
 			quote = *s;
 			s++;

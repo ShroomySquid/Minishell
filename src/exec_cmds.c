@@ -24,16 +24,23 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 
 	while (exec_st->i <= exec_st->pipes_nbr)
 	{
+		setup_interactive();
 		parent_process(exec_st, line);
 		exec_st->child = fork();
 		if	(exec_st->child < 0)
 			return (1);
 		if (!exec_st->child)
 		{
+			setup_non_interactive();
+			exec_st->ret = 0;
 			if (child_process(exec_st, line, cmd_paths))
 			{
 				free_all(exec_st->cmd_args);
-				exit (1);
+				free_all(cmd_paths);
+				free_all(line);
+				free(exec_st->child_list);
+				exec_st->ret = 127;
+				b_true_exit(NULL, exec_st, env, false);
 			}
 			line_args_nbr = check_redirection(exec_st->cmd_args, exec_st);
 			if (line_args_nbr >= 0)
@@ -41,13 +48,16 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 				line_args = line_rm_redirection(exec_st->cmd_args, line_args_nbr);
 				fix_quotes(&line_args, exec_st);
 				if (!line_args || execute(cmd_paths[exec_st->i],
-						line_args, env) == -1)
+										  line_args, env, &exec_st->ret) == -1)
 					perror("Cmd failed to execute");
 				if (line_args)
 					free_all(line_args);
 			}
 			free_all(exec_st->cmd_args);
-			exit (1);
+			free_all(cmd_paths);
+			free_all(line);
+			free(exec_st->child_list);
+			b_true_exit(NULL, exec_st, env, false);
 		}
 		else
 		{
@@ -62,7 +72,7 @@ int	run_cmds(char **line, char	**cmd_paths, t_env *env, t_exec_st *exec_st)
 {
 	exec_st->i = 0;
 	exec_st->cmd_ptr = 0;
-	exec_st->child_list = ft_calloc(exec_st->pipes_nbr + 2, sizeof(char *));
+	exec_st->child_list = ft_calloc(exec_st->pipes_nbr + 2, sizeof(int));
 	if (!exec_st->child_list)
 	{
 		perror("Malloc failed for exec_st->child_list");
