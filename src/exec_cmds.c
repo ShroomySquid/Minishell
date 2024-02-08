@@ -12,11 +12,6 @@
 
 #include "minishell.h"
 
-int child()
-{
-
-}
-
 int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 {
 	char	**line_args;

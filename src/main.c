@@ -93,7 +93,7 @@ int exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
 		free_moi_ca(NULL, line_args, exec_st);
 		return (1);
 	}
-	trigger_here_docs(line_args, exec_st);
+	trigger_here_docs(line_args, exec_st, env);
 	execute(line_args[0], line_args, env, &exec_st->ret);
 	return (0);
 }
