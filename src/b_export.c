@@ -70,18 +70,45 @@ int	b_export(char **args, char **envp)
 	return (0);
 }
 
+int	contains_illegal_char(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!ft_isalpha(str[i]) && str[i] != '_')
+		return (1);
+	while (str[i] && str[i] != '=')
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	b_parent_export(char **args, t_env *env)
 {
 	int		i;
 	char	**split;
+	int		ret;
 
 	i = 0;
+	ret = 0;
 	if (!args[1])
 		return (b_export_no_args(env));
 	split = NULL;
 	while (args[++i])
 	{
 		free_all(split);
+		split = NULL;
+		if (contains_illegal_char(args[i]))
+		{
+			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+			ft_putstr_fd(args[i], STDERR_FILENO);
+			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+			ret = 1;
+			continue ;
+		}
 		split = ft_split(args[i], '=');
 		if (!split || !split[0] || (!split[1] && !ft_strchr(args[i], '=')))
 			continue ;
@@ -92,5 +119,5 @@ int	b_parent_export(char **args, t_env *env)
 		else
 			env_add_back(&env, env_new(split[0], split[1]));
 	}
-	return (0);
+	return (ret);
 }

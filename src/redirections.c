@@ -74,7 +74,6 @@ int	check_redirection(char **line, t_exec_st *exec_st)
 		if (file < 0)
 		{
 			perror("Error");
-			ft_printf("fd: %d\n", file);
 			return (-1);
 		}
 		i++;

@@ -29,12 +29,6 @@ int	b_parent_unset(char **args, t_env *env)
 	{
 		if (env_find(env, args[i]))
 			env_delone(&env, args[i]);
-		else
-		{
-			ft_printf("minishell: unset: `%s': not a valid identifier\n",
-				args[i]);
-			return (1);
-		}
 		i++;
 	}
 	return (0);

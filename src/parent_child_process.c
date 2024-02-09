@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/stat.h>
 
 void	increment_cmd_here_doc(t_exec_st *exec_st, char **line)
 {
@@ -86,7 +87,7 @@ void	parent_close(t_exec_st *exec_st)
 int	failed_cmd_msg(t_exec_st *exec_st, char **cmd_paths)
 {
 	dup2(exec_st->temp_stdout, STDOUT_FILENO);
-	ft_putstr_fd("Minishell: ", 2);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd_paths[exec_st->i], 2);
 	ft_putstr_fd(": command not found\n", 2);
 	return (1);
@@ -96,6 +97,7 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 {
 	int	ite;
 	int	return_value;
+	struct stat	buf;
 
 	return_value = 0;
 	ite = 0;
@@ -109,9 +111,45 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 		ite++;
 	}
 	exec_st->cmd_args[ite] = 0;
-	if (access(cmd_paths[exec_st->i], X_OK < 0) < 0
-		&& !b_is_builtin(cmd_paths[exec_st->i]))
-		return_value = failed_cmd_msg(exec_st, cmd_paths);
+	if (b_is_builtin(exec_st->cmd_args[0]))
+		return_value = 0;
+	else if (!ft_strchr(cmd_paths[exec_st->i], '/'))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(exec_st->cmd_args[0], STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		exec_st->ret = 127;
+		return_value = 1;
+	}
+	else if (stat(cmd_paths[exec_st->i], &buf) < 0)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd_paths[exec_st->i], STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		exec_st->ret = 127;
+		return_value = 1;
+	}
+	else if (S_ISDIR(buf.st_mode))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(exec_st->cmd_args[0], STDERR_FILENO);
+		ft_putstr_fd(": is a directory\n", STDERR_FILENO);
+		exec_st->ret = 126;
+		return_value = 1;
+//		return (1);
+	}
+	else if (!(buf.st_mode & S_IXUSR))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd_paths[exec_st->i], STDERR_FILENO);
+		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+		exec_st->ret = 126;
+		return_value = 1;
+//		return (1);
+	}
+//	if (access(cmd_paths[exec_st->i], X_OK < 0) < 0
+//		&& !b_is_builtin(cmd_paths[exec_st->i]))
+//		return_value = failed_cmd_msg(exec_st, cmd_paths);
 	if (exec_st->i == exec_st->pipes_nbr)
 		close(exec_st->fd[1]);
 	close(exec_st->fd[0]);

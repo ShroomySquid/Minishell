@@ -34,7 +34,6 @@ int	execute(char *path, char **args, t_env *env, int *ret)
 		i++;
 	}
 	*ret = execve(path, args, envp);
-	ft_printf("execve returned %d\n", *ret);
 	free_all(envp);
 	return (*ret);
 }

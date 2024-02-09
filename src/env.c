@@ -52,8 +52,12 @@ t_env	*env_innit(char **envp)
 		return (NULL);
 	while (envp[i])
 	{
-		split = ft_split(envp[i], '=');
-		if (!split || !split[0] || (!split[1] && ft_strchr(envp[i], '=')[1]))
+		split = ft_calloc(3, sizeof(char *));
+		if (!split)
+			return (NULL);
+		split[1] = ft_strdup(ft_strchr(envp[i], '=') + 1);
+		split[0] = ft_substr(envp[i], 0, ft_strchr(envp[i], '=') - envp[i]);
+		if (!split[0] || (!split[1] && ft_strchr(envp[i], '=')[1]))
 		{
 			env_clear(&env);
 			env_free_split(split);
