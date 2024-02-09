@@ -87,6 +87,13 @@ char	**parsing_line(char *buff, t_exec_st *exec_st, t_env *env)
 int	exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
 {
 	exec_st->ret = 0;
+	line_args = line_rm_redirection(line_args, check_redirection(line_args, exec_st));
+	if (!line_args || exec_st->ret)
+	{
+		free_all(line_args);
+		exec_st->ret = 1;
+		return (1);
+	}
 	if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))
 	{
 		b_true_exit(line_args, exec_st, env, true);
@@ -158,6 +165,8 @@ int	main(int argc, char	**argv, char **envp)
 		{
 			if (exec_builtin(line_args, env, exec_st) == 1)
 				continue ;
+			dup2(exec_st->temp_stdin, STDIN_FILENO);
+			dup2(exec_st->temp_stdout, STDOUT_FILENO);
 		}
 		else
 			exec_line(exec_st, line_args, env);

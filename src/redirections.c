@@ -74,6 +74,7 @@ int	check_redirection(char **line, t_exec_st *exec_st)
 		if (file < 0)
 		{
 			perror("Error");
+			exec_st->ret = 1;
 			return (-1);
 		}
 		i++;
