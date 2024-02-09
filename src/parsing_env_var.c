@@ -98,21 +98,31 @@ void	get_name(char *buff, char *temp_buff, int *i, int *a, t_env *env)
 {
 	int		b;
 	t_env	*cur_node;
-	char	*name;
 
 	b = 0;
+	cur_node = env;
 	while (buff[*i + b] && is_valid_env_char(buff[*i + b + 1]))
 		b++;
 	if (handle_edge_case(b, i, a, buff, temp_buff))
 		return ;
-	name = ft_substr(&buff[*i + 1], 0, b);
-	if (!name)
-		return ;
-	cur_node = env_find(env, name);
-	if (cur_node)
-		replace_name(temp_buff, cur_node, a);
-	free(name);
-	*i += b + 1;
+	while (cur_node->name)
+	{
+		//printf("%s len: %d, b len: %d\n", cur_node->name, (int)ft_strlen(cur_node->name), b);
+		if (((int)ft_strlen(cur_node->name) == (b)) && !ft_strncmp(&buff[*i + 1], cur_node->name, b - 1))
+		{
+			printf("hello\n");
+			*i += b + 1;
+			replace_name(temp_buff, cur_node, a);
+			break ;
+		}
+		else if (cur_node->next)
+			cur_node = cur_node->next;
+		else
+		{
+			*i += b + 1;
+			break ;
+		}
+	}
 }
 
 int next(int *i, int *a, char *temp_buff, char *buff)

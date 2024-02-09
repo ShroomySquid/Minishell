@@ -14,9 +14,6 @@
 
 int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 {
-	char	**line_args;
-	int		line_args_nbr;
-
 	while (exec_st->i <= exec_st->pipes_nbr)
 	{
 		setup_interactive();
@@ -28,7 +25,7 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 		{
 			setup_non_interactive();
 			exec_st->ret = 0;
-			if (child_process(exec_st, line, cmd_paths))
+			if (child_process(exec_st, line, cmd_paths, env))
 			{
 				free_all(exec_st->cmd_args);
 				free_all(cmd_paths);
@@ -36,18 +33,12 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 				free(exec_st->child_list);
 				b_true_exit(NULL, exec_st, env, false);
 			}
-			line_args_nbr = check_redirection(exec_st->cmd_args, exec_st);
-			if (line_args_nbr >= 0)
-			{
-				line_args = line_rm_redirection(exec_st->cmd_args,
-						line_args_nbr);
-				fix_quotes(&line_args, exec_st);
-				if (!line_args || execute(cmd_paths[exec_st->i],
-						line_args, env, &exec_st->ret) == -1)
+			fix_quotes(&exec_st->cmd_args, exec_st);
+			if (!exec_st->cmd_args || execute(cmd_paths[exec_st->i],
+				exec_st->cmd_args, env, &exec_st->ret) == -1)
 					perror("Cmd failed to execute");
-				if (line_args)
-					free_all(line_args);
-			}
+			if (exec_st->cmd_args)
+				free_all(exec_st->cmd_args);
 			free_all(exec_st->cmd_args);
 			free_all(cmd_paths);
 			free_all(line);

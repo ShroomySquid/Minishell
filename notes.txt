@@ -2,4 +2,3 @@
  Pour les pipes:
  Pour les guillemets / ft_split_quote:
  Pour redirections:
- Faire le $?
