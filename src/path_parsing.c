@@ -38,11 +38,9 @@ char	*find_path(char **possible_paths, char *cmd)
 
 char	*seek_cmd(char *cmd, t_env *env)
 {
-	int		i;
 	char	**possible_paths;
 	char	*valid_path;
 
-	i = 0;
 	if (!cmd)
 		return (0);
 	if (cmd[0] == '~' && cmd[1] == '/')

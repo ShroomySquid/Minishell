@@ -12,23 +12,25 @@
 
 #include "minishell.h"
 
-int get_pwd_length()
+int	get_pwd_length(void)
 {
-	char *pwd;
-	int i;
+	char		*pwd;
+	size_t		i;
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (0);
 	i = ft_strlen(pwd);
 	free(pwd);
-	return (i);
+	return ((int) i);
 }
-int handle_edge_case_len(int b, int *i, int *a, char *buff)
+
+int	handle_edge_case_len(int b, int *i, int *a, char *buff)
 {
 	if (b == 0)
 	{
-		if (!buff[*i + 1] || is_white_space(buff[*i + 1]) || buff[*i + 1] == buff[*i - 1])
+		if (!buff[*i + 1] || is_white_space(buff[*i + 1])
+			|| buff[*i + 1] == buff[*i - 1])
 			*a += 1;
 		*i += 1;
 		return (1);
@@ -42,7 +44,7 @@ int handle_edge_case_len(int b, int *i, int *a, char *buff)
 	return (0);
 }
 
-int get_env_name_len(int *i, int *a, int *b, t_env *cur_node)
+int	get_env_name_len(int *i, int *a, int *b, t_env *cur_node)
 {
 	*i += *b;
 	*b = 0;
@@ -51,6 +53,7 @@ int get_env_name_len(int *i, int *a, int *b, t_env *cur_node)
 	*a += *b;
 	return (1);
 }
+
 void	get_name_length(int *i, int *a, char *buff, t_env *env)
 {
 	t_env	*cur_node;
@@ -64,7 +67,8 @@ void	get_name_length(int *i, int *a, char *buff, t_env *env)
 		return ;
 	while (cur_node->name)
 	{
-		if ((int)ft_strlen(cur_node->name) > b - 1 && !ft_strncmp(&buff[*i + 1], cur_node->name, b - 1))
+		if ((int)ft_strlen(cur_node->name) > b - 1
+			&& !ft_strncmp(&buff[*i + 1], cur_node->name, b - 1))
 		{
 			get_env_name_len(i, a, &b, cur_node);
 			break ;
@@ -103,4 +107,3 @@ int	tb_length_env(char *buff, t_env *env, t_exec_st *exec_st)
 	a++;
 	return (a);
 }
-

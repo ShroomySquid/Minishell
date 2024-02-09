@@ -34,37 +34,12 @@ void	to_end_quote_var(const char *buff, char *temp_buff, int *i, int *a)
 	}
 }
 
-int is_valid_env_char(char c)
-{
-	if (ft_isalpha(c) || c == '_')
-		return (1);
-	return (0);
-}
-
-int get_pwd(char *temp_buff, int *a)
-{
-	char *pwd;
-	int i;
-
-	i = 0;
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		return (0);
-	while (pwd[i])
-	{
-		temp_buff[*a] = pwd[i];
-		i++;
-		*a += 1;
-	}
-	free(pwd);
-	return (i);
-}
-
-int handle_edge_case(int b, int *i, int *a, char *buff, char *temp_buff)
+int	handle_edge_case(int b, int *i, int *a, char *buff, char *temp_buff)
 {
 	if (b == 0)
 	{
-		if (!buff[*i + 1] || is_white_space(buff[*i + 1]) || buff[*i + 1] == buff[*i - 1])
+		if (!buff[*i + 1] || is_white_space(buff[*i + 1])
+			|| buff[*i + 1] == buff[*i - 1])
 		{
 			temp_buff[*a] = buff[*i];
 			*a += 1;
@@ -83,7 +58,7 @@ int handle_edge_case(int b, int *i, int *a, char *buff, char *temp_buff)
 
 void	replace_name(char *temp_buff, t_env *cur_node, int *a)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (cur_node->value[len])
@@ -115,14 +90,6 @@ void	get_name(char *buff, char *temp_buff, int *i, int *a, t_env *env)
 	*i += b + 1;
 }
 
-int next(int *i, int *a, char *temp_buff, char *buff)
-{
-	temp_buff[*a] = buff[*i];
-	*i += 1;
-	*a += 1;
-	return (0);
-}
-
 char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
 {
 	char	*temp_buff;
@@ -143,7 +110,7 @@ char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
 		if (buff[i] && buff[i] == '$' && !is_white_space(buff[i + 1]))
 			get_name(buff, temp_buff, &i, &a, env);
 		else
-			next(&i, &a, temp_buff, buff);
+			env_next(&i, &a, temp_buff, buff);
 	}
 	temp_buff[a] = '\0';
 	free (buff);

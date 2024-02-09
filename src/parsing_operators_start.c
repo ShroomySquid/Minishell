@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	to_end_quote_length(char quote, char *buff, int *i, int *a)
+void	to_end_quote_length(char quote, const char *buff, int *i, int *a)
 {
 	*i += 1;
 	*a += 1;

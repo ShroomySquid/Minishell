@@ -37,20 +37,3 @@ int	execute(char *path, char **args, t_env *env, int *ret)
 	free_all(envp);
 	return (*ret);
 }
-
-void	get_args(t_exec_st *exec_st, char **line)
-{
-	int	ite;
-
-	ite = 0;
-	while (ft_strncmp("|", line[exec_st->cmd_ptr + ite], 2))
-		ite++;
-	exec_st->cmd_args = ft_calloc(ite + 1, sizeof(char *));
-	ite = 0;
-	while (ft_strncmp("|", line[exec_st->cmd_ptr + ite], 2))
-	{
-		exec_st->cmd_args[ite] = ft_strdup(line[exec_st->cmd_ptr + ite]);
-		ite++;
-	}
-	exec_st->cmd_args[ite] = 0;
-}

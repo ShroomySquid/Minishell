@@ -23,7 +23,8 @@ int	b_exit_mock(char **args, char **env)
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
-	else if (args[1] && !ft_isdigit(*(args[1])) && args[1][0] != '-' && args[1][0] != '+')
+	else if (args[1] && !ft_isdigit(*(args[1]))
+		&& args[1][0] != '-' && args[1][0] != '+')
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
@@ -45,7 +46,8 @@ int	b_exit(char **args, int custom_exit)
 		exit_code = custom_exit;
 	if (!args)
 		exit(exit_code);
-	else if (args[1] && !ft_isdigit(*(args[1])) && args[1][0] != '-' && args[1][0] != '+')
+	else if (args[1] && !ft_isdigit(*(args[1]))
+		&& args[1][0] != '-' && args[1][0] != '+')
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
@@ -78,13 +80,6 @@ int	b_true_exit(char **buff, void *exec_st_t, t_env *env, bool verbose)
 		free_all(exec_st->ope_quotes);
 	free(exec_st);
 	env_clear(&env);
-//	if (verbose)
-//	{
-//		rl_replace_line("", 0);
-//		rl_on_new_line();
-//		rl_clear_history();
-//		ft_printf("\n[exit]\n");
-//	}
 	b_exit(buff, ret);
 	return (0);
 }

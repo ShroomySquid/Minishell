@@ -89,35 +89,21 @@ int	contains_illegal_char(char *str)
 int	b_parent_export(char **args, t_env *env)
 {
 	int		i;
-	char	**split;
 	int		ret;
 
 	i = 0;
 	ret = 0;
 	if (!args[1])
 		return (b_export_no_args(env));
-	split = NULL;
 	while (args[++i])
 	{
-		free_all(split);
-		split = NULL;
 		if (contains_illegal_char(args[i]))
 		{
-			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-			ft_putstr_fd(args[i], STDERR_FILENO);
-			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+			b_identifier_export_error(args[i]);
 			ret = 1;
-			continue ;
 		}
-		split = ft_split(args[i], '=');
-		if (!split || !split[0] || (!split[1] && !ft_strchr(args[i], '=')))
-			continue ;
-		if (!split[1])
-			split[1] = ft_strdup("");
-		if (env_find(env, split[0]))
-			env_find(env, split[0])->value = ft_strdup(split[1]);
 		else
-			env_add_back(&env, env_new(split[0], split[1]));
+			b_export_final(env, args[1]);
 	}
 	return (ret);
 }

@@ -95,8 +95,8 @@ int	failed_cmd_msg(t_exec_st *exec_st, char **cmd_paths)
 
 int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 {
-	int	ite;
-	int	return_value;
+	int			ite;
+	int			return_value;
 	struct stat	buf;
 
 	return_value = 0;
@@ -136,7 +136,6 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 		ft_putstr_fd(": is a directory\n", STDERR_FILENO);
 		exec_st->ret = 126;
 		return_value = 1;
-//		return (1);
 	}
 	else if (!(buf.st_mode & S_IXUSR))
 	{
@@ -145,11 +144,7 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 		exec_st->ret = 126;
 		return_value = 1;
-//		return (1);
 	}
-//	if (access(cmd_paths[exec_st->i], X_OK < 0) < 0
-//		&& !b_is_builtin(cmd_paths[exec_st->i]))
-//		return_value = failed_cmd_msg(exec_st, cmd_paths);
 	if (exec_st->i == exec_st->pipes_nbr)
 		close(exec_st->fd[1]);
 	close(exec_st->fd[0]);

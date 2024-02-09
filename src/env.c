@@ -12,19 +12,6 @@
 
 #include "env.h"
 
-static	void	env_free_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
-
 static int	env_len(t_env *env)
 {
 	int		i;
@@ -46,11 +33,11 @@ t_env	*env_innit(char **envp)
 	char	**split;
 	int		i;
 
-	i = 0;
+	i = -1;
 	env = NULL;
 	if (!envp)
 		return (NULL);
-	while (envp[i])
+	while (envp[++i])
 	{
 		split = ft_calloc(3, sizeof(char *));
 		if (!split)
@@ -60,12 +47,11 @@ t_env	*env_innit(char **envp)
 		if (!split[0] || (!split[1] && ft_strchr(envp[i], '=')[1]))
 		{
 			env_clear(&env);
-			env_free_split(split);
+			free_all(split);
 			return (NULL);
 		}
 		env_add_back(&env, env_new(split[0], split[1]));
-		env_free_split(split);
-		i++;
+		free_all(split);
 	}
 	return (env);
 }
@@ -76,7 +62,6 @@ char	**env_to_tab(t_env *env)
 	int		i;
 	t_env	*tmp;
 	char	*name;
-	char	*value;
 
 	i = 0;
 	tmp = env;
@@ -86,14 +71,13 @@ char	**env_to_tab(t_env *env)
 	while (tmp)
 	{
 		name = ft_strjoin(tmp->name, "=");
-		value = ft_strjoin(name, tmp->value);
+		envp[i] = ft_strjoin(name, tmp->value);
 		free(name);
-		if (!value)
+		if (!envp[i])
 		{
 			free_all(envp);
 			return (NULL);
 		}
-		envp[i] = value;
 		tmp = tmp->next;
 		i++;
 	}

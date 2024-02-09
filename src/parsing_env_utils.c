@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   line_reader.c                                      :+:      :+:    :+:   */
+/*   parsing_env_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
+/*   By: gcrepin <gcrepin@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/11 15:35:53 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/11 15:35:59 by gcrepin          ###   ########.fr       */
+/*   Created: 2024/02/09 16:27:37 by gcrepin           #+#    #+#             */
+/*   Updated: 2024/02/09 16:27:41 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sig_handling.h"
+#include "minishell.h"
 
-char	*line_reader(void)
+int	is_valid_env_char(char c)
 {
-	char	*line;
+	if (ft_isalpha(c) || c == '_')
+		return (1);
+	return (0);
+}
 
-	line = readline("minishell$ ");
-	if (!line)
-	{
-		ft_printf("exit\n");
-		exit(0);
-	}
-	if (*line)
-		add_history(line);
-	return (line);
+int	env_next(int *i, int *a, char *temp_buff, const char *buff)
+{
+	temp_buff[*a] = buff[*i];
+	*i += 1;
+	*a += 1;
+	return (0);
 }

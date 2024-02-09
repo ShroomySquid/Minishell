@@ -93,23 +93,3 @@ void	env_clear(t_env **env)
 		*env = tmp;
 	}
 }
-
-t_env	*env_dup(t_env *env)
-{
-	t_env	*new_env;
-	t_env	*tmp;
-
-	new_env = NULL;
-	while (env)
-	{
-		tmp = env_new(env->name, env->value);
-		if (!tmp)
-		{
-			env_clear(&new_env);
-			return (NULL);
-		}
-		env_add_back(&new_env, tmp);
-		env = env->next;
-	}
-	return (new_env);
-}

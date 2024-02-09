@@ -21,7 +21,7 @@ int	b_pwd(char **args, char **env)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
-		ft_printf("minishell: pwd: error retrieving current directory\n");
+		ft_putstr_fd("minishell: pwd: error retrieving current directory\n", 2);
 		return (-1);
 	}
 	ft_printf("%s\n", pwd);
@@ -40,7 +40,7 @@ char	*b_get_pwd_short(char **args)
 	home = getenv("HOME");
 	if (!pwd)
 	{
-		ft_printf("minishell: pwd: error retrieving current directory\n");
+		ft_putstr_fd("minishell: pwd: error retrieving current directory\n", 2);
 		return (0);
 	}
 	if (!home)
@@ -54,15 +54,21 @@ char	*b_get_pwd_short(char **args)
 	return (pwd);
 }
 
-int	b_pwd_short(char **args)
+int	get_pwd(char *temp_buff, int *a)
 {
 	char	*pwd;
+	int		i;
 
-	(void)args;
-	pwd = b_get_pwd_short(args);
+	i = 0;
+	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		return (-1);
-	ft_printf("%s\n", pwd);
+		return (0);
+	while (pwd[i])
+	{
+		temp_buff[*a] = pwd[i];
+		i++;
+		*a += 1;
+	}
 	free(pwd);
-	return (0);
+	return (i);
 }

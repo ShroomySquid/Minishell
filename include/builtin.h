@@ -24,7 +24,6 @@ typedef struct s_builtin
 }				t_builtin;
 
 int		b_pwd(char **args, char **env);
-int		b_pwd_short(char **args);
 char	*b_get_pwd_short(char **args);
 int		b_echo(char **args, char **env);
 int		b_cd(char **args, char **env);
@@ -39,6 +38,9 @@ int		b_parent_export(char **args, t_env *env);
 int		b_parent_unset(char **args, t_env *env);
 int		is_env_cmd(char *path);
 int		exec_env(char *path, char **args, t_env *envp);
+int		get_pwd(char *temp_buff, int *a);
+void	b_identifier_export_error(char *arg);
+void	b_export_final(t_env *env, char *arg);
 
 extern const t_builtin	g_builtin[];
 
