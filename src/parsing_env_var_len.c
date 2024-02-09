@@ -64,7 +64,7 @@ void	get_name_length(int *i, int *a, char *buff, t_env *env)
 		return ;
 	while (cur_node->name)
 	{
-		if (!ft_strncmp(&buff[*i + 1], cur_node->name, b - 1))
+		if ((int)ft_strlen(cur_node->name) > b - 1 && !ft_strncmp(&buff[*i + 1], cur_node->name, b - 1))
 		{
 			get_env_name_len(i, a, &b, cur_node);
 			break ;

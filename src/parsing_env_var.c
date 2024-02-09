@@ -107,7 +107,7 @@ void	get_name(char *buff, char *temp_buff, int *i, int *a, t_env *env)
 		return ;
 	while (cur_node->name)
 	{
-		if (!ft_strncmp(&buff[*i + 1], cur_node->name, b - 1))
+		if ((int)ft_strlen(cur_node->name) > b - 1 && !ft_strncmp(&buff[*i + 1], cur_node->name, b - 1))
 		{
 			*i += b + 1;
 			replace_name(temp_buff, cur_node, a);
