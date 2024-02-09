@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/02/08 14:30:21 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:42:14 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		execute(char *path, char **args, t_env *env, int *ret);
 int		ft_strcmp(const char *s1, const char *s2);
 int		parent_process(t_exec_st *exec_st, char **line);
 void	parent_close(t_exec_st *exec_st);
-int		child_process(t_exec_st *exec_st, char **line, char **cmd_paths);
+int		child_process(t_exec_st *exec_st, char **line, char **cmd_paths, t_env *env);
 char	*seek_cmd(char *cmd, t_env *env);
 void	seek_all_cmds(char ***cmd_paths, char **line_args, t_env *env);
 char	**ft_split_quote(char const *s);
