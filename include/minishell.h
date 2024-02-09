@@ -54,5 +54,7 @@ int		get_exit_code_length(int *i, int *a, t_exec_st *exec_st);
 int		get_exit_code(int *i, int *a, t_exec_st *exec_st, char *temp_buff);
 void	to_end_quote(const char *buff, char *temp_buff, int *i, const int a);
 char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st);
+int     tb_length_env(char *buff, t_env *env, t_exec_st *exec_st);
+int     is_valid_env_char(char c);
 
 #endif

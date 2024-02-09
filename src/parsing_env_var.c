@@ -12,66 +12,86 @@
 
 #include "minishell.h"
 
-void	get_name_length(int *i, int *a, char *buff, t_env *env)
+void	to_end_quote_var(const char *buff, char *temp_buff, int *i, int *a)
 {
-	t_env	*cur_node;
-	int		b;
+	char	quote;
 
-	b = 0;
-	cur_node = env;
-	while (buff[*i + b] && is_white_space(buff[*i + b]) == 0)
-		b++;
-	while (cur_node->name)
+	quote = buff[*i];
+	temp_buff[*a] = buff[*i];
+	*i += 1;
+	*a += 1;
+	while (buff[*i] && buff[*i] != quote)
 	{
-		if (!ft_strncmp(&buff[*i + 1], cur_node->name, b - 1))
-		{
-			*i += b;
-			b = 0;
-			while (cur_node->value[b])
-				b++;
-			*a += b;
-			break ;
-		}
-		else if (cur_node->next)
-			cur_node = cur_node->next;
-		else
-		{
-			*i += b;
-			break ;
-		}
+		temp_buff[*a] = buff[*i];
+		*i += 1;
+		*a += 1;
+	}
+	if (buff[*i])
+	{
+		temp_buff[*a] = buff[*i];
+		*i += 1;
+		*a += 1;
 	}
 }
 
-int	tb_length_env(char *buff, t_env *env, t_exec_st *exec_st)
+int is_valid_env_char(char c)
 {
-	int	i;
-	int	a;
+	if (ft_isalpha(c) || c == '_')
+		return (1);
+	return (0);
+}
+
+int get_pwd(char *temp_buff, int *a)
+{
+	char *pwd;
+	int i;
 
 	i = 0;
-	a = 0;
-	while (buff[i])
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (0);
+	while (pwd[i])
 	{
-		if ('\'' == buff[i])
-			to_end_quote_length(buff[i], buff, &i, &a);
-		if (buff[i] && buff[i] == '$' && buff[i + 1] == '?')
-			get_exit_code_length(&i, &a, exec_st);
-		if (buff[i] && buff[i] == '$' && !is_white_space(buff[i + 1]))
-			get_name_length(&i, &a, buff, env);
-		else
-		{
-			i++;
-			a++;
-		}
+		temp_buff[*a] = pwd[i];
+		i++;
+		*a += 1;
 	}
-	a++;
-	return (a);
+	free(pwd);
+	return (i);
 }
 
-void	replace_name(char *temp_buff, t_env *cur_node, int *b, int *a)
+int handle_edge_case(int b, int *i, int *a, char *buff, char *temp_buff)
 {
-	temp_buff[*a] = cur_node->value[*b];
-	*a += 1;
-	*b += 1;
+	if (b == 0)
+	{
+		if (!buff[*i + 1] || is_white_space(buff[*i + 1]) || buff[*i + 1] == buff[*i - 1])
+		{
+			temp_buff[*a] = buff[*i];
+			*a += 1;
+		}
+		*i += 1;
+		return (1);
+	}
+	if (!ft_strncmp(&buff[*i + 1], "PWD", b - 1))
+	{
+		get_pwd(temp_buff, a);
+		*i += b + 1;
+		return (1);
+	}
+	return (0);
+}
+
+void	replace_name(char *temp_buff, t_env *cur_node, int *a)
+{
+	int len;
+
+	len = 0;
+	while (cur_node->value[len])
+	{
+		temp_buff[*a] = cur_node->value[len];
+		*a += 1;
+		len += 1;
+	}
 }
 
 void	get_name(char *buff, char *temp_buff, int *i, int *a, t_env *env)
@@ -81,26 +101,34 @@ void	get_name(char *buff, char *temp_buff, int *i, int *a, t_env *env)
 
 	b = 0;
 	cur_node = env;
-	while (buff[*i + b] && is_white_space(buff[*i + b]) == 0)
+	while (buff[*i + b] && is_valid_env_char(buff[*i + b + 1]))
 		b++;
+	if (handle_edge_case(b, i, a, buff, temp_buff))
+		return ;
 	while (cur_node->name)
 	{
 		if (!ft_strncmp(&buff[*i + 1], cur_node->name, b - 1))
 		{
-			*i += b;
-			b = 0;
-			while (cur_node->value[b])
-				replace_name(temp_buff, cur_node, &b, a);
+			*i += b + 1;
+			replace_name(temp_buff, cur_node, a);
 			break ;
 		}
 		else if (cur_node->next)
 			cur_node = cur_node->next;
 		else
 		{
-			*i += b;
+			*i += b + 1;
 			break ;
 		}
 	}
+}
+
+int next(int *i, int *a, char *temp_buff, char *buff)
+{
+	temp_buff[*a] = buff[*i];
+	*i += 1;
+	*a += 1;
+	return (0);
 }
 
 char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
@@ -108,29 +136,22 @@ char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
 	char	*temp_buff;
 	int		i;
 	int		a;
-	int		useless;
 
 	temp_buff = ft_calloc(tb_length_env(buff, env, exec_st), sizeof(char));
 	if (!temp_buff)
 		return (NULL);
 	i = 0;
 	a = 0;
-	useless = 0;
 	while (buff[i])
 	{
 		if ('\'' == buff[i])
-			to_end_quote(buff, temp_buff, &useless, a);
+			to_end_quote_var(buff, temp_buff, &i, &a);
 		if (buff[i] && buff[i] == '$' && buff[i + 1] == '?')
 			get_exit_code(&i, &a, exec_st, temp_buff);
 		if (buff[i] && buff[i] == '$' && !is_white_space(buff[i + 1]))
 			get_name(buff, temp_buff, &i, &a, env);
 		else
-		{
-			temp_buff[a] = buff[i];
-			i++;
-			a++;
-		}
-		useless = 0;
+			next(&i, &a, temp_buff, buff);
 	}
 	temp_buff[a] = '\0';
 	free (buff);
