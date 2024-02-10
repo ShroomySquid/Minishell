@@ -13,6 +13,13 @@
 #ifndef DEFINE_H
 # define DEFINE_H
 
+typedef struct s_env
+{
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}			t_env;
+
 typedef struct s_exec_st
 {
 	int		child;
@@ -30,13 +37,9 @@ typedef struct s_exec_st
 	int		*hd_list;
 	char	**cmd_args;
 	char	**ope_quotes;
+	t_env	*env;
 }				t_exec_st;
 
-typedef struct s_env
-{
-	char			*name;
-	char			*value;
-	struct s_env	*next;
-}				t_env;
+
 
 #endif

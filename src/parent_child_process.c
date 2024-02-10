@@ -13,15 +13,6 @@
 #include "minishell.h"
 #include <sys/stat.h>
 
-int is_redirect(char *arg)
-{
-	if (!ft_strcmp(">", arg) || !ft_strcmp(">>", arg))
-		return (1);
-	if (!ft_strcmp("<", arg) || !ft_strcmp("<<", arg))
-		return (1);
-	return (0);
-}
-
 void	increment_cmd_here_doc(t_exec_st *exec_st, char **line)
 {
 	int	i;
@@ -102,12 +93,11 @@ int	failed_cmd_msg(t_exec_st *exec_st, char **cmd_paths)
 	return (1);
 }
 
-int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths, t_env *env)
+int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 {
 	int			ite;
 	int			return_value;
 	struct stat	buf;
-	int cmd_nbr;
 
 	return_value = 0;
 	ite = 0;
@@ -120,16 +110,15 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths, t_env *env)
 		exec_st->cmd_args[ite] = ft_strdup(line[exec_st->cmd_ptr + ite]);
 		ite++;
 	}
-	exec_st->cmd_args[ite] = 0;
-	cmd_nbr = check_redirection(exec_st->cmd_args, exec_st);
-	if (cmd_nbr < 0)
-		return (1);
-	exec_st->cmd_args = line_rm_redirection(exec_st->cmd_args, cmd_nbr);
-	if (is_redirect(cmd_paths[exec_st->i]))
+	ite = check_redirection(exec_st->cmd_args, exec_st);
+	if (ite >= 0)
 	{
-		free(cmd_paths[exec_st->i]);
-		cmd_paths[exec_st->i] = seek_cmd(exec_st->cmd_args[0], env);
+		exec_st->cmd_args = line_rm_redirection(exec_st->cmd_args, ite);
+		cmd_paths[exec_st->i] = seek_cmd(exec_st->cmd_args[0], exec_st->env);
+		fix_quotes(&exec_st->cmd_args, exec_st);
 	}
+	else
+		return (1);
 	if (b_is_builtin(exec_st->cmd_args[0]))
 		return_value = 0;
 	else if (!ft_strchr(cmd_paths[exec_st->i], '/'))

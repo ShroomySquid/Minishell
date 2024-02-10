@@ -90,7 +90,9 @@ char	**line_rm_redirection(char **line, int args_nbr)
 
 	i = 0;
 	a = 0;
-	line_args = ft_calloc(args_nbr + 1, sizeof(unsigned long int));
+	if (args_nbr < 0)
+		return (0);
+	line_args = ft_calloc(args_nbr + 1, sizeof(char *));
 	if (!line_args)
 	{
 		perror("malloc failed for line_args");
@@ -109,6 +111,5 @@ char	**line_rm_redirection(char **line, int args_nbr)
 		i++;
 	}
 	line_args[i - a] = 0;
-	free_all(line);
 	return (line_args);
 }
