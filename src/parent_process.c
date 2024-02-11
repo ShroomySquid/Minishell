@@ -18,7 +18,8 @@ void	increment_cmd_here_doc(t_exec_st *exec_st, char **line)
 	int	i;
 
 	i = 0;
-	while (ft_strncmp("|", line[exec_st->cmd_ptr + i], 2))
+	while (line[exec_st->cmd_ptr + i]
+		&& ft_strncmp("|", line[exec_st->cmd_ptr + i], 2))
 	{
 		if (!ft_strncmp("<<", line[exec_st->cmd_ptr + i], 3))
 			exec_st->cmd++;
@@ -28,6 +29,10 @@ void	increment_cmd_here_doc(t_exec_st *exec_st, char **line)
 
 int	parent_process(t_exec_st *exec_st, char **line)
 {
+	while (ft_strncmp("|", line[exec_st->cmd_ptr], 2 && exec_st->i))
+		exec_st->cmd_ptr++;
+	if (exec_st->i)
+		exec_st->cmd_ptr++;
 	if (exec_st->i)
 	{
 		dup2(exec_st->fd[0], STDIN_FILENO);
@@ -46,10 +51,6 @@ int	parent_process(t_exec_st *exec_st, char **line)
 	else if (exec_st->pipes_nbr)
 		dup2(exec_st->temp_stdout, STDOUT_FILENO);
 	increment_cmd_here_doc(exec_st, line);
-	while (ft_strncmp("|", line[exec_st->cmd_ptr], 2) && exec_st->i)
-		exec_st->cmd_ptr++;
-	if (exec_st->i)
-		exec_st->cmd_ptr++;
 	return (0);
 }
 

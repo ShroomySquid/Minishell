@@ -6,12 +6,27 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:52:31 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/11 10:38:45 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/11 17:12:20 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINE_H
 # define DEFINE_H
+
+typedef struct s_redir
+{
+	int	i;
+	int	file;
+	int	a;
+	int	max_here_doc;
+}				t_redir;
+
+typedef struct s_env_parse
+{
+	int	i;
+	int	a;
+	int	len;
+}				t_env_parse;
 
 typedef struct s_env
 {
@@ -40,7 +55,5 @@ typedef struct s_exec_st
 	char	**ope_quotes;
 	t_env	*env;
 }				t_exec_st;
-
-
 
 #endif

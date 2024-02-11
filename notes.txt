@@ -3,3 +3,6 @@
  Pour les guillemets / ft_split_quote:
  Pour redirectionso:
  double free interuption here_doc
+ bug malloc cd ..
+ Bug si on fini avec redirection sans fichier
+ Bug si opérateur répétés trop de fois d'affilé (Ou pas?)

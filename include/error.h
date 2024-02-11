@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:29:50 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/06 10:09:54 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/11 18:00:21 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 int		error_dup(t_exec_st *exec_st);
 int		error_malloc_hd(t_exec_st *exec_st, char **line_args);
 void	error_parsing(char **line_args);
-void    error_cmd_not_found(t_exec_st *exec_st, int *return_value);
-void    error_no_file(t_exec_st *exec_st, int *return_value, char **cmd_paths);
-void    error_is_dir(t_exec_st *exec_st, int *return_value);
-void    error_permission_d(t_exec_st *exec_st, int *return_value, char **cmd_paths);
-int     failed_cmd_msg(t_exec_st *exec_st, char **cmd_paths);
+void	error_cmd_not_found(t_exec_st *exec_st, int *return_value);
+void	error_no_file(t_exec_st *exec_st, int *return_value, char **cmd_paths);
+void	error_is_dir(t_exec_st *exec_st, int *return_value);
+void	error_permission_d(t_exec_st *exec_st,
+			int *return_value, char **cmd_paths);
+int		failed_cmd_msg(t_exec_st *exec_st, char **cmd_paths);
 
 #endif

@@ -23,6 +23,6 @@ void			env_clear(t_env **lst);
 char			**env_to_tab(t_env *env);
 t_env			*env_find(t_env *env, char *name);
 void			env_delone(t_env **env, char *name);
-int				env_next(int *i, int *a, char *temp_buff, const char *buff);
+int				env_next(t_env_parse *parse, char *temp_buff, const char *buff);
 
 #endif

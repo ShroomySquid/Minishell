@@ -25,85 +25,85 @@ int	get_pwd_length(void)
 	return ((int) i);
 }
 
-int	handle_edge_case_len(int b, int *i, int *a, char *buff)
+int	handle_edge_case_len(t_env_parse *parse, char *buff)
 {
-	if (b == 0)
+	if (parse->len == 0)
 	{
-		if (!buff[*i + 1] || is_white_space(buff[*i + 1])
-			|| buff[*i + 1] == buff[*i - 1])
-			*a += 1;
-		*i += 1;
+		if (!buff[parse->i + 1] || is_white_space(buff[parse->i + 1])
+			|| buff[parse->i + 1] == buff[parse->i - 1])
+			parse->a += 1;
+		parse->i += 1;
 		return (1);
 	}
-	if (!ft_strncmp(&buff[*i], "$PWD", b))
+	if (!ft_strncmp(&buff[parse->i], "$PWD", parse->len))
 	{
-		*a += get_pwd_length();
-		*i += b;
+		parse->a += get_pwd_length();
+		parse->i += parse->len;
 		return (1);
 	}
 	return (0);
 }
 
-int	get_env_name_len(int *i, int *a, int *b, t_env *cur_node)
+int	get_env_name_len(t_env_parse *parse, t_env *cur_node)
 {
-	*i += *b;
-	*b = 0;
-	while (cur_node->value[*b])
-		*b += 1;
-	*a += *b;
+	parse->i += parse->len;
+	parse->len = 0;
+	while (cur_node->value[parse->len])
+		parse->len += 1;
+	parse->a += parse->len;
 	return (1);
 }
 
-void	get_name_length(int *i, int *a, char *buff, t_env *env)
+void	get_name_length(t_env_parse *parse, char *buff, t_env *env)
 {
 	t_env	*cur_node;
-	int		b;
 
-	b = 0;
+	parse->len = 0;
 	cur_node = env;
-	while (buff[*i + b] && is_valid_env_char(buff[*i + b + 1]))
-		b++;
-	if (handle_edge_case_len(b, i, a, buff))
+	while (buff[parse->i + parse->len]
+		&& is_valid_env_char(buff[parse->i + parse->len + 1]))
+		parse->len++;
+	if (handle_edge_case_len(parse, buff))
 		return ;
 	while (cur_node->name)
 	{
-		if ((int)ft_strlen(cur_node->name) > b - 1
-			&& !ft_strncmp(&buff[*i + 1], cur_node->name, b - 1))
+		if ((int)ft_strlen(cur_node->name) > (parse->len - 1)
+			&& !ft_strncmp(&buff[parse->i + 1], cur_node->name, parse->len - 1))
 		{
-			get_env_name_len(i, a, &b, cur_node);
+			get_env_name_len(parse, cur_node);
 			break ;
 		}
 		else if (cur_node->next)
 			cur_node = cur_node->next;
 		else
 		{
-			*i += b;
+			parse->i += parse->len;
 			break ;
 		}
 	}
 }
 
-int	tb_length_env(char *buff, t_env *env, t_exec_st *exec_st)
+int	tb_len_env(char *buff, t_env *env,
+	t_exec_st *exec_st, t_env_parse *parse)
 {
-	int	i;
-	int	a;
-
-	i = 0;
-	a = 0;
-	while (buff[i])
+	parse->i = 0;
+	parse->a = 0;
+	while (buff[parse->i])
 	{
-		if ('\'' == buff[i])
-			to_end_quote_length(buff[i], buff, &i, &a);
-		if (buff[i] && buff[i] == '$' && buff[i + 1] == '?')
-			get_exit_code_length(&i, &a, exec_st);
-		if (buff[i] && buff[i] == '$' && !is_white_space(buff[i + 1]))
-			get_name_length(&i, &a, buff, env);
+		if ('\'' == buff[parse->i])
+			to_end_quote_length(buff[parse->i], buff, &parse->i, &parse->a);
+		if (buff[parse->i] && buff[parse->i]
+			== '$' && buff[parse->i + 1] == '?')
+			get_exit_code_length(parse, exec_st);
+		if (buff[parse->i] && buff[parse->i]
+			== '$' && !is_white_space(buff[parse->i + 1]))
+			get_name_length(parse, buff, env);
 		else
 		{
-			i++;
-			a++;
+			parse->i++;
+			parse->a++;
 		}
 	}
-	a++;
-	return (a);
+	parse->a++;
+	return (parse->a);
 }

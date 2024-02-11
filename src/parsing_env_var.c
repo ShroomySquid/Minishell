@@ -12,107 +12,87 @@
 
 #include "minishell.h"
 
-void	to_end_quote_var(const char *buff, char *temp_buff, int *i, int *a)
+int	handle_edge_case(t_env_parse *parse, char *buff, char *temp_buff)
 {
-	char	quote;
-
-	quote = buff[*i];
-	temp_buff[*a] = buff[*i];
-	*i += 1;
-	*a += 1;
-	while (buff[*i] && buff[*i] != quote)
+	if (parse->len == 0)
 	{
-		temp_buff[*a] = buff[*i];
-		*i += 1;
-		*a += 1;
-	}
-	if (buff[*i])
-	{
-		temp_buff[*a] = buff[*i];
-		*i += 1;
-		*a += 1;
-	}
-}
-
-int	handle_edge_case(int b, int *i, int *a, char *buff, char *temp_buff)
-{
-	if (b == 0)
-	{
-		if (!buff[*i + 1] || is_white_space(buff[*i + 1])
-			|| buff[*i + 1] == buff[*i - 1])
+		if (!buff[parse->i + 1] || is_white_space(buff[parse->i + 1])
+			|| buff[parse->i + 1] == buff[parse->i - 1])
 		{
-			temp_buff[*a] = buff[*i];
-			*a += 1;
+			temp_buff[parse->a] = buff[parse->i];
+			parse->a += 1;
 		}
-		*i += 1;
+		parse->i += 1;
 		return (1);
 	}
-	if (!ft_strncmp(&buff[*i + 1], "PWD", b - 1))
+	if (!ft_strncmp(&buff[parse->i + 1], "PWD", parse->len - 1))
 	{
-		get_pwd(temp_buff, a);
-		*i += b + 1;
+		get_pwd(temp_buff, &parse->a);
+		parse->i += parse->len + 1;
 		return (1);
 	}
 	return (0);
 }
 
-void	replace_name(char *temp_buff, t_env *cur_node, int *a)
+void	replace_name(char *temp_buff, t_env *cur_node, t_env_parse *parse)
 {
 	int	len;
 
 	len = 0;
 	while (cur_node->value[len])
 	{
-		temp_buff[*a] = cur_node->value[len];
-		*a += 1;
+		temp_buff[parse->a] = cur_node->value[len];
+		parse->a += 1;
 		len += 1;
 	}
 }
 
-void	get_name(char *buff, char *temp_buff, int *i, int *a, t_env *env)
+void	get_name(char *buff, char *temp_buff, t_env_parse *parse, t_env *env)
 {
-	int		b;
 	t_env	*cur_node;
 	char	*name;
 
-	b = 0;
-	while (buff[*i + b] && is_valid_env_char(buff[*i + b + 1]))
-		b++;
-	if (handle_edge_case(b, i, a, buff, temp_buff))
+	parse->len = 0;
+	while (buff[parse->i + parse->len]
+		&& is_valid_env_char(buff[parse->i + parse->len + 1]))
+		parse->len++;
+	if (handle_edge_case(parse, buff, temp_buff))
 		return ;
-	name = ft_substr(&buff[*i + 1], 0, b);
+	name = ft_substr(&buff[parse->i + 1], 0, parse->len);
 	if (!name)
 		return ;
 	cur_node = env_find(env, name);
 	if (cur_node)
-		replace_name(temp_buff, cur_node, a);
+		replace_name(temp_buff, cur_node, parse);
 	free(name);
-	*i += b + 1;
+	parse->i += parse->len + 1;
 }
 
 char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
 {
-	char	*temp_buff;
-	int		i;
-	int		a;
+	char		*temp_buff;
+	t_env_parse	*par;
 
-	temp_buff = ft_calloc(tb_length_env(buff, env, exec_st), sizeof(char));
+	par = ft_calloc(sizeof(t_env_parse), 1);
+	if (!par)
+		return (NULL);
+	temp_buff = ft_calloc(tb_len_env(buff, env, exec_st, par), sizeof(char));
 	if (!temp_buff)
 		return (NULL);
-	i = 0;
-	a = 0;
-	while (buff[i])
+	par->i = 0;
+	par->a = 0;
+	while (buff[par->i])
 	{
-		if ('\'' == buff[i])
-			to_end_quote_var(buff, temp_buff, &i, &a);
-		if (buff[i] && buff[i] == '$' && buff[i + 1] == '?')
-			get_exit_code(&i, &a, exec_st, temp_buff);
-		if (buff[i] && buff[i] == '$' && !is_white_space(buff[i + 1]))
-			get_name(buff, temp_buff, &i, &a, env);
+		if ('\'' == buff[par->i])
+			to_end_quote_var(buff, temp_buff, par);
+		if (buff[par->i] && buff[par->i] == '$' && buff[par->i + 1] == '?')
+			get_exit_code(par, exec_st, temp_buff);
+		if (buff[par->i] && buff[par->i] == '$'
+			&& !is_white_space(buff[par->i + 1]))
+			get_name(buff, temp_buff, par, env);
 		else
-			env_next(&i, &a, temp_buff, buff);
+			env_next(par, temp_buff, buff);
 	}
-	temp_buff[a] = '\0';
-	free (buff);
-	return (temp_buff);
+	temp_buff[par->a] = '\0';
+	return (free(buff), free(par), temp_buff);
 }

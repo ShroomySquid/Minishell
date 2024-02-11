@@ -13,9 +13,9 @@
 #include "minishell.h"
 #include <sys/stat.h>
 
-int innit_child_process(t_exec_st *exec_st, char **line)
+int	innit_child_process(t_exec_st *exec_st, char **line)
 {
-	int ite;
+	int	ite;
 
 	ite = 0;
 	while (ft_strncmp("|", line[exec_st->cmd_ptr + ite], 2))
@@ -32,7 +32,8 @@ int innit_child_process(t_exec_st *exec_st, char **line)
 	return (check_redirection(exec_st->cmd_args, exec_st));
 }
 
-void	check_error(t_exec_st *exec_st, int *return_value, char **cmd_paths, struct stat *buf)
+void	check_error(t_exec_st *exec_st,
+	int *return_value, char **cmd_paths, struct stat *buf)
 {
 	if (b_is_builtin(exec_st->cmd_args[0]))
 		return_value = 0;

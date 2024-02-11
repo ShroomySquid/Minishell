@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/11 10:46:10 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/11 18:04:02 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ int	innit_main(int argc, char **argv, t_exec_st **exec_st)
 	}
 	(*exec_st)->temp_stdout = dup(STDOUT_FILENO);
 	(*exec_st)->temp_stdin = dup(STDIN_FILENO);
-	(*exec_st)->hd_i = 0;
 	if (!(*exec_st)->temp_stdin || !(*exec_st)->temp_stdout)
 		return (error_dup(*exec_st));
 	(*exec_st)->ope_quotes = set_ope_quotes();
@@ -131,6 +130,25 @@ int	innit_main(int argc, char **argv, t_exec_st **exec_st)
 		return (1);
 	}
 	return (0);
+}
+/*
+int	innit_line(char *buff, t_exec_st *exec_st)
+{
+	dup2(exec_st->temp_stdin, STDIN_FILENO);
+	dup2(exec_st->temp_stdout, STDOUT_FILENO);
+	setup_interactive();
+	buff = recieve_input();
+	return (buff);
+}
+*/
+
+int final_exit(t_exec_st *exec_st, t_env *env)
+{
+	exec_st->ret = 0;
+	close(exec_st->temp_stdin);
+	close(exec_st->temp_stdout);
+	b_true_exit(NULL, exec_st, env, true);
+	return (1);
 }
 
 int	main(int argc, char	**argv, char **envp)
@@ -161,7 +179,10 @@ int	main(int argc, char	**argv, char **envp)
 		exec_st->pipes_nbr = seek_pipe(line_args, exec_st);
 		exec_st->hd_list = ft_calloc(exec_st->nbr_hd + 3, sizeof(int));
 		if (!exec_st->hd_list)
+		{
 			error_malloc_hd(exec_st, line_args);
+			break ;
+		}
 		if (exec_st->pipes_nbr == 0 && b_is_builtin(line_args[0]))
 		{
 			if (exec_builtin(line_args, env, exec_st) == 1)
@@ -171,9 +192,5 @@ int	main(int argc, char	**argv, char **envp)
 			exec_line(exec_st, line_args, env);
 		free_moi_ca(NULL, line_args, exec_st);
 	}
-	exec_st->ret = 0;
-	close(exec_st->temp_stdin);
-	close(exec_st->temp_stdout);
-	b_true_exit(NULL, exec_st, env, true);
-	return (0);
+	return (final_exit(exec_st, env));
 }
