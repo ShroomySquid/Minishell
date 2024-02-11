@@ -1,4 +1,5 @@
  Checker les leaks
  Pour les pipes:
  Pour les guillemets / ft_split_quote:
- Pour redirections:
+ Pour redirectionso:
+ double free interuption here_doc

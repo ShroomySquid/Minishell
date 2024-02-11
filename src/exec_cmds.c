@@ -6,11 +6,34 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/07 10:13:10 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/11 10:39:40 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_exit(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
+{
+	if (exec_st->cmd_args)
+		free_all(exec_st->cmd_args);
+	free_all(cmd_paths);
+	free_all(line);
+	free(exec_st->child_list);
+	b_true_exit(NULL, exec_st, env, false);
+}
+
+void	child_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
+{
+	setup_non_interactive();
+	exec_st->ret = 0;
+	exec_st->env = env;
+	if (child_process(exec_st, line, cmd_paths))
+		free_exit(exec_st, cmd_paths, env, line);
+	if (!exec_st->cmd_args || execute(cmd_paths[exec_st->i],
+			exec_st->cmd_args, env, &exec_st->ret) == -1)
+		perror("Cmd failed to execute");
+	free_exit(exec_st, cmd_paths, env, line);
+}
 
 int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 {
@@ -22,26 +45,7 @@ int	run_each_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 		if (exec_st->child < 0)
 			return (1);
 		if (!exec_st->child)
-		{
-			setup_non_interactive();
-			exec_st->ret = 0;
-			exec_st->env = env;
-			if (child_process(exec_st, line, cmd_paths))
-			{
-				free_all(cmd_paths);
-				free_all(line);
-				free(exec_st->child_list);
-				b_true_exit(NULL, exec_st, env, false);
-			}
-			if (!exec_st->cmd_args || execute(cmd_paths[exec_st->i],
-					exec_st->cmd_args, env, &exec_st->ret) == -1)
-				perror("Cmd failed to execute");
-			free_all(exec_st->cmd_args);
-			free_all(cmd_paths);
-			free_all(line);
-			free(exec_st->child_list);
-			b_true_exit(NULL, exec_st, env, false);
-		}
+			child_cmd(exec_st, cmd_paths, env, line);
 		else
 		{
 			exec_st->child_list[exec_st->i] = exec_st->child;

@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/08 14:27:03 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/11 10:46:10 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ int	innit_main(int argc, char **argv, t_exec_st **exec_st)
 	}
 	(*exec_st)->temp_stdout = dup(STDOUT_FILENO);
 	(*exec_st)->temp_stdin = dup(STDIN_FILENO);
+	(*exec_st)->hd_i = 0;
 	if (!(*exec_st)->temp_stdin || !(*exec_st)->temp_stdout)
 		return (error_dup(*exec_st));
 	(*exec_st)->ope_quotes = set_ope_quotes();

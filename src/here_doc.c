@@ -47,7 +47,7 @@ void	finish_here_doc(t_exec_st *exec_st)
 {
 	exec_st->cmd++;
 	exec_st->hd_list[exec_st->cmd] = 0;
-	exec_st->cmd = 0;
+	exec_st->cmd = -1;
 }
 
 int	here_doc_input(t_exec_st *exec_st, char **line_args, int i, t_env *env)
@@ -76,20 +76,15 @@ int	trigger_here_docs(char **line_args, t_exec_st *exec_st, t_env *env)
 	int	file;
 
 	exec_st->cmd = 0;
-	exec_st->hd_bool = 0;
 	i = 0;
 	while (line_args[i] && line_args[i + 1])
 	{
 		if (!ft_strncmp("<<", line_args[i], 3))
 		{
 			file = here_doc_input(exec_st, line_args, i, env);
+			exec_st->cmd++;
 			if (file < 0)
 				return (0);
-		}
-		if (!ft_strncmp("|", line_args[i], 2) && exec_st->hd_bool)
-		{
-			exec_st->hd_bool = 0;
-			exec_st->cmd++;
 		}
 		i++;
 	}
