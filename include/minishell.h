@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/02/11 18:01:43 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/11 18:12:29 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ void	to_end_quote_var(const char *buff, char *temp_buff, t_env_parse *parse);
 void	r_redirect(t_redir *redir, char *given_file);
 void	ra_redirect(t_redir *redir, char *given_file);
 void	l_redirect(t_redir *redir, char *given_file);
+int		seek_pipe(char **line_args, t_exec_st *exec_st);
+void	free_moi_ca(char **cmd_paths, char **line_args, t_exec_st *exec_st);
+char	*recieve_input(void);
+char	**parsing_line(char *buff, t_exec_st *exec_st, t_env *env);
+int		innit_main(int argc, char **argv, t_exec_st **exec_st);
 
 void	print_array(char **array_str);
 
