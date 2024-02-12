@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 12:02:04 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/04 10:12:41 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/12 12:04:51 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ static char	**split_it_quote(char *s, char **final_array)
 		if (*s)
 		{
 			end_str = find_next_str(s);
-			final_array[i++] = ft_substr(s, 0, (end_str - s));
+			final_array[i] = ft_substr(s, 0, (end_str - s));
+			i++;
 			if (!final_array[i - 1])
 				return (free_all(final_array));
 			s = end_str;

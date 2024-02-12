@@ -1,8 +1,6 @@
  Checker les leaks
- Pour les pipes:
- Pour les guillemets / ft_split_quote:
- Pour redirectionso:
  double free interuption here_doc
  bug malloc cd ..
- Bug si on fini avec redirection sans fichier
+ Bug redirection sans fichier.
+ Bug echo double free
  Bug si opérateur répétés trop de fois d'affilé (Ou pas?)

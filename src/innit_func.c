@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/11 18:50:52 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:31:09 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,14 @@ int	seek_pipe(char	**line_args, t_exec_st *exec_st)
 {
 	int	i;
 	int	pipe_nbr;
-	int	last_cmd_hd;
 
 	i = 0;
 	pipe_nbr = 0;
 	exec_st->nbr_hd = 0;
-	last_cmd_hd = -1;
 	while (line_args[i])
 	{
-		if (!ft_strncmp("<<", line_args[i], 3) && last_cmd_hd != pipe_nbr)
-		{
+		if (!ft_strncmp("<<", line_args[i], 3))
 			exec_st->nbr_hd++;
-			last_cmd_hd = pipe_nbr;
-		}
 		if (!ft_strncmp("|", line_args[i], 2))
 			pipe_nbr++;
 		i++;

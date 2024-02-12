@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:26:19 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/07 13:04:59 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:42:45 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,11 @@ static int	get_line(int i, char **return_buf, char *buf_static, int fd)
 	a = 0;
 	if (*return_buf)
 		temp_buf2 = *return_buf;
-	while ((i + a) < BUFFER_SIZE && buf_static[i + a] 
+	while ((i + a) < BUFFER_SIZE && buf_static[i + a]
 		&& buf_static[i + a] != '\n')
 		a++;
 	if ((i + a) < BUFFER_SIZE || buf_static[i + a] == '\n')
-		return (temp_buf = ft_substr(&buf_static[i], 0, a + 1), 
+		return (temp_buf = ft_substr(&buf_static[i], 0, a + 1),
 			finish_get_line(temp_buf, temp_buf2, return_buf));
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/11 18:50:47 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:43:01 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,11 @@ int	run_minishell(t_exec_st *exec_st, t_env *env)
 	exec_st->hd_list = ft_calloc(exec_st->nbr_hd + 3, sizeof(int));
 	if (!exec_st->hd_list)
 		return (error_malloc_hd(exec_st, line_args), 1);
-	if (exec_st->pipes_nbr == 0 && b_is_builtin(line_args[0])
-		&& exec_builtin(line_args, env, exec_st) == 1)
-		return (0);
+	if (exec_st->pipes_nbr == 0 && b_is_builtin(line_args[0]))
+	{
+		if (exec_builtin(line_args, env, exec_st) == 1)
+			return (0);
+	}
 	else
 		exec_line(exec_st, line_args, env);
 	free_moi_ca(NULL, line_args, exec_st);

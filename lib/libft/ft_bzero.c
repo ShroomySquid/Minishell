@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@42quebec.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 11:54:43 by fbarrett          #+#    #+#             */
-/*   Updated: 2023/10/24 16:24:37 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:41:50 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,5 @@
 /* Écrit des zéros partout dans le array donné pour la taille donné */
 void	ft_bzero(void *s, size_t n)
 {
-	ft_memset(s, 0, n); 
+	ft_memset(s, 0, n);
 }

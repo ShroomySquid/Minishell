@@ -6,13 +6,13 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 09:12:17 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/07 12:35:20 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:42:11 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_verifiedbase_fd(unsigned int n, 
+void	ft_putnbr_verifiedbase_fd(unsigned int n,
 		int fd, char *base, unsigned int base_type)
 {
 	if (n > base_type)

@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/06 19:10:40 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:26:22 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	to_end_quote_length(char quote, const char *buff, int *i, int *a)
 
 void	operators_extra_len(char *buff, int *a, int *i)
 {
-	if (buff[*i - 1] && buff[*i - 1] != ' ')
+	if (*i > 0 && buff[*i - 1] != ' ')
 		*a += 1;
 	if (buff[*i + 1] && buff[*i + 1] != ' ')
 		*a += 1;
@@ -34,7 +34,7 @@ void	operators_extra_len(char *buff, int *a, int *i)
 		if (buff[*i + 2] && buff[*i + 2] != ' ')
 			*a += 1;
 	}
-	if (buff[*i] == '<' && buff[*i + 1] && buff[*i + 1] == '<')
+	if (buff[*i] == '>' && buff[*i + 1] && buff[*i + 1] == '>')
 	{
 		if (buff[*i + 2] && buff[*i + 2] != ' ')
 			a += 1;
@@ -63,7 +63,7 @@ int	tb_length(char *buff)
 
 void	operator_found(char *buff, char *temp_buff, int *i, int *a)
 {
-	if (buff[*i - 1] && buff[*i - 1] != ' ' && buff[*i - 1] != buff[*i])
+	if (*i > 0 && buff[*i - 1] != ' ' && buff[*i - 1] != buff[*i])
 	{
 		temp_buff[*i + *a] = ' ';
 		*a += 1;

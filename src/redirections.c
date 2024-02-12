@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/11 10:39:21 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:41:23 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	redirect_em(char **line, t_redir *redir, t_exec_st *exec_st)
 {
-	if (!ft_strncmp(">", line[redir->i], 2))
+	if (!ft_strncmp(">", line[redir->i], 2) && line[redir->i + 1])
 		r_redirect(redir, line[redir->i + 1]);
-	else if (!ft_strncmp(">>", line[redir->i], 3))
+	else if (!ft_strncmp(">>", line[redir->i], 3) && line[redir->i + 1])
 		ra_redirect(redir, line[redir->i + 1]);
-	else if (!ft_strncmp("<", line[redir->i], 2))
+	else if (!ft_strncmp("<", line[redir->i], 2) && line[redir->i + 1])
 		l_redirect(redir, line[redir->i + 1]);
-	else if (!ft_strncmp("<<", line[redir->i], 3))
+	else if (!ft_strncmp("<<", line[redir->i], 3) && line[redir->i + 1])
 	{
 		if (redir->max_here_doc)
 			redir->file = read_here_doc(exec_st);
@@ -32,8 +32,9 @@ void	redirect_em(char **line, t_redir *redir, t_exec_st *exec_st)
 int	check_redirection(char **line, t_exec_st *exec_st)
 {
 	t_redir	*redir;
+	int		return_value;
 
-	redir = ft_calloc(sizeof(redir), 1);
+	redir = ft_calloc(sizeof(t_redir), 1);
 	if (!redir)
 		return (-1);
 	redir->i = 0;
@@ -51,8 +52,9 @@ int	check_redirection(char **line, t_exec_st *exec_st)
 		}
 		redir->i += 1;
 	}
+	return_value = redir->i - redir->a;
 	free(redir);
-	return (redir->i - redir->a);
+	return (return_value);
 }
 
 int	is_redirect(char **line, int i)
@@ -78,7 +80,7 @@ char	**line_rm_redirection(char **line, int args_nbr)
 		return (0);
 	while (line[i])
 	{
-		if (is_redirect(line, i))
+		if (is_redirect(line, i) && line[i + 1])
 		{
 			i += 2;
 			a += 2;
