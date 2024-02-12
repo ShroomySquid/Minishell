@@ -16,20 +16,21 @@
 int	b_echo(char **args, char **env)
 {
 	bool	n_flag;
+	int		i;
 
 	(void)env;
 	n_flag = false;
-	args++;
-	if (args[0] && ft_strcmp(args[0], "-n") == 0)
+	i = 1;
+	if (args[1] && ft_strcmp(args[1], "-n") == 0)
 	{
 		n_flag = true;
-		args++;
+		i++;
 	}
-	while (*args)
+	while (args[i])
 	{
-		ft_printf("%s", *args);
-		args++;
-		if (*args)
+		ft_printf("%s", args[i]);
+		i++;
+		if (args[i])
 			ft_printf(" ");
 	}
 	if (!n_flag)

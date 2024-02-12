@@ -89,7 +89,7 @@ char	**line_rm_redirection(char **line, int args_nbr)
 		line_args[i - a] = ft_strdup(line[i]);
 		i++;
 	}
-	line_args[i - a] = 0;
-	free (line);
+	line_args[args_nbr] = 0;
+	free_all(line);
 	return (line_args);
 }

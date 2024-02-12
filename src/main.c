@@ -13,30 +13,30 @@
 #include <stdbool.h>
 #include "minishell.h"
 
-int	exec_builtin(char **line_args, t_env *env, t_exec_st *exec_st)
+int	exec_builtin(char ***line_args, t_env *env, t_exec_st *exec_st)
 {
 	exec_st->ret = 0;
-	line_args = line_rm_redirection(line_args,
-			check_redirection(line_args, exec_st));
-	if (!line_args || exec_st->ret)
+	trigger_here_docs(*line_args, exec_st, env);
+	*line_args = line_rm_redirection(*line_args,
+			check_redirection(*line_args, exec_st));
+	if (!*line_args || exec_st->ret)
 	{
-		free_all(line_args);
+		free_all(*line_args);
 		exec_st->ret = 1;
 		return (1);
 	}
-	if (line_args[0] && !ft_strncmp(line_args[0], "exit", 5))
+	if (line_args[0] && !ft_strncmp(*line_args[0], "exit", 5))
 	{
-		b_true_exit(line_args, exec_st, env, true);
+		b_true_exit(*line_args, exec_st, env, true);
 		return (1);
 	}
-	else if (is_env_cmd(line_args[0]))
+	else if (is_env_cmd(*line_args[0]))
 	{
-		exec_st->ret = exec_env(line_args[0], line_args, env);
-		free_moi_ca(NULL, line_args, exec_st);
+		exec_st->ret = exec_env(*line_args[0], *line_args, env);
+		free_moi_ca(NULL, *line_args, exec_st);
 		return (1);
 	}
-	trigger_here_docs(line_args, exec_st, env);
-	execute(line_args[0], line_args, env, &exec_st->ret);
+	execute(*line_args[0], *line_args, env, &exec_st->ret);
 	return (0);
 }
 
@@ -74,7 +74,7 @@ int	run_minishell(t_exec_st *exec_st, t_env *env)
 		return (error_malloc_hd(exec_st, line_args), 1);
 	if (exec_st->pipes_nbr == 0 && b_is_builtin(line_args[0]))
 	{
-		if (exec_builtin(line_args, env, exec_st) == 1)
+		if (exec_builtin(&line_args, env, exec_st) == 1)
 			return (0);
 	}
 	else

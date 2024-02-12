@@ -20,9 +20,9 @@ static int	here_doc_readline(char *delimiter, int file, t_env *env,
 	while (1)
 	{
 		buff = readline("Input something: ");
-		if (!buff)
+		if (!buff && !rl_eof_found)
 			return (-1);
-		if (!ft_strncmp(delimiter, buff, ft_strlen(delimiter)))
+		if (rl_eof_found || !ft_strncmp(delimiter, buff, ft_strlen(delimiter)))
 			break ;
 		buff = parse_env_var(buff, env, exec_st);
 		write(file, buff, ft_strlen(buff));
@@ -60,10 +60,7 @@ int	here_doc_input(t_exec_st *exec_st, char **line_args, int i, t_env *env)
 		return (-1);
 	file = here_doc(line_args[i + 1], exec_st, env);
 	if (file < 0)
-	{
-		free(exec_st->hd_list);
 		return (file);
-	}
 	exec_st->hd_list[exec_st->cmd] = exec_st->fd[0];
 	exec_st->hd_bool = 1;
 	return (file);
