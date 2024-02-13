@@ -90,7 +90,7 @@ char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
 		if (buff[par->i] && buff[par->i] == '$'
 			&& !is_white_space(buff[par->i + 1]))
 			get_name(buff, temp_buff, par, env);
-		else
+		else if (buff[par->i])
 			env_next(par, temp_buff, buff);
 	}
 	temp_buff[par->a] = '\0';

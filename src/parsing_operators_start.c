@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/12 13:26:22 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/13 10:19:10 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,12 @@ char	*parse_operators(char *buff)
 	{
 		if (buff[i] == 34 || 39 == buff[i])
 			to_end_quote(buff, temp_buff, &i, a);
-		if (buff[i] == '<' || buff[i] == '>' || buff[i] == '|')
+		if (buff[i] && (buff[i] == '<' || buff[i] == '>' || buff[i] == '|'))
 			operator_found(buff, temp_buff, &i, &a);
-		else
+		else if (buff[i])
 			temp_buff[i + a] = buff[i];
-		i++;
+		if (buff[i])
+			i++;
 	}
 	temp_buff[i + a] = '\0';
 	return (temp_buff);
