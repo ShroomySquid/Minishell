@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:12:05 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/26 16:12:33 by gcrepin          ###   ########.fr       */
+/*   Updated: 2024/02/13 18:00:37 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,9 @@ char	**export_to_tab(t_env *env)
 		}
 		else
 			envp[i] = ft_strdup(tmp->name);
-		if (!envp[i])
-		{
-			free_all(envp);
-			return (NULL);
-		}
+		if (!envp[i++])
+			return (free_all(envp), NULL);
 		tmp = tmp->next;
-		i++;
 	}
 	return (envp);
 }

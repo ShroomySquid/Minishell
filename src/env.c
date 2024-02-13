@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:24:32 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/26 16:24:51 by gcrepin          ###   ########.fr       */
+/*   Updated: 2024/02/13 17:57:37 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ t_env	*env_innit(char **envp)
 	int		i;
 
 	i = -1;
-	env = NULL;
 	if (!envp)
 		return (NULL);
 	env = env_new(NULL, NULL);
@@ -80,13 +79,9 @@ char	**env_to_tab(t_env *env)
 		name = ft_strjoin(tmp->name, "=");
 		envp[i] = ft_strjoin(name, tmp->value);
 		free(name);
-		if (!envp[i])
-		{
-			free_all(envp);
-			return (NULL);
-		}
+		if (!envp[i++])
+			return (free_all(envp), NULL);
 		tmp = tmp->next;
-		i++;
 	}
 	return (envp);
 }
