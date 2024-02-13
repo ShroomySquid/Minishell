@@ -12,16 +12,17 @@
 
 #include "env.h"
 
-static int	env_len(t_env *env)
+int	env_len(t_env *env)
 {
 	int		i;
 	t_env	*tmp;
 
 	i = 0;
-	tmp = env;
+	tmp = env->next;
 	while (tmp)
 	{
-		i++;
+		if (tmp->value)
+			i++;
 		tmp = tmp->next;
 	}
 	return (i);
@@ -37,6 +38,7 @@ t_env	*env_innit(char **envp)
 	env = NULL;
 	if (!envp)
 		return (NULL);
+	env = env_new(NULL, NULL);
 	while (envp[++i])
 	{
 		split = ft_calloc(3, sizeof(char *));
@@ -64,12 +66,17 @@ char	**env_to_tab(t_env *env)
 	char	*name;
 
 	i = 0;
-	tmp = env;
+	tmp = env->next;
 	envp = ft_calloc(env_len(env) + 1, sizeof(char *));
 	if (!envp)
 		return (NULL);
 	while (tmp)
 	{
+		if (!tmp->value)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
 		name = ft_strjoin(tmp->name, "=");
 		envp[i] = ft_strjoin(name, tmp->value);
 		free(name);
@@ -84,14 +91,28 @@ char	**env_to_tab(t_env *env)
 	return (envp);
 }
 
+t_env	*export_find(t_env *env, char *name)
+{
+	t_env	*tmp;
+
+	tmp = env->next;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->name, name))
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
 t_env	*env_find(t_env *env, char *name)
 {
 	t_env	*tmp;
 
-	tmp = env;
+	tmp = env->next;
 	while (tmp)
 	{
-		if (!ft_strcmp(tmp->name, name))
+		if (!ft_strcmp(tmp->name, name) && tmp->value)
 			return (tmp);
 		tmp = tmp->next;
 	}

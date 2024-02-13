@@ -27,7 +27,7 @@ int	b_parent_unset(char **args, t_env *env)
 	i = 1;
 	while (args[i])
 	{
-		if (env_find(env, args[i]))
+		if (export_find(env, args[i]))
 			env_delone(&env, args[i]);
 		i++;
 	}

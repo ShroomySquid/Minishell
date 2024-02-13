@@ -49,7 +49,6 @@ void	innit_line(t_exec_st *exec_st)
 
 int	final_exit(t_exec_st *exec_st, t_env *env)
 {
-	exec_st->ret = 0;
 	close(exec_st->temp_stdin);
 	close(exec_st->temp_stdout);
 	b_true_exit(NULL, exec_st, env, true);

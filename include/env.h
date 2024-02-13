@@ -24,5 +24,8 @@ char			**env_to_tab(t_env *env);
 t_env			*env_find(t_env *env, char *name);
 void			env_delone(t_env **env, char *name);
 int				env_next(t_env_parse *parse, char *temp_buff, const char *buff);
+int				env_len(t_env *env);
+char			**export_to_tab(t_env *env);
+int				export_len(t_env *env);
 
 #endif

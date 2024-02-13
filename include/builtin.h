@@ -40,7 +40,8 @@ int		is_env_cmd(char *path);
 int		exec_env(char *path, char **args, t_env *envp);
 int		get_pwd(char *temp_buff, int *a);
 void	b_identifier_export_error(char *arg);
-void	b_export_final(t_env *env, char *arg);
+void	b_export_final(t_env **env, char *arg);
+t_env	*export_find(t_env *env, char *arg);
 
 extern const t_builtin	g_builtin[];
 
