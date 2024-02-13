@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:52:31 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/11 17:12:20 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/13 15:38:13 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_exec_st
 	int		hd_bool;
 	int		hd_i;
 	int		*hd_list;
+	char	*error;
 	char	**cmd_args;
 	char	**ope_quotes;
 	t_env	*env;

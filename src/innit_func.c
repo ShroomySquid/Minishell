@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/13 11:57:40 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/13 17:34:06 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,25 @@ char	**parsing_line(char *buff, t_exec_st *exec_st, t_env *env)
 	char	*temp_buff;
 
 	add_history(buff);
+	temp_buff = parse_errors(buff);
+	if (temp_buff)
+	{
+		free(buff);
+		error_parsing(temp_buff);
+		return (NULL);
+	}
 	temp_buff = parse_operators(buff);
 	temp_buff = parse_env_var(temp_buff, env, exec_st);
 	temp_line = ft_split_quote(temp_buff);
 	remove_quotes(temp_line, exec_st);
 	free(temp_buff);
+	temp_buff = parse_errors_again(temp_line);
+	if (temp_buff)
+	{
+		free(buff);
+		error_parsing(temp_buff);
+		return (NULL);
+	}
 	free(buff);
 	return (temp_line);
 }

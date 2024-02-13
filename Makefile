@@ -8,7 +8,7 @@ OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o src/sig_center.o
 	src/here_doc.o	src/redirections.o	src/here_doc_utils.o src/env_utils.o src/env.o src/exec_env.o \
 	src/parsing_operators.o	src/parsing_quotes.o src/parsing_operators_start.o src/error_func.o \
 	src/exec_cmds.o src/parsing_env_var.o src/parsing_env_var_len.o src/parsing_env_utils.o \
-	src/b_export_utils.o src/error_func_2.o	src/parent_process.o	src/redirections_utils.o	src/innit_func.o
+	src/b_export_utils.o src/error_func_2.o	src/parent_process.o	src/redirections_utils.o	src/innit_func.o src/parse_error.o
 DEPS = -I./include -I./lib/libft -I/Users/$(USER)/.brew/opt/readline/include
 READLINE_LIB = -L/Users/$(USER)/.brew/opt/readline/lib -lreadline -lhistory
 INCLUDES = $(OBJECTS:.o=.d)

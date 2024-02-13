@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/12 13:43:01 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/13 15:31:40 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	run_minishell(t_exec_st *exec_st, t_env *env)
 		return (1);
 	line_args = parsing_line(buff, exec_st, env);
 	if (!line_args || !line_args[0])
-		return (error_parsing(line_args), 0);
+		return (0);
 	exec_st->pipes_nbr = seek_pipe(line_args, exec_st);
 	exec_st->hd_list = ft_calloc(exec_st->nbr_hd + 3, sizeof(int));
 	if (!exec_st->hd_list)
