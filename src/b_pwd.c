@@ -44,7 +44,10 @@ char	*b_get_pwd_short(char **args)
 		return (0);
 	}
 	if (!home)
+	{
+		free(pwd);
 		return (0);
+	}
 	if (ft_strncmp(pwd, home, ft_strlen(home)) == 0)
 	{
 		short_pwd = ft_strjoin("~", pwd + ft_strlen(home));

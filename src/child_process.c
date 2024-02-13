@@ -58,6 +58,7 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 	if (new_malloc >= 0)
 	{
 		exec_st->cmd_args = line_rm_redirection(exec_st->cmd_args, new_malloc);
+		free(cmd_paths[exec_st->i]);
 		cmd_paths[exec_st->i] = seek_cmd(exec_st->cmd_args[0], exec_st->env);
 		fix_quotes(&exec_st->cmd_args, exec_st);
 	}

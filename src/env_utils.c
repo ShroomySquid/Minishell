@@ -19,12 +19,13 @@ t_env	*env_new(char *name, char *value)
 	new = ft_calloc(1, sizeof(t_env));
 	if (!new)
 		return (NULL);
+	if (!name)
+		return (new);
 	new->name = ft_strdup(name);
-	new->value = ft_strdup(value);
+	if (value)
+		new->value = ft_strdup(value);
 	new->next = NULL;
-	if (!new->value && !value)
-		new->value = ft_strdup("");
-	if (!new->name || !new->value)
+	if (!new->name || (value && !new->value))
 	{
 		free(new->name);
 		free(new->value);
@@ -41,7 +42,7 @@ void	env_delone(t_env **env, char *name)
 
 	if (!env || !*env)
 		return ;
-	tmp = *env;
+	tmp = (*env)->next;
 	prev = NULL;
 	while (tmp)
 	{
@@ -92,4 +93,37 @@ void	env_clear(t_env **env)
 		free(*env);
 		*env = tmp;
 	}
+}
+
+char	**export_to_tab(t_env *env)
+{
+	char	**envp;
+	int		i;
+	t_env	*tmp;
+	char	*name;
+
+	i = 0;
+	tmp = env->next;
+	envp = ft_calloc(export_len(env) + 1, sizeof(char *));
+	if (!envp)
+		return (NULL);
+	while (tmp)
+	{
+		if (tmp->value)
+		{
+			name = ft_strjoin(tmp->name, "=");
+			envp[i] = ft_strjoin(name, tmp->value);
+			free(name);
+		}
+		else
+			envp[i] = ft_strdup(tmp->name);
+		if (!envp[i])
+		{
+			free_all(envp);
+			return (NULL);
+		}
+		tmp = tmp->next;
+		i++;
+	}
+	return (envp);
 }

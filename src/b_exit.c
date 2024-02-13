@@ -78,6 +78,8 @@ int	b_true_exit(char **buff, void *exec_st_t, t_env *env, bool verbose)
 		free(exec_st->hd_list);
 	if (exec_st->ope_quotes)
 		free_all(exec_st->ope_quotes);
+	close(exec_st->temp_stdin);
+	close(exec_st->temp_stdout);
 	free(exec_st);
 	env_clear(&env);
 	b_exit(buff, ret);

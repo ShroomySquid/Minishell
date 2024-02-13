@@ -41,7 +41,7 @@ static int	b_export_no_args(t_env *env)
 	char	**tab;
 	char	**hold;
 
-	tab = env_to_tab(env);
+	tab = export_to_tab(env);
 	hold = tab;
 	if (!tab)
 		return (1);
@@ -103,7 +103,7 @@ int	b_parent_export(char **args, t_env *env)
 			ret = 1;
 		}
 		else
-			b_export_final(env, args[1]);
+			b_export_final(&env, args[1]);
 	}
 	return (ret);
 }
