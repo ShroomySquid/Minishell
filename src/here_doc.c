@@ -66,6 +66,7 @@ int	trigger_here_docs(char **line_args, t_exec_st *exec_st, t_env *env)
 
 	exec_st->cmd = 0;
 	i = 0;
+	file = 0;
 	while (line_args[i] && line_args[i + 1])
 	{
 		if (!ft_strncmp("<<", line_args[i], 3))

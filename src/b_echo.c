@@ -13,6 +13,23 @@
 #include "minishell.h"
 #include <stdbool.h>
 
+static int	is_n_flag(const char *arg)
+{
+	int	i;
+
+	i = 2;
+	if (!arg)
+		return (0);
+	if (arg[0] == '-' && arg[1] == 'n')
+		while (arg[i] == 'n')
+			i++;
+	else
+		return (0);
+	if (arg[i] == '\0')
+		return (1);
+	return (0);
+}
+
 int	b_echo(char **args, char **env)
 {
 	bool	n_flag;
@@ -21,7 +38,7 @@ int	b_echo(char **args, char **env)
 	(void)env;
 	n_flag = false;
 	i = 1;
-	if (args[1] && ft_strcmp(args[1], "-n") == 0)
+	while (is_n_flag(args[i]))
 	{
 		n_flag = true;
 		i++;

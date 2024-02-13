@@ -1,5 +1,5 @@
 CFLAGS= -Wextra -Wall -Werror -MMD
-DEBUG_CFLAGS= -fsanitize=address $(CFLAGS)
+DEBUG_CFLAGS= $(CFLAGS) -g
 LIBS	:= -lft -L./lib/libft
 NAME = minishell
 OBJECTS = src/main.o src/ft_split_quote.o src/minishell_utils.o src/sig_center.o src/sig_meta.o src/ft_strcmp.o \
