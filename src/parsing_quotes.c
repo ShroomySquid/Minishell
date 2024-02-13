@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/02 14:41:50 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/13 10:31:23 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	new_length(const char *arg, int i, int a)
 		{
 			quote = arg[i];
 			i++;
-			while (arg[i] != quote)
+			while (arg[i] && arg[i] != quote)
 			{
 				i++;
 				a++;
@@ -58,7 +58,7 @@ int	new_length(const char *arg, int i, int a)
 			if (arg[i])
 				i++;
 		}
-		else
+		else if (arg[i])
 		{
 			i++;
 			a++;
