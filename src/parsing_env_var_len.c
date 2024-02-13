@@ -98,7 +98,7 @@ int	tb_len_env(char *buff, t_env *env,
 		if (buff[parse->i] && buff[parse->i]
 			== '$' && !is_white_space(buff[parse->i + 1]))
 			get_name_length(parse, buff, env);
-		else if (buff[parse->i])
+		if (buff[parse->i])
 		{
 			parse->i++;
 			parse->a++;
