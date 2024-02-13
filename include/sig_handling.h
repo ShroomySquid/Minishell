@@ -26,5 +26,7 @@ void	sig_interactive_handler(int signum);
 void	be_patient(void);
 void	setup_interactive(void);
 void	setup_non_interactive(void);
+void	start_heredoc(void);
+void	in_here_doc(int signum);
 
 #endif

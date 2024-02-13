@@ -79,7 +79,8 @@ int	exec_line(t_exec_st *exec_st, char **line_args, t_env *env)
 {
 	char	**cmd_paths;
 
-	trigger_here_docs(line_args, exec_st, env);
+	if (trigger_here_docs(line_args, exec_st, env))
+		return (1);
 	cmd_paths = ft_calloc((exec_st->pipes_nbr) + 2, sizeof(char *));
 	if (!cmd_paths)
 	{

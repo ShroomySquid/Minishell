@@ -48,3 +48,14 @@ void	be_patient(void)
 	sigaction(CTRLC, &act, NULL);
 	sigaction(CTRLSL, &act, NULL);
 }
+
+void	start_heredoc(void)
+{
+	t_sigaction	act;
+
+	act = (t_sigaction){0};
+	rl_catch_signals = 1;
+	act.sa_handler = SIG_DFL;
+	act.sa_flags = 0;
+	sigaction(CTRLC, &act, NULL);
+}
