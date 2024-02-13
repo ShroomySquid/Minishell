@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 12:02:04 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/13 11:22:50 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:57:38 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*skip_quote(char *s, char quote)
 	if (*s)
 		s++;
 	if (*s == 39 || *s == 34)
-		return (skip_quote(s, quote));
+		return (skip_quote(s, *s));
 	return (s);
 }
 

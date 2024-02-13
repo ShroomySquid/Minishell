@@ -21,6 +21,8 @@ void	to_end_quote_length(char quote, const char *buff, int *i, int *a)
 		*i += 1;
 		*a += 1;
 	}
+	if (buff[*i] && (34 == buff[*i] || 39 == buff[*i]))
+		to_end_quote_length(buff[*i], buff, i, a);
 }
 
 void	operators_extra_len(char *buff, int *a, int *i)
@@ -102,9 +104,9 @@ char	*parse_operators(char *buff)
 			to_end_quote(buff, temp_buff, &i, a);
 		if (buff[i] && (buff[i] == '<' || buff[i] == '>' || buff[i] == '|'))
 			operator_found(buff, temp_buff, &i, &a);
-		else if (buff[i])
+		else if (buff[i] && buff[i] != 34 && buff[i] != 39)
 			temp_buff[i + a] = buff[i];
-		if (buff[i])
+		if (buff[i] && buff[i] != 34 && buff[i] != 39)
 			i++;
 	}
 	temp_buff[i + a] = '\0';
