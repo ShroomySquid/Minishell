@@ -1,6 +1,4 @@
  Checker les leaks
- double free interuption here_doc
- bug malloc cd ..
- Bug redirection sans fichier.
- Bug echo double free
  Bug si opérateur répétés trop de fois d'affilé (Ou pas?)
+ crtl c dans cat pas de newline
+ traité ; comme espace

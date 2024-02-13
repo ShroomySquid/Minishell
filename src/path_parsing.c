@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:37:41 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/01/28 11:39:49 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:12:49 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ char	*seek_cmd(char *cmd, t_env *env)
 	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
 	env = env_find(env, "PATH");
+	if (!env)
+		return (0);
 	possible_paths = ft_split(env->value + 5, ':');
 	if (!possible_paths)
 		return (0);
