@@ -60,7 +60,7 @@ void	free_moi_ca(char **cmd_paths, char **line_args, t_exec_st *exec_st);
 char	*recieve_input(void);
 char	**parsing_line(char *buff, t_exec_st *exec_st, t_env *env);
 int		innit_main(int argc, char **argv, t_exec_st **exec_st);
-
+void	child_here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env);
 void	print_array(char **array_str);
 
 #endif
