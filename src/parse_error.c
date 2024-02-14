@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:37:14 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/13 17:34:03 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/14 10:33:30 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,36 +38,44 @@ char	*check_redir_error(char **line, int i)
 	return (NULL);
 }
 
-char	*error_return(char *token)
+char	*check_ope_error(char *buff, int *i)
 {
-	char	*error;
+	int	a;
 
-	error = ft_strdup(token);
-	return (error);
+	a = 0;
+	while (buff[*i + a] && 34 != buff[*i + a] && 39 != buff[*i + a])
+		a++;
+	if (ft_strnstr(&buff[*i], "<<<", a))
+		return ("<<");
+	if (ft_strnstr(&buff[*i], "||", a))
+		return ("|");
+	if (ft_strnstr(&buff[*i], ">>>", a))
+		return (">>");
+	*i += a;
+	if (buff[*i] && (34 == buff[*i] || 39 == buff[*i]))
+		to_end_quote_length(buff[*i], &buff[*i], i, &a);
+	return (NULL);
 }
 
 char	*parse_errors(char *buff)
 {
-	int	i;
-	int	a;
+	int		i;
+	int		quote;
+	char	*return_value;
 
 	i = 0;
 	if (!buff)
 		return (NULL);
+	quote = check_invalid_quote(buff);
+	if (quote == '\'')
+		return (error_return("\'"));
+	if (quote == '"')
+		return (error_return("\""));
 	while (buff[i])
 	{
-		a = 0;
-		while (buff[i + a] && 34 != buff[i + a] && 39 != buff[i + a])
-			a++;
-		if (ft_strnstr(&buff[i], "<<<", a))
-			return (error_return("<<"));
-		if (ft_strnstr(&buff[i], "||", a))
-			return (error_return("|"));
-		if (ft_strnstr(&buff[i], ">>>", a))
-			return (error_return(">>"));
-		i += a;
-		if (buff[i] && (34 == buff[i] || 39 == buff[i]))
-			to_end_quote_length(buff[i], &buff[i], &i, &a);
+		return_value = check_ope_error(buff, &i);
+		if (return_value)
+			return (error_return(return_value));
 	}
 	return (NULL);
 }

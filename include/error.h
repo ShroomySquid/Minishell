@@ -24,5 +24,7 @@ void	error_permission_d(t_exec_st *exec_st,
 int		failed_cmd_msg(t_exec_st *exec_st, char **cmd_paths);
 char	*parse_errors(char *buff);
 char	*parse_errors_again(char **line);
+char	*error_return(char *token);
+char	check_invalid_quote(char *buff);
 
 #endif

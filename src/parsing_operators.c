@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/13 10:07:55 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/14 09:47:44 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,17 @@ int	check_operators(t_exec_st *exec_st, char *arg)
 {
 	int		i;
 	int		return_value;
-	size_t	len;
+	size_t	len_quote;
+	size_t	len_arg;
 
 	i = 0;
 	return_value = 0;
+	len_arg = ft_strlen(arg);
 	while (exec_st->ope_quotes[i])
 	{
-		len = ft_strlen(exec_st->ope_quotes[i]);
-		if (!ft_strncmp(exec_st->ope_quotes[i], arg, len))
+		len_quote = ft_strlen(exec_st->ope_quotes[i]);
+		if (len_arg == len_quote
+			&& !ft_strncmp(exec_st->ope_quotes[i], arg, len_quote))
 		{
 			return_value = 1;
 			break ;
