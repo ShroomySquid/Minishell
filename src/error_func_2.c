@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:22:07 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/11 10:39:29 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/15 08:52:49 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,3 @@ void	error_permission_d(t_exec_st *exec_st,
 	exec_st->ret = 126;
 	*return_value = 1;
 }
-
