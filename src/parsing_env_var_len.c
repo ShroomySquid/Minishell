@@ -56,31 +56,22 @@ int	get_env_name_len(t_env_parse *parse, t_env *cur_node)
 
 void	get_name_length(t_env_parse *parse, char *buff, t_env *env)
 {
-	t_env	*cur_node;
+	char	*name;
 
 	parse->len = 0;
-	cur_node = env;
 	while (buff[parse->i + parse->len]
 		&& is_valid_env_char(buff[parse->i + parse->len + 1]))
 		parse->len++;
 	if (handle_edge_case_len(parse, buff))
 		return ;
-	while (cur_node->name)
-	{
-		if ((int)ft_strlen(cur_node->name) > (parse->len - 1)
-			&& !ft_strncmp(&buff[parse->i + 1], cur_node->name, parse->len - 1))
-		{
-			get_env_name_len(parse, cur_node);
-			break ;
-		}
-		else if (cur_node->next)
-			cur_node = cur_node->next;
-		else
-		{
-			parse->i += parse->len;
-			break ;
-		}
-	}
+	name = ft_calloc(parse->len + 1, sizeof(char));
+	if (!name)
+		return ;
+	ft_strlcpy(name, &buff[parse->i + 1], parse->len + 1);
+	env = env_find(env, name);
+	if (env)
+		get_env_name_len(parse, env);
+	free(name);
 }
 
 int	tb_len_env(char *buff, t_env *env,
@@ -104,6 +95,6 @@ int	tb_len_env(char *buff, t_env *env,
 			parse->a++;
 		}
 	}
-	parse->a++;
+	parse->a += 2;
 	return (parse->a);
 }

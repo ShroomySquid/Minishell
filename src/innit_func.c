@@ -51,7 +51,7 @@ char	*recieve_input(t_env *env)
 
 	temp = b_get_pwd_short(env);
 	if (!temp)
-		prompt = ft_strdup("minishell$ ");
+		prompt = ft_strdup("minishell $ ");
 	else
 	{
 		prompt = ft_strjoin(temp, " $ ");

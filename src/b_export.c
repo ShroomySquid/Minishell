@@ -103,7 +103,7 @@ int	b_parent_export(char **args, t_env *env)
 			ret = 1;
 		}
 		else
-			b_export_final(&env, args[1]);
+			b_export_final(&env, args[i]);
 	}
 	return (ret);
 }

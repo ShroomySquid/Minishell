@@ -21,6 +21,11 @@ void	to_end_quote_length(char quote, const char *buff, int *i, int *a)
 		*i += 1;
 		*a += 1;
 	}
+	if (buff[*i])
+	{
+		*i += 1;
+		*a += 1;
+	}
 	if (buff[*i] && (34 == buff[*i] || 39 == buff[*i]))
 		to_end_quote_length(buff[*i], buff, i, a);
 }
@@ -39,7 +44,7 @@ void	operators_extra_len(char *buff, int *a, int *i)
 	if (buff[*i] == '>' && buff[*i + 1] && buff[*i + 1] == '>')
 	{
 		if (buff[*i + 2] && buff[*i + 2] != ' ')
-			a += 1;
+			*a += 1;
 	}
 }
 
