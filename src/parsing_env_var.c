@@ -25,7 +25,7 @@ int	handle_edge_case(t_env_parse *parse, char *buff, char *temp_buff)
 		parse->i += 1;
 		return (1);
 	}
-	if (!ft_strncmp(&buff[parse->i + 1], "PWD", parse->len - 1))
+	if (parse->len == 4 && !ft_strncmp(&buff[parse->i], "$PWD", parse->len))
 	{
 		get_pwd(temp_buff, &parse->a);
 		parse->i += parse->len + 1;
