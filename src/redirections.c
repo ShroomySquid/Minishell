@@ -48,6 +48,7 @@ int	check_redirection(char **line, t_exec_st *exec_st)
 		{
 			perror("Error");
 			exec_st->ret = 1;
+			free(redir);
 			return (-1);
 		}
 		redir->i += 1;
