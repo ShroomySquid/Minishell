@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:22:07 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/13 18:07:57 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:36:37 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,15 @@ void	check_error(t_exec_st *exec_st,
 		error_permission_d(exec_st, return_value, cmd_paths);
 }
 
+void	close_child(t_exec_st *exec_st)
+{
+	if (exec_st->i == exec_st->pipes_nbr)
+		close(exec_st->fd[1]);
+	close(exec_st->fd[0]);
+	close(exec_st->temp_stdin);
+	close(exec_st->temp_stdout);
+}
+
 int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 {
 	int			new_malloc;
@@ -63,12 +72,11 @@ int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
 		fix_quotes(&exec_st->cmd_args, exec_st);
 	}
 	else
+	{
+		close_child(exec_st);
 		return (1);
+	}
 	check_error(exec_st, &return_value, cmd_paths, &buf);
-	if (exec_st->i == exec_st->pipes_nbr)
-		close(exec_st->fd[1]);
-	close(exec_st->fd[0]);
-	close(exec_st->temp_stdin);
-	close(exec_st->temp_stdout);
+	close_child(exec_st);
 	return (return_value);
 }
