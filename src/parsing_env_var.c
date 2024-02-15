@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/13 11:52:46 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:49:41 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	handle_edge_case(t_env_parse *parse, char *buff, char *temp_buff)
 		parse->i += 1;
 		return (1);
 	}
-	if (!ft_strncmp(&buff[parse->i + 1], "PWD", parse->len - 1))
+	if (parse->len == 4 && !ft_strncmp(&buff[parse->i], "$PWD", parse->len))
 	{
 		get_pwd(temp_buff, &parse->a);
 		parse->i += parse->len + 1;
