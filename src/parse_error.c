@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:37:14 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/14 10:33:30 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:59:27 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,15 @@ char	*check_ope_error(char *buff, int *i)
 	a = 0;
 	while (buff[*i + a] && 34 != buff[*i + a] && 39 != buff[*i + a])
 		a++;
-	if (ft_strnstr(&buff[*i], "<<<", a))
+	if (buff[*i] && ft_strnstr(&buff[*i], "<<<", a))
 		return ("<<");
-	if (ft_strnstr(&buff[*i], "||", a))
+	if (buff[*i] && ft_strnstr(&buff[*i], "||", a))
 		return ("|");
-	if (ft_strnstr(&buff[*i], ">>>", a))
+	if (buff[*i] && ft_strnstr(&buff[*i], ">>>", a))
 		return (">>");
 	*i += a;
 	if (buff[*i] && (34 == buff[*i] || 39 == buff[*i]))
-		to_end_quote_length(buff[*i], &buff[*i], i, &a);
+		to_end_quote_length(buff[*i], buff, i, &a);
 	return (NULL);
 }
 
@@ -73,6 +73,7 @@ char	*parse_errors(char *buff)
 		return (error_return("\""));
 	while (buff[i])
 	{
+		//printf("i value: %d\n", i);
 		return_value = check_ope_error(buff, &i);
 		if (return_value)
 			return (error_return(return_value));
