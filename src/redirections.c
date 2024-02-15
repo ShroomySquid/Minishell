@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/13 17:16:04 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:09:38 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	check_redirection(char **line, t_exec_st *exec_st)
 		if (redir->file < 0)
 		{
 			perror("Error");
+			free(redir);
 			exec_st->ret = 1;
 			return (-1);
 		}
