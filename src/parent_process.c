@@ -54,6 +54,18 @@ int	parent_process(t_exec_st *exec_st, char **line)
 	return (0);
 }
 
+void	close_here_docs(t_exec_st *exec_st)
+{
+	int	i;
+
+	i = 0;
+	while (exec_st->hd_list[i])
+	{
+		close(exec_st->hd_list[i]);
+		i++;
+	}
+}
+
 void	parent_close(t_exec_st *exec_st)
 {
 	int	i;
@@ -65,6 +77,8 @@ void	parent_close(t_exec_st *exec_st)
 	if (exec_st->pipes_nbr)
 		dup2(exec_st->temp_stdin, STDIN_FILENO);
 	be_patient();
+	if (exec_st->hd_list[0])
+		close_here_docs(exec_st);
 	while (exec_st->child_list[i])
 	{
 		waitpid(exec_st->child_list[i], &stat_loc, 0);

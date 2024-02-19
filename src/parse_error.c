@@ -45,11 +45,11 @@ char	*check_ope_error(char *buff, int *i)
 	a = 0;
 	while (buff[*i + a] && 34 != buff[*i + a] && 39 != buff[*i + a])
 		a++;
-	if (ft_strnstr(&buff[*i], "<<<", a))
+	if (buff[*i] && ft_strnstr(&buff[*i], "<<<", a))
 		return ("<<");
-	if (ft_strnstr(&buff[*i], "||", a))
+	if (buff[*i] && ft_strnstr(&buff[*i], "||", a))
 		return ("|");
-	if (ft_strnstr(&buff[*i], ">>>", a))
+	if (buff[*i] && ft_strnstr(&buff[*i], ">>>", a))
 		return (">>");
 	*i += a;
 	if (buff[*i] && (34 == buff[*i] || 39 == buff[*i]))
