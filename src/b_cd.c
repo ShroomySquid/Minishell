@@ -40,7 +40,8 @@ int	b_cd(char **args, char **env)
 			home_dir = "/";
 		if (chdir(home_dir) != -1)
 			return (0);
-		perror("minishell: cd");
+		ft_putstr_fd("minishell: cd: ", 2);
+		perror(home_dir);
 		return (1);
 	}
 	if (chdir(args[1]) == -1)
