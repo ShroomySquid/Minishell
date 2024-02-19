@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 14:25:06 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/16 14:26:13 by gcrepin          ###   ########.fr       */
+/*   Updated: 2024/02/15 08:59:18 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	b_parent_export(char **args, t_env *env)
 			ret = 1;
 		}
 		else
-			b_export_final(&env, args[1]);
+			b_export_final(&env, args[i]);
 	}
 	return (ret);
 }

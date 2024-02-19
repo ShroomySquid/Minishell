@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/15 10:59:29 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/14 09:38:10 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ void	to_end_quote_length(char quote, const char *buff, int *i, int *a)
 	*i += 1;
 	*a += 1;
 	while (buff[*i] && buff[*i] != quote)
+	{
+		*i += 1;
+		*a += 1;
+	}
+	if (buff[*i])
 	{
 		*i += 1;
 		*a += 1;
@@ -39,7 +44,7 @@ void	operators_extra_len(char *buff, int *a, int *i)
 	if (buff[*i] == '>' && buff[*i + 1] && buff[*i + 1] == '>')
 	{
 		if (buff[*i + 2] && buff[*i + 2] != ' ')
-			a += 1;
+			*a += 1;
 	}
 }
 

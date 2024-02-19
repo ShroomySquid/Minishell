@@ -21,7 +21,6 @@ void	error_no_file(t_exec_st *exec_st, int *return_value, char **cmd_paths);
 void	error_is_dir(t_exec_st *exec_st, int *return_value);
 void	error_permission_d(t_exec_st *exec_st,
 			int *return_value, char **cmd_paths);
-int		failed_cmd_msg(t_exec_st *exec_st, char **cmd_paths);
 char	*parse_errors(char *buff);
 char	*parse_errors_again(char **line);
 char	*error_return(char *token);

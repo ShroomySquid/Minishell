@@ -19,7 +19,7 @@ void	fix_quotes(char ***line, t_exec_st *exec_st)
 	char	*temp_arg;
 
 	i = 0;
-	while (line[0][i])
+	while (*line && line[0][i])
 	{
 		a = 1;
 		if (check_operators(exec_st, line[0][i]))

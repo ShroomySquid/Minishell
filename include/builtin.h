@@ -24,7 +24,7 @@ typedef struct s_builtin
 }				t_builtin;
 
 int		b_pwd(char **args, char **env);
-char	*b_get_pwd_short(char **args);
+char	*b_get_pwd_short(t_env *t_env);
 int		b_echo(char **args, char **env);
 int		b_cd(char **args, char **env);
 int		b_export(char **args, char **env);

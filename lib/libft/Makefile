@@ -49,10 +49,10 @@ test:	$(NAME) libft.h
 	$(CC) $(CCFLAGS) -c $< -o $@ $(LIBFLAGS)
 
 clean:
-	rm -f $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
+	@rm -f $(MY_OBJECTS) $(MY_BONUS) $(MY_FT_PRINTF)
 
 fclean:	clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re:	fclean $(NAME)
 

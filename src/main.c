@@ -62,7 +62,7 @@ int	run_minishell(t_exec_st *exec_st, t_env *env)
 	char	*buff;
 
 	innit_line(exec_st);
-	buff = recieve_input();
+	buff = recieve_input(env);
 	if (!buff)
 		return (1);
 	line_args = parsing_line(buff, exec_st, env);

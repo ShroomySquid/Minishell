@@ -43,13 +43,13 @@ void	free_moi_ca(char **cmd_paths, char **line_args, t_exec_st *exec_st)
 	exec_st->hd_list = NULL;
 }
 
-char	*recieve_input(void)
+char	*recieve_input(t_env *env)
 {
 	char	*buff;
 	char	*temp;
 	char	*prompt;
 
-	temp = b_get_pwd_short(NULL);
+	temp = b_get_pwd_short(env);
 	if (!temp)
 		prompt = ft_strdup("minishell$ ");
 	else

@@ -15,7 +15,6 @@
 
 # include <signal.h>
 # include "minishell.h"
-# include <termios.h>
 
 typedef struct sigaction	t_sigaction;
 
@@ -27,6 +26,5 @@ void	be_patient(void);
 void	setup_interactive(void);
 void	setup_non_interactive(void);
 void	start_heredoc(void);
-void	in_here_doc(int signum);
 
 #endif

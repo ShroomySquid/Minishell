@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/15 10:12:30 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:42:17 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int	here_doc_input(t_exec_st *exec_st, char **line_args, int i, t_env *env)
 	if (file)
 		return (file);
 	exec_st->hd_list[exec_st->cmd] = exec_st->fd[0];
-	exec_st->hd_bool = 1;
 	return (file);
 }
 

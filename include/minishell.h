@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/02/15 08:48:23 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/15 08:52:26 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,10 @@ void	ra_redirect(t_redir *redir, char *given_file);
 void	l_redirect(t_redir *redir, char *given_file);
 int		seek_pipe(char **line_args, t_exec_st *exec_st);
 void	free_moi_ca(char **cmd_paths, char **line_args, t_exec_st *exec_st);
-char	*recieve_input(void);
+char	*recieve_input(t_env *env);
 char	**parsing_line(char *buff, t_exec_st *exec_st, t_env *env);
 int		innit_main(int argc, char **argv, t_exec_st **exec_st);
 void	child_here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env);
-void	print_array(char **array_str);
 int		is_redirect(char **line, int i);
 
 #endif

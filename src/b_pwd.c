@@ -29,21 +29,22 @@ int	b_pwd(char **args, char **env)
 	return (0);
 }
 
-char	*b_get_pwd_short(char **args)
+char	*b_get_pwd_short(t_env *env)
 {
 	char	*pwd;
 	char	*home;
 	char	*short_pwd;
 
-	(void)args;
 	pwd = getcwd(NULL, 0);
-	home = getenv("HOME");
+	env = env_find(env, "HOME");
+	if (env)
+		home = env->value;
 	if (!pwd)
 	{
 		ft_putstr_fd("minishell: pwd: error retrieving current directory\n", 2);
 		return (0);
 	}
-	if (!home)
+	if (!env || !env->value)
 	{
 		free(pwd);
 		return (0);

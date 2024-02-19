@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:37:14 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/15 10:59:27 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/14 10:33:30 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*check_ope_error(char *buff, int *i)
 char	*parse_errors(char *buff)
 {
 	int		i;
-	int		quote;
+	char	quote;
 	char	*return_value;
 
 	i = 0;
@@ -73,7 +73,6 @@ char	*parse_errors(char *buff)
 		return (error_return("\""));
 	while (buff[i])
 	{
-		//printf("i value: %d\n", i);
 		return_value = check_ope_error(buff, &i);
 		if (return_value)
 			return (error_return(return_value));

@@ -48,10 +48,7 @@ typedef struct s_exec_st
 	int		*child_list;
 	int		nbr_hd;
 	int		cmd;
-	int		hd_bool;
-	int		hd_i;
 	int		*hd_list;
-	char	*error;
 	char	**cmd_args;
 	char	**ope_quotes;
 	t_env	*env;

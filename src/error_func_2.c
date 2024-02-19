@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:22:07 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/15 08:50:29 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/15 08:52:49 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,4 @@ void	error_permission_d(t_exec_st *exec_st,
 	ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 	exec_st->ret = 126;
 	*return_value = 1;
-}
-
-int	failed_cmd_msg(t_exec_st *exec_st, char **cmd_paths)
-{
-	dup2(exec_st->temp_stdout, STDOUT_FILENO);
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd_paths[exec_st->i], 2);
-	ft_putstr_fd(": command not found\n", 2);
-	return (1);
 }

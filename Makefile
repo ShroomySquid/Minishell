@@ -46,6 +46,7 @@ fclean: libclean clean
 
 libclean:
 	@$(MAKE) -C ./lib/libft fclean
+	@echo "\033[1;31mlibft cleaned\033[0m"
 
 re: fclean space all
 
