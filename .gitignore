@@ -1,0 +1,11 @@
+.gitignore
+.idea
+.DS_Store
+minishell
+lib/libft/libft.a
+val_ignore.txt
+minishell_tester/*
+/minishell_tester/
+*.o
+*.d
+*.txt
