@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/13 11:42:55 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:27:01 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 int	read_here_doc(t_exec_st *exec_st)
 {
-	int	i;
+	//int	i;
 
-	i = 0;
+	//i = 0;
 	dup2(exec_st->hd_list[exec_st->cmd], STDIN_FILENO);
-	while (exec_st->hd_list[i])
-	{
-		close(exec_st->hd_list[i]);
-		i++;
-	}
+	//while (exec_st->hd_list[i])
+	//{
+	//	close(exec_st->hd_list[i]);
+	//	i++;
+	//}
 	return (0);
 }
 
@@ -64,7 +64,7 @@ void	close_fd_hd_child(t_exec_st *exec_st)
 	close(exec_st->temp_stdin);
 }
 
-void	child_here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env)
+void	child_here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env, char **args)
 {
 	int	readline_result;
 
@@ -73,6 +73,8 @@ void	child_here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env)
 	close_fd_hd_child(exec_st);
 	free_moi_ca(NULL, exec_st->ope_quotes, exec_st);
 	free(exec_st);
+	env_clear(&env);
+	free_all(args);
 	if (readline_result < 0)
 		exit(-1);
 	exit(0);

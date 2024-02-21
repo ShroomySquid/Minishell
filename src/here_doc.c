@@ -6,13 +6,13 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/13 11:42:17 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:26:58 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	here_doc(char *delimiter, t_exec_st *exec_st, t_env *env)
+int	here_doc(char *delimiter, t_exec_st *exec_st, t_env *env, char **args)
 {
 	int		child;
 	int		status;
@@ -21,7 +21,7 @@ int	here_doc(char *delimiter, t_exec_st *exec_st, t_env *env)
 	if (child < 0)
 		return (-1);
 	if (!child)
-		child_here_doc(delimiter, exec_st, env);
+		child_here_doc(delimiter, exec_st, env, args);
 	be_patient();
 	waitpid(child, &status, 0);
 	setup_interactive();
@@ -50,7 +50,7 @@ int	here_doc_input(t_exec_st *exec_st, char **line_args, int i, t_env *env)
 		close(exec_st->hd_list[exec_st->cmd]);
 	if (pipe(exec_st->fd) < 0)
 		return (-1);
-	file = here_doc(line_args[i + 1], exec_st, env);
+	file = here_doc(line_args[i + 1], exec_st, env, line_args);
 	if (file)
 		return (file);
 	exec_st->hd_list[exec_st->cmd] = exec_st->fd[0];

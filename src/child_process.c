@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:22:07 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/15 09:36:37 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:26:56 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,19 @@ void	check_error(t_exec_st *exec_st,
 
 void	close_child(t_exec_st *exec_st)
 {
+	int i;
+	
 	if (exec_st->i == exec_st->pipes_nbr)
 		close(exec_st->fd[1]);
 	close(exec_st->fd[0]);
 	close(exec_st->temp_stdin);
 	close(exec_st->temp_stdout);
+	i = 0;
+	while (exec_st->hd_list[i])
+	{
+		close(exec_st->hd_list[i]);
+		i++;
+	}
 }
 
 int	child_process(t_exec_st *exec_st, char **line, char **cmd_paths)
