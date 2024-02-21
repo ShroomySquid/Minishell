@@ -14,24 +14,20 @@
 
 int	execute(char *path, char **args, t_env *env, int *ret)
 {
-	int		i;
-	char	**envp;
+	char		**envp;
+	t_builtin	builtin;
 
-	i = 0;
 	if (!path || !args)
 		return (-1);
 	envp = env_to_tab(env);
 	if (!envp)
 		return (-1);
-	while (i < BUILTIN_NUM)
+	builtin = get_builtin(path);
+	if (ft_strcmp(path, builtin.name) == 0)
 	{
-		if (ft_strcmp(path, g_builtin[i].name) == 0)
-		{
-			*ret = (g_builtin[i].func)(args, envp);
-			free_all(envp);
-			return (*ret);
-		}
-		i++;
+		*ret = (builtin.func)(args, envp);
+		free_all(envp);
+		return (*ret);
 	}
 	*ret = execve(path, args, envp);
 	free_all(envp);

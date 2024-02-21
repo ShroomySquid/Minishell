@@ -12,6 +12,8 @@
 
 #include "sig_handling.h"
 
+t_exec_st	g_exec_st;
+
 void	sig_interactive_handler(int signum)
 {
 	(void)signum;
