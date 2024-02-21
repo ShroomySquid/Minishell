@@ -29,6 +29,7 @@ int	exec_builtin(char ***line_args, t_env *env, t_exec_st *exec_st)
 	if (line_args[0] && !ft_strncmp(*line_args[0], "exit", 5))
 	{
 		b_true_exit(*line_args, exec_st, env, true);
+		free_moi_ca(NULL, *line_args, exec_st);
 		return (1);
 	}
 	else if (is_env_cmd(*line_args[0]))
