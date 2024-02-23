@@ -62,5 +62,7 @@ int		innit_main(int argc, char **argv, t_exec_st **exec_st);
 void	child_here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env,
 			char **args);
 int		is_redirect(char **line, int i);
+void	close_here_docs(t_exec_st *exec_st);
+void	increment_cmd_here_doc(t_exec_st *exec_st, char **line);
 
 #endif

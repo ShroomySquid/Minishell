@@ -49,3 +49,12 @@ void	error_permission_d(t_exec_st *exec_st,
 	exec_st->ret = 126;
 	*return_value = 1;
 }
+
+int	error_builtin(t_exec_st *exec_st, char ***line_args)
+{
+	close_here_docs(exec_st);
+	close(exec_st->fd[0]);
+	close(exec_st->fd[1]);
+	free_moi_ca(NULL, *line_args, exec_st);
+	return (1);
+}

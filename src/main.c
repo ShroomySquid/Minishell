@@ -16,29 +16,29 @@
 int	exec_builtin(char ***line_args, t_env *env, t_exec_st *exec_st)
 {
 	exec_st->ret = 0;
-	trigger_here_docs(*line_args, exec_st, env);
+	if (trigger_here_docs(*line_args, exec_st, env))
+		return (error_builtin(exec_st, line_args));
+	increment_cmd_here_doc(exec_st, *line_args);
 	*line_args = line_rm_redirection(*line_args,
 			check_redirection(*line_args, exec_st));
 	fix_quotes(line_args, exec_st);
 	if (!*line_args || exec_st->ret)
 	{
-		free_all(*line_args);
 		exec_st->ret = 1;
-		return (1);
+		return (free_all(*line_args), 1);
 	}
 	if (line_args[0] && !ft_strncmp(*line_args[0], "exit", 5))
 	{
 		b_true_exit(*line_args, exec_st, env, true);
-		free_moi_ca(NULL, *line_args, exec_st);
-		return (1);
+		return (error_builtin(exec_st, line_args));
 	}
 	else if (is_env_cmd(*line_args[0]))
 	{
 		exec_st->ret = exec_env(*line_args[0], *line_args, env);
-		free_moi_ca(NULL, *line_args, exec_st);
-		return (1);
+		return (error_builtin(exec_st, line_args));
 	}
 	execute(*line_args[0], *line_args, env, &exec_st->ret);
+	close_here_docs(exec_st);
 	return (0);
 }
 

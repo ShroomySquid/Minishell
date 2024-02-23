@@ -25,5 +25,6 @@ char	*parse_errors(char *buff);
 char	*parse_errors_again(char **line);
 char	*error_return(char *token);
 char	check_invalid_quote(char *buff);
+int		error_builtin(t_exec_st *exec_st, char ***line_args);
 
 #endif
