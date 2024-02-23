@@ -21,6 +21,11 @@ all: space lib/libft/libft.a
 	@$(MAKE) $(NAME) 2>&1 | (grep -v "make\[[0-9]*\]" || echo "\033[1;33mNothing to be done for $(NAME)\033[0m\n")
 
 lib/libft/libft.a:
+	@if [ ! -d /Users/$(USER)/.brew ]; then \
+        echo "\033[1;32mInstalling brew:\033[0m"; \
+        curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh; \
+        echo "\033[1;32mBrew installed\033[0m"; \
+    fi
 	brew install readline
 
 $(NAME): $(OBJECTS)
