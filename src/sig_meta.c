@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 22:43:57 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/01/28 11:10:37 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/22 03:36:08 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	start_heredoc(void)
 
 	act = (t_sigaction){0};
 	rl_catch_signals = 1;
-	act.sa_handler = SIG_DFL;
+	act.sa_handler = sig_heredoc_handler;
 	act.sa_flags = 0;
 	sigaction(CTRLC, &act, NULL);
 }

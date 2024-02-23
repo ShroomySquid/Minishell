@@ -24,7 +24,6 @@
 # include "error.h"
 
 int		check_redirection(char **line, t_exec_st *exec_st);
-int		read_here_doc(t_exec_st *exec_st);
 int		trigger_here_docs(char **line_args, t_exec_st *exec_st, t_env *env);
 int		execute(char *path, char **args, t_env *env, int *ret);
 int		ft_strcmp(const char *s1, const char *s2);
@@ -60,7 +59,8 @@ void	free_moi_ca(char **cmd_paths, char **line_args, t_exec_st *exec_st);
 char	*recieve_input(t_env *env);
 char	**parsing_line(char *buff, t_exec_st *exec_st, t_env *env);
 int		innit_main(int argc, char **argv, t_exec_st **exec_st);
-void	child_here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env, char **args);
+void	child_here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env,
+			char **args);
 int		is_redirect(char **line, int i);
 
 #endif

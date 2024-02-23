@@ -23,6 +23,7 @@ t_builtin	get_builtin(char *cmd)
 	{"unset", b_unset},
 	{"env", b_env},
 	{"exit", b_exit_mock},
+	{NULL, NULL}
 	};
 
 	i = 0;
@@ -40,6 +41,8 @@ int	b_is_builtin(char *cmd)
 	t_builtin	builtin;
 
 	builtin = get_builtin(cmd);
+	if (!builtin.name)
+		return (0);
 	if (ft_strcmp(cmd, builtin.name) == 0)
 		return (1);
 	return (0);

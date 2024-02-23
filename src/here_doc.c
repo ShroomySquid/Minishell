@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/21 15:26:58 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/22 03:46:43 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	here_doc(char *delimiter, t_exec_st *exec_st, t_env *env, char **args)
 	waitpid(child, &status, 0);
 	setup_interactive();
 	close(exec_st->fd[1]);
-	if (WIFSIGNALED(status))
+	if (WEXITSTATUS(status) == 255)
 	{
-		exec_st->ret = WTERMSIG(status);
+		exec_st->ret = 1;
 		ft_printf("\n");
 		return (1);
 	}

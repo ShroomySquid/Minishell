@@ -23,7 +23,7 @@ void	redirect_em(char **line, t_redir *redir, t_exec_st *exec_st)
 	else if (!ft_strncmp("<<", line[redir->i], 3) && line[redir->i + 1])
 	{
 		if (redir->max_here_doc)
-			redir->file = read_here_doc(exec_st);
+			redir->file = dup2(exec_st->hd_list[exec_st->cmd], STDIN_FILENO);
 		redir->a += 2;
 		redir->max_here_doc = 0;
 	}

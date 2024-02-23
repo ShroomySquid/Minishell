@@ -49,8 +49,8 @@ void	check_error(t_exec_st *exec_st,
 
 void	close_child(t_exec_st *exec_st)
 {
-	int i;
-	
+	int	i;
+
 	if (exec_st->i == exec_st->pipes_nbr)
 		close(exec_st->fd[1]);
 	close(exec_st->fd[0]);

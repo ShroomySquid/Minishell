@@ -21,6 +21,8 @@ char	*check_pipe_error(char **line, int i)
 		return (error);
 	if (is_redirect(line, i - 1))
 		return (error);
+	if (!line[i + 1])
+		return (error);
 	free(error);
 	return (NULL);
 }

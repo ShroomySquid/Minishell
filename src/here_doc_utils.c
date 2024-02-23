@@ -6,25 +6,11 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/21 15:27:01 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:42:26 by gcrepin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	read_here_doc(t_exec_st *exec_st)
-{
-	//int	i;
-
-	//i = 0;
-	dup2(exec_st->hd_list[exec_st->cmd], STDIN_FILENO);
-	//while (exec_st->hd_list[i])
-	//{
-	//	close(exec_st->hd_list[i]);
-	//	i++;
-	//}
-	return (0);
-}
 
 static int	here_doc_readline(char *delimiter, int file, t_env *env,
 		t_exec_st *exec_st)
@@ -64,10 +50,12 @@ void	close_fd_hd_child(t_exec_st *exec_st)
 	close(exec_st->temp_stdin);
 }
 
-void	child_here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env, char **args)
+void	child_here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env,
+		char **args)
 {
 	int	readline_result;
 
+	signal_fix(exec_st, args, env);
 	readline_result = here_doc_readline(delimiter, exec_st->fd[1], env,
 			exec_st);
 	close_fd_hd_child(exec_st);
