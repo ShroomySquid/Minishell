@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:37:14 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/14 10:33:30 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:41:12 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ char	*check_pipe_error(char **line, int i)
 	if (is_redirect(line, i - 1))
 		return (error);
 	if (!line[i + 1])
+		return (error);
+	if (!ft_strncmp(line[i + 1], "|", 2))
 		return (error);
 	free(error);
 	return (NULL);

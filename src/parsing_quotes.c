@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/13 10:31:23 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:40:10 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	fix_quotes(char ***line, t_exec_st *exec_st)
 				a++;
 			}
 			line[0][i][a] = '\0';
+			free(temp_arg);
 		}
 		i++;
 	}
