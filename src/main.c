@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/23 17:43:22 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/25 08:19:10 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	exec_builtin(char ***line_args, t_env *env, t_exec_st *exec_st)
 	exec_st->ret = 0;
 	if (trigger_here_docs(*line_args, exec_st, env))
 		return (error_builtin(exec_st, line_args));
-	increment_cmd_here_doc(exec_st, *line_args);
+	exec_st->cmd = 0;
 	*line_args = line_rm_redirection(*line_args,
 			check_redirection(*line_args, exec_st));
 	fix_quotes(line_args, exec_st);
