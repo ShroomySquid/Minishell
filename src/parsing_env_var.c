@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/13 11:52:46 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/25 16:50:17 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,13 @@ char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
 			to_end_quote_var(buff, temp_buff, par);
 		if (buff[par->i] && buff[par->i] == '$' && buff[par->i + 1] == '?')
 			get_exit_code(par, exec_st, temp_buff);
+		if (buff[par->i] && buff[par->i] == '$' && buff[par->i + 1] == '$')
+		{
+			temp_buff[par->a] = buff[par->i];
+			par->a += 1;
+			par->i += 2;
+			continue;
+		}
 		if (buff[par->i] && buff[par->i] == '$'
 			&& !is_white_space(buff[par->i + 1]))
 			get_name(buff, temp_buff, par, env);
