@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/25 08:19:10 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/25 18:02:03 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,19 @@ int	final_exit(t_exec_st *exec_st, t_env *env)
 	return (1);
 }
 
+int is_empty_buffer(char *buff)
+{
+	int i;
+
+	i = 0;
+	while (is_white_space(buff[i]))
+		i++;
+	if (buff[i])
+		return (0);
+	free(buff);
+	return (1);
+}
+
 int	run_minishell(t_exec_st *exec_st, t_env *env)
 {
 	char	**line_args;
@@ -66,6 +79,8 @@ int	run_minishell(t_exec_st *exec_st, t_env *env)
 	buff = recieve_input(env);
 	if (!buff)
 		return (1);
+	if (is_empty_buffer(buff))
+		return (0);
 	line_args = parsing_line(buff, exec_st, env);
 	if (!line_args || !line_args[0])
 		return (0);
