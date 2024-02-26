@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/26 15:45:51 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:53:17 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ int	check_edge_cases(char *buff, char *temp_buff,
 		t_env_parse *par, t_exec_st *exec_st)
 {
 	if ('\'' == buff[par->i])
+	{
 		to_end_quote_var(buff, temp_buff, par);
+		return (1);
+	}
 	if (buff[par->i] && buff[par->i] == '$' && buff[par->i + 1] == '?')
 		get_exit_code(par, exec_st, temp_buff);
 	if (buff[par->i] && buff[par->i] == '$' && buff[par->i + 1] == '$')
