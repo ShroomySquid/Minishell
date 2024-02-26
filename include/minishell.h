@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:45 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/02/21 15:22:05 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:58:42 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,8 @@ void	child_here_doc(char	*delimiter, t_exec_st *exec_st, t_env *env,
 int		is_redirect(char **line, int i);
 void	close_here_docs(t_exec_st *exec_st);
 void	increment_cmd_here_doc(t_exec_st *exec_st, char **line);
+void	innit_line(t_exec_st *exec_st);
+int		final_exit(t_exec_st *exec_st, t_env *env);
+int		is_empty_buffer(char *buff);
 
 #endif

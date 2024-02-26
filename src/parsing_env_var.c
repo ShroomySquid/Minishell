@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/25 16:50:17 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/26 12:14:34 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	handle_edge_case(t_env_parse *parse, char *buff, char *temp_buff)
 		parse->i += 1;
 		return (1);
 	}
-	if (parse->len == 4 && !ft_strncmp(&buff[parse->i], "$PWD", parse->len))
+	if (parse->len == 4 && !ft_strncmp(&buff[parse->i], "$PWD", parse->len + 1))
 	{
 		get_pwd(temp_buff, &parse->a);
 		parse->i += parse->len + 1;
@@ -68,6 +68,23 @@ void	get_name(char *buff, char *temp_buff, t_env_parse *parse, t_env *env)
 	parse->i += parse->len + 1;
 }
 
+int	check_edge_cases(char *buff, char *temp_buff,
+		t_env_parse *par, t_exec_st *exec_st)
+{
+	if ('\'' == buff[par->i])
+		to_end_quote_var(buff, temp_buff, par);
+	if (buff[par->i] && buff[par->i] == '$' && buff[par->i + 1] == '?')
+		get_exit_code(par, exec_st, temp_buff);
+	if (buff[par->i] && buff[par->i] == '$' && buff[par->i + 1] == '$')
+	{
+		temp_buff[par->a] = buff[par->i];
+		par->a += 1;
+		par->i += 2;
+		return (1);
+	}
+	return (0);
+}
+
 char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
 {
 	char		*temp_buff;
@@ -78,22 +95,13 @@ char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
 		return (NULL);
 	temp_buff = ft_calloc(tb_len_env(buff, env, exec_st, par), sizeof(char));
 	if (!temp_buff)
-		return (NULL);
+		return (free(par), NULL);
 	par->i = 0;
 	par->a = 0;
 	while (buff[par->i])
 	{
-		if ('\'' == buff[par->i])
-			to_end_quote_var(buff, temp_buff, par);
-		if (buff[par->i] && buff[par->i] == '$' && buff[par->i + 1] == '?')
-			get_exit_code(par, exec_st, temp_buff);
-		if (buff[par->i] && buff[par->i] == '$' && buff[par->i + 1] == '$')
-		{
-			temp_buff[par->a] = buff[par->i];
-			par->a += 1;
-			par->i += 2;
-			continue;
-		}
+		if (check_edge_cases(buff, temp_buff, par, exec_st))
+			continue ;
 		if (buff[par->i] && buff[par->i] == '$'
 			&& !is_white_space(buff[par->i + 1]))
 			get_name(buff, temp_buff, par, env);
