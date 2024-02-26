@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/26 12:15:16 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:45:59 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	handle_edge_case_len(t_env_parse *parse, char *buff)
 	if (parse->len == 0)
 	{
 		if (!buff[parse->i + 1] || is_white_space(buff[parse->i + 1])
-			|| buff[parse->i + 1] == buff[parse->i - 1])
+			|| buff[parse->i + 1] == 34 || 39 == buff[parse->i + 1])
 			parse->a += 1;
 		parse->i += 1;
 		return (1);
