@@ -6,7 +6,7 @@
 /*   By: fbarrett <fbarrett@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:52:31 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/13 15:38:13 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/27 09:37:40 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_env_parse
 	int	i;
 	int	a;
 	int	len;
+	int in_double;
 }				t_env_parse;
 
 typedef struct s_env

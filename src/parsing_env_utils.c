@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:27:37 by gcrepin           #+#    #+#             */
-/*   Updated: 2024/02/26 18:50:10 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/27 09:41:00 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@ int	is_valid_env_char(char c)
 int	env_next(t_env_parse *parse, char *temp_buff, const char *buff)
 {
 	temp_buff[parse->a] = buff[parse->i];
+	if (buff[parse->i] == 34)
+	{
+		if (parse->in_double)
+			parse->in_double = 0;
+		else
+			parse->in_double = 1;
+	}
 	parse->i += 1;
 	parse->a += 1;
 	return (0);

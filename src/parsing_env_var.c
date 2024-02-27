@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/26 18:53:17 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/27 09:41:02 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	get_name(char *buff, char *temp_buff, t_env_parse *parse, t_env *env)
 int	check_edge_cases(char *buff, char *temp_buff,
 		t_env_parse *par, t_exec_st *exec_st)
 {
-	if ('\'' == buff[par->i])
+	if ('\'' == buff[par->i] && !par->in_double)
 	{
 		to_end_quote_var(buff, temp_buff, par);
 		return (1);
@@ -101,6 +101,7 @@ char	*parse_env_var(char *buff, t_env *env, t_exec_st *exec_st)
 		return (free(par), NULL);
 	par->i = 0;
 	par->a = 0;
+	par->in_double = 0;
 	while (buff[par->i])
 	{
 		if (check_edge_cases(buff, temp_buff, par, exec_st))

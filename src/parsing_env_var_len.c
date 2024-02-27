@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/26 15:45:59 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/27 09:40:58 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,10 @@ int	tb_len_env(char *buff, t_env *env,
 {
 	parse->i = 0;
 	parse->a = 0;
+	parse->in_double = 0;
 	while (buff[parse->i])
 	{
-		if ('\'' == buff[parse->i])
+		if ('\'' == buff[parse->i] && !parse->in_double)
 			to_end_quote_length(buff[parse->i], buff, &parse->i, &parse->a);
 		if (buff[parse->i] && buff[parse->i]
 			== '$' && buff[parse->i + 1] == '?')
@@ -94,6 +95,13 @@ int	tb_len_env(char *buff, t_env *env,
 			get_name_length(parse, buff, env);
 		if (buff[parse->i])
 		{
+			if (buff[parse->i] == 34)
+			{
+				if (parse->in_double)
+					parse->in_double = 0;
+				else
+					parse->in_double = 1;
+			}
 			parse->i++;
 			parse->a++;
 		}
