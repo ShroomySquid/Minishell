@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/26 18:48:02 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:12:42 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	child_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 	if (!exec_st->cmd_args || execute(cmd_paths[exec_st->i],
 			exec_st->cmd_args, env, &exec_st->ret) == -1)
 		perror("Cmd failed to execute");
+	rl_clear_history();
 	free_exit(exec_st, cmd_paths, env, line);
 }
 
