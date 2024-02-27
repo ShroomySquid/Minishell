@@ -6,7 +6,7 @@
 /*   By: gcrepin <gcrepin@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:31:34 by fbarrett          #+#    #+#             */
-/*   Updated: 2024/02/26 19:12:42 by fbarrett         ###   ########.fr       */
+/*   Updated: 2024/02/27 09:45:13 by fbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	free_exit(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 void	child_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 {
 	setup_non_interactive();
+	rl_clear_history();
 	exec_st->ret = 0;
 	exec_st->env = env;
 	if (child_process(exec_st, line, cmd_paths))
@@ -32,7 +33,6 @@ void	child_cmd(t_exec_st *exec_st, char **cmd_paths, t_env *env, char **line)
 	if (!exec_st->cmd_args || execute(cmd_paths[exec_st->i],
 			exec_st->cmd_args, env, &exec_st->ret) == -1)
 		perror("Cmd failed to execute");
-	rl_clear_history();
 	free_exit(exec_st, cmd_paths, env, line);
 }
 
