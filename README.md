@@ -22,7 +22,7 @@ git@github.com:ShroomySquid/Minishell.git
 
 # Minishell -- Français
 
-Ce programme est un shell avec des fonctions limités. Ce projet fait partie du cursus de 42 Québec.
+Ce programme est un shell avec des fonctions limitées. Ce projet fait partie du cursus de 42 Québec.
 
 Pour lancer minishell, faites la commande suivante:
 ```bash
@@ -39,7 +39,7 @@ Pour quitter minishell, faites la commande "exit".
 git@github.com:ShroomySquid/Minishell.git
 ```
 
-- Faites la commande "make" dans le doisser afin de compiler le program.
+- Faites la commande "make" dans le dossier afin de compiler le program.
 
 - NOTE: L'installation va également installer brew et la library readline si celles-ci ne sont pas déjà présentes.
 
