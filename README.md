@@ -2,7 +2,7 @@
 
 This program is a shell with limited features. It is a project part of the 42 Quebec cursus.
 
-To run minshell simply type:
+To run minishell simply type:
 ```bash
 ./minishell
 ```
