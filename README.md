@@ -1,6 +1,7 @@
 # Minishell
 
-This program is a shell with limited features. It is a project part of the 42 Quebec cursus. This project was made with the cooperation of - [@Tanker50207].
+This program is a shell with limited features. It is a project part of the 42 Quebec cursus. This project was made with 
+the cooperation of [Tanker50207](https://github.com/Tanker50207).
 
 To run minishell simply type:
 ```bash
