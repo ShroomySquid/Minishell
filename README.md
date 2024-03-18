@@ -17,7 +17,7 @@ To exit minishell, write the command "exit".
 git@github.com:ShroomySquid/Minishell.git
 ```
 
-- Run the command make in the folder to compile the program.
+- Run the command "make" in the folder to compile the program.
 
 - NOTE: If not already there, brew and the readline library will be installed.
 
