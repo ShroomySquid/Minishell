@@ -23,7 +23,8 @@ git@github.com:ShroomySquid/Minishell.git
 
 # Minishell -- Français
 
-Ce programme est un shell avec des fonctions limitées. Ce projet fait partie du cursus de 42 Québec.
+Ce programme est un shell avec des fonctions limitées. Ce projet fait partie du cursus de 42 Québec et il fut 
+fait avec la coopération de [Tanker50207](https://github.com/Tanker50207).
 
 Pour lancer minishell, faites la commande suivante:
 ```bash
